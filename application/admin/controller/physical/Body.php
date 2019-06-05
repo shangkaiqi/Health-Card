@@ -9,7 +9,7 @@ use app\common\controller\Backend;
  *
  * @icon fa fa-circle-o
  */
-class Foundation extends Backend
+class Body extends Backend
 {
     
     /**
@@ -24,6 +24,6 @@ class Foundation extends Backend
     }
 
     public function index(){
-        echo "aaaaaaaaa";
+        echo "Body";
     }
 }
