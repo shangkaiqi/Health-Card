@@ -28,7 +28,7 @@ class Business extends Backend
 
     /**
      *
-     * @var \app\common\model\Config
+     * 
      */
     protected $model = null;
 

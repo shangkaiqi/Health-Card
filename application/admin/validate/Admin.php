@@ -1,5 +1,4 @@
 <?php
-
 namespace app\admin\validate;
 
 use think\Validate;
@@ -10,42 +9,66 @@ class Admin extends Validate
     /**
      * 验证规则
      */
+
+    //
+    //
+    //
+    // age
+    //
+    //
+    //
     protected $rule = [
-        'username' => 'require|max:50|unique:admin',
-        'nickname' => 'require',
-        'password' => 'require',
-        'email'    => 'require|email|unique:admin,email',
+        'name' => 'require|max:50|unique',
+        'identitycard' => 'require',
+        'type' => 'require',
+        'sex' => 'require|',
+        'age' => 'require|number|between:1,120',
+        'phone' => 'require|mobile',
+        // 'employee' => 'require|email|unique:admin,email',
+        'company' => 'require'
     ];
 
     /**
      * 提示消息
      */
-    protected $message = [
-    ];
+    protected $message = [];
 
     /**
      * 字段描述
      */
-    protected $field = [
-    ];
+    protected $field = [];
 
     /**
      * 验证场景
      */
     protected $scene = [
-        'add'  => ['username', 'email', 'nickname', 'password'],
-        'edit' => ['username', 'email', 'nickname'],
+        'add' => [
+            'name',
+            'identitycard',
+            'type',
+            'sex',
+            'age',
+            'phone',
+            'company'
+        ]
+        // 'edit' => [
+        // 'username',
+        // 'email',
+        // 'nickname'
+        // ]
     ];
 
     public function __construct(array $rules = [], $message = [], $field = [])
     {
         $this->field = [
-            'username' => __('Username'),
-            'nickname' => __('Nickname'),
-            'password' => __('Password'),
-            'email'    => __('Email'),
+            'name' => __('name'),
+            'identitycard' => __('identitycard'),
+            'type' => __('type'),
+            'sex' => __('sex'),
+            'age' => __('age'),
+            'phone' => __('phone'),
+            'company' => __('company')
         ];
         parent::__construct($rules, $message, $field);
     }
-
 }

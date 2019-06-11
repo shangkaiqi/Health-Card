@@ -27,7 +27,7 @@ class Enregister extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = model("User");
+        $this->model = model("PhysicalUsers");
     }
 
     public function index()
@@ -43,7 +43,23 @@ class Enregister extends Backend
     {
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            if ($params) {}
+            if ($params) {
+                // name
+                // identitycard
+                // type
+                // sex
+                // age
+                // phone
+                // employee
+                // company
+                $params['bsid'] = $this->auth->id;
+                $result = $this->model->validate("Enregister.add")->save($params);
+                if ($result === false) {
+                    $this->error($this->model->getError());
+                }
+
+                $this->success();
+            }
             $this->error();
         }
 
