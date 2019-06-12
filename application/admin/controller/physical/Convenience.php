@@ -5,7 +5,7 @@ use app\common\controller\Backend;
 
 /**
  *
- * 采便检测
+ * @desc采便检测
  *
  * @icon fa fa-circle-o
  */
@@ -60,5 +60,6 @@ class Convenience extends Backend
             }
             $this->error();
         }
+        return $this->view->fetch();
     }
 }

@@ -4,7 +4,7 @@ namespace app\admin\controller\physical;
 use app\common\controller\Backend;
 
 /**
- * 采血检查
+ * @desc采血检查
  *
  * @icon fa fa-circle-o
  */

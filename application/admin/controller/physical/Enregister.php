@@ -4,7 +4,7 @@ namespace app\admin\controller\physical;
 use app\common\controller\Backend;
 
 /**
- *
+ * @desc 体检登记
  * @icon fa fa-circle-o
  */
 class Enregister extends Backend

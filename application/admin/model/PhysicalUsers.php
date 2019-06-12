@@ -4,7 +4,7 @@ namespace app\admin\model;
 use think\Model;
 use think\Session;
 
-class Admin extends Model
+class PhysicalUsers extends Model
 {
 
     // 开启自动写入时间戳字段

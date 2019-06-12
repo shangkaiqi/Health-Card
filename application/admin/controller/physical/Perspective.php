@@ -4,7 +4,7 @@ namespace app\admin\controller\physical;
 use app\common\controller\Backend;
 
 /**
- * 透视检查
+ * @desc 透视检查
  *
  * @icon fa fa-circle-o
  */

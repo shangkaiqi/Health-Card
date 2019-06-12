@@ -6,7 +6,7 @@ use app\common\controller\Backend;
 
 /**
  * 
- *身体检查
+ *@desc 身体检查
  * @icon fa fa-circle-o
  */
 class Body extends Backend
