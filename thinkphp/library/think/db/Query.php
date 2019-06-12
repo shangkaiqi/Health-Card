@@ -824,7 +824,7 @@ class Query
      * @param string  $alias     别名前缀
      * @return $this
      */
-    public function field($field, $except = false, $tableName = '', $prefix = '', $alias = '')
+    public function ($field, $except = false, $tableName = '', $prefix = '', $alias = '')
     {
         if (empty($field)) {
             return $this;

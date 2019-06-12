@@ -57,7 +57,8 @@ class Enregister extends Backend
                 if ($result === false) {
                     $this->error($this->model->getError());
                 }
-
+                //生成订单及体检类别
+                
                 $this->success();
             }
             $this->error();

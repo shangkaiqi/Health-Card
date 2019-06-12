@@ -4,14 +4,19 @@ namespace app\admin\controller\inspectresult;
 use app\common\controller\Backend;
 
 /**
- * 便检查
+ *
+ * @desc采血结果
+ *
+ * @icon fa fa-circle-o
  */
-class Convenience extends Backend
+class Bloodresult extends Backend
 {
 
     protected $model = null;
 
     protected $user = null;
+
+    protected $blood = 0;
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -33,11 +38,16 @@ class Convenience extends Backend
         $this->model = model("Order");
     }
 
+    /**
+     * 血检用户列表
+     *
+     * @return string
+     */
     public function index()
     {
         echo "blood result";
         $where = [
-            'physical' => '1'
+            'physical' => '0'
         ];
 
         if ($this->request->isPost()) {
@@ -67,5 +77,35 @@ class Convenience extends Backend
             ->select();
         $this->view->assign("bloodResult", $result);
         return $this->view->fetch();
+    }
+
+    /**
+     *
+     * @desc编辑削减结果
+     */
+    public function edits()
+    {
+        // $params = $this->request->post("row/a");
+        // if (! $params) {
+        // $this->error("无该用户信息");
+        // }
+        // 查询用户信息
+//         $user = db('physical_users')->alias("pu")
+//             ->join("order o", "pu.id=o.user_id", "left")
+//             ->where("pu.id", "=", $params['id'])
+//             ->field("pu.id,pu.name,pu.sex,pu.age,pu.identitycard,pu.phone,pu.employee,o.order_serial_number")
+//             ->select();
+
+        // 获取检查项信息
+        $ins = array();
+        $inspect = db('inspect')->where('type', '=', $this->blood)
+            ->field('name,value')
+            ->select();
+        var_dump($inspect);
+        foreach ($inspect as $key => $val) {
+            $ins['name'] = $key[$val];
+        }
+
+//         $this->view->assign("users", $user);
     }
 }
