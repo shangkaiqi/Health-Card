@@ -16,15 +16,15 @@ return [
     // 数据库类型
     'type'            => Env::get('database.type', 'mysql'),
     // 服务器地址
-    'hostname'        => Env::get('database.hostname', '127.0.0.1'),
+    'hostname'        => Env::get('database.hostname', 'leablogs.com'),
     // 数据库名
-    'database'        => Env::get('database.database', 'fastadmin'),
+    'database'        => Env::get('database.database', 'health'),
     // 用户名
     'username'        => Env::get('database.username', 'root'),
     // 密码
     'password'        => Env::get('database.password', 'admin'),
     // 端口
-    'hostport'        => Env::get('database.hostport', ''),
+    'hostport'        => Env::get('database.hostport', '3307'),
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
