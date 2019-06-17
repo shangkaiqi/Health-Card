@@ -4,7 +4,8 @@ namespace app\admin\controller\physical;
 use app\common\controller\Backend;
 
 /**
- * @desc 体检登记
+ * 体检登记
+ *
  * @icon fa fa-circle-o
  */
 class Enregister extends Backend
@@ -32,11 +33,25 @@ class Enregister extends Backend
 
     public function index()
     {
-        $userList = db("user")->field("type,nickname,identity_card")->select();
-        echo db()->getLastSql();
-        var_dump($userList);
+        if ($this->request->isAjax()) {
+            // 如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField')) {
+                return $this->selectpage();
+            }
 
-        echo "Enregister";
+            list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $total = db("physical_users")->count("id");
+
+            $userList = db("physical_users")->field("id,name,identitycard,type")->select();
+
+            $result = array(
+                "total" => $total,
+                "rows" => $userList
+            );
+
+            return json($result);
+        }
+        return $this->view->fetch();
     }
 
     public function add()
@@ -57,8 +72,8 @@ class Enregister extends Backend
                 if ($result === false) {
                     $this->error($this->model->getError());
                 }
-                //生成订单及体检类别
-                
+                // 生成订单及体检类别
+
                 $this->success();
             }
             $this->error();

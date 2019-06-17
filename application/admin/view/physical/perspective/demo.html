@@ -1,0 +1,7 @@
+<div class="panel panel-default panel-intro" style="width: 900px;">
+	<h3>检体查询--search</h3>
+	{foreach $inspect as $k=>$v}
+	{$v.name}
+	{foreach $v.value as $s} {$s} 
+	{/foreach} {/foreach}
+</div>
