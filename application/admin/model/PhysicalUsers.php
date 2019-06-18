@@ -1,15 +1,37 @@
 <?php
+
 namespace app\admin\model;
 
 use think\Model;
-use think\Session;
+
 
 class PhysicalUsers extends Model
 {
-
-    // 开启自动写入时间戳字段
-    protected $autoWriteTimestamp = 'int';
-
+    
+    
+    
+    //数据库
+    protected $connection = 'database';
+    // 表名
+    protected $name = 'physical_users';
+    
+    // 自动写入时间戳字段
+    protected $autoWriteTimestamp = false;
+    
     // 定义时间戳字段名
-    protected $createTime = 'createtime';
+    protected $createTime = false;
+    protected $updateTime = false;
+    protected $deleteTime = false;
+    
+    // 追加属性
+    protected $append = [
+        
+    ];
+    
+    
+    
+    public function order()
+    {
+        return $this->belongsTo('app\admin\model\Order', 'id', 'user_id', [], 'LEFT')->setEagerlyType(0);
+    }
 }

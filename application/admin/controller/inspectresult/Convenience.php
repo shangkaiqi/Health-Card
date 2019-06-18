@@ -2,6 +2,7 @@
 namespace app\admin\controller\inspectresult;
 
 use app\common\controller\Backend;
+use app\admin\controller\Common;
 
 /**
  * 便检查
@@ -13,7 +14,9 @@ class Convenience extends Backend
 
     protected $user = null;
 
-    protected $blood = 1;
+    protected $blood = 0;
+
+    protected $type = "0";
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -23,16 +26,18 @@ class Convenience extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        // 操作人
-        $where = [
-            'id' => $this->auth->id
-        ];
-        $operate = db('admin')->where($where)
-            ->field('nickname')
-            ->find();
-        $this->view->assign("operate", $operate);
-        // $this->user = model("PhysicalUsers");
-        $this->model = model("Order");
+        $comm = new Common();
+        $ins = $comm->inspect($this->type);
+        $this->view->assign("inspect", $ins);
+
+        $this->view->assign("wait_physical", $comm->wait_physical());
+        $this->view->assign("pid", $comm->employess());
+        // 获取结果检查信息
+        $inspect_top = db("inspect")->field("id,name,value")
+            ->where('type', '=', $this->type)
+            ->select();
+        $this->view->assign("ins", $inspect_top);
+        $this->model = model("PhysicalUsers");
     }
 
     /**
@@ -42,67 +47,59 @@ class Convenience extends Backend
      */
     public function index()
     {
-        echo "blood result";
-        $where = [
-            'physical' => '0'
-        ];
-
-        if ($this->request->isPost()) {
-            $params = $this->request->post("row/a");
-            if ($params) {
-                if (! empty($params['time'])) {
-                    $where["create_date"] = $params['time'];
-                } else if (! empty($params['yesterday'])) {
-                    $where["create_date"] = $params['yesterday'];
-                } else if (! empty($params['yesterday_before'])) {
-                    $where["create_date"] = $params['yesterday_before'];
-                } else {
-                    $where["create_date"] = $params['threeday_ago'];
-                }
-                $where['order_serial_number'] = [
-                    'like',
-                    date("Ymd", time()) . "%"
-                ];
+        // 当前是否为关联查询
+        $this->relationSearch = true;
+        // 设置过滤方法
+        $this->request->filter([
+            'strip_tags'
+        ]);
+        if ($this->request->isAjax()) {
+            // 如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField')) {
+                return $this->selectpage();
             }
+            list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $total = $this->model->with([
+                'order'
+            ])
+                ->where($where)
+                ->order($sort, $order)
+                ->count();
+
+            $list = $this->model->with([
+                'order'
+            ])
+                ->where($where)
+                ->order($sort, $order)
+                ->limit($offset, $limit)
+                ->select();
+            file_put_contents("bloodresult.txt", db()->getLastSql());
+            foreach ($list as $row) {}
+            $list = collection($list)->toArray();
+            $result = array(
+                "total" => $total,
+                "rows" => $list
+            );
+
+            return json($result);
         }
-        $result = db('physical_users')->alias("pu")
-            ->join("order o", "pu.id=o.user_id", "left")
-            ->join("order_detail od", "o.order_serial_number=od.order_serial_number", "left")
-            ->field("pu.id,pu.name,pu.sex,pu.age,pu.identitycard,pu.phone,pu.employee,o.order_serial_number,od.physical_result")
-            ->select();
-        $this->view->assign("bloodResult", $result);
         return $this->view->fetch();
     }
 
-    /**
-     *
-     * @desc编辑削减结果
-     */
-    public function edits()
+    public function edit($ids = null)
     {
-        // $params = $this->request->post("row/a");
-        // if (! $params) {
-        // $this->error("无该用户信息");
-        // }
-        // 查询用户信息
-        // $user = db('physical_users')->alias("pu")
-        // ->join("order o", "pu.id=o.user_id", "left")
-        // ->where("pu.id", "=", $params['id'])
-        // ->field("pu.id,pu.name,pu.sex,pu.age,pu.identitycard,pu.phone,pu.employee,o.order_serial_number")
-        // ->select();
-
-        // 获取检查项信息
-        $ins = array();
-        $inspect = db('inspect')->where('type', '=', $this->blood)
-            ->field('name,value')
-            ->select();
-        foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
-            $ins[] = array(
-                $inspect[$key]['name'] => $values
-            );
+        $row = $this->model->get([
+            'id' => $ids
+        ]);
+        if (! $row)
+            $this->error(__('No Results were found'));
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            if ($params) {}
+            file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
+            $this->success("success");
         }
-        $this->view->assign("ins", $ins);
-        // $this->view->assign("users", $user);
+        $this->view->assign("row", $row);
+        return $this->view->fetch();
     }
 }
