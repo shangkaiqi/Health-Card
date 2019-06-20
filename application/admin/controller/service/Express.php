@@ -56,7 +56,6 @@ class Express extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            file_put_contents("express.txt", db()->getLastSql());
             foreach ($list as $row) {}
             $list = collection($list)->toArray();
             $result = array(

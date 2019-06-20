@@ -56,9 +56,12 @@ class Search extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            file_put_contents("express.txt", db()->getLastSql());
-            foreach ($list as $row) {}
+            foreach ($list as $row) {
+                $list[$row]['registertime'] = date("Y-m-d H:i:s", $list[$row]['createtime']);
+            }
             $list = collection($list)->toArray();
+
+            file_put_contents("search.txt", print_r($list, TRUE));
             $result = array(
                 "total" => $total,
                 "rows" => $list

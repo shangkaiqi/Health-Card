@@ -1,12 +1,11 @@
 <?php
-
 use app\common\model\Category;
 use fast\Form;
 use fast\Tree;
 use think\Db;
 
 if (!function_exists('build_select')) {
-
+    
     /**
      * 生成下拉列表
      * @param string $name
@@ -24,7 +23,7 @@ if (!function_exists('build_select')) {
 }
 
 if (!function_exists('build_radios')) {
-
+    
     /**
      * 生成单选按钮组
      * @param string $name
@@ -45,7 +44,7 @@ if (!function_exists('build_radios')) {
 }
 
 if (!function_exists('build_checkboxs')) {
-
+    
     /**
      * 生成复选按钮组
      * @param string $name
@@ -67,7 +66,7 @@ if (!function_exists('build_checkboxs')) {
 
 
 if (!function_exists('build_category_select')) {
-
+    
     /**
      * 生成分类下拉列表框
      * @param string $name
@@ -92,7 +91,7 @@ if (!function_exists('build_category_select')) {
 }
 
 if (!function_exists('build_toolbar')) {
-
+    
     /**
      * 生成表格操作按钮栏
      * @param array $btns 按钮组
@@ -163,7 +162,7 @@ EOT;
 }
 
 if (!function_exists('build_heading')) {
-
+    
     /**
      * 生成页面Heading
      *
@@ -195,14 +194,32 @@ if (!function_exists('build_heading')) {
     }
 }
 
-function create_uuid($prefix = ""){    //可以指定前缀
+function create_uuid($prefix = "")
+{ // 可以指定前缀
     $str = md5(uniqid(mt_rand(), true));
-    $uuid  = substr($str,0,8) . '-';
-    $uuid .= substr($str,8,4) . '-';
-    $uuid .= substr($str,12,4) . '-';
-    $uuid .= substr($str,16,4) . '-';
-    $uuid .= substr($str,20,12);
+    $uuid = substr($str, 0, 8) . '-';
+    $uuid .= substr($str, 8, 4) . '-';
+    $uuid .= substr($str, 12, 4) . '-';
+    $uuid .= substr($str, 16, 4) . '-';
+    $uuid .= substr($str, 20, 12);
     return $prefix . $uuid;
 }
+function getSex($value)
+{
+    $status = [
+        0 => '男',
+        1 => '女'
+    ];
+    return $status[$value];
+}
 
+function getRegisterType($value)
+{
+    $status = [
+        0 => '个人',
+        1 => '团体',
+        2 => '临时'
+    ];
+    return $status[$value];
+}
 

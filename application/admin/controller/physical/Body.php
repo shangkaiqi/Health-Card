@@ -54,7 +54,6 @@ class Body extends Backend
                 // if (! $uid) {
                 // $this->error("用户不存在");
                 // }
-                echo db()->getLastSql();
                 $where = [
                     "user_id" => $uid["id"],
                     'physical' => $this->type
