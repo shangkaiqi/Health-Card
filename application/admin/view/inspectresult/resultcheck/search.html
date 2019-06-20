@@ -1,5 +1,5 @@
 <div class="panel panel-default panel-intro" style="width: 1000px;">
-	<h3>结果录入</h3>
+	<h3>结果录入--search</h3>
 	<div class="panel-body" style="position: relative; min-height: 400px">
 		<form id="edit-form" class="form-horizontal" role="form"
 			data-toggle="validator" method="POST" action="">
@@ -19,38 +19,37 @@
 			style="border-bottom: 1px solid #eee; height: 215px; background-color: #eee; padding: 10px">
 			<div class="form-group width-1">
 				<div class="context-b">
-					<i class="form-name">姓名:</i><span class="form-controller width-2"></span>
+					<i class="form-name">姓名:</i><span class="form-controller width-2">{$body['name']}</span>
 				</div>
 				<div class="context-b">
-					<i class="form-name">性别:</i><span class="form-controller width-3"></span>
+					<i class="form-name">性别:</i><span class="form-controller width-3">{$body['sex']}</span>
 				</div>
 				<div class="context-b">
-					<i class="form-name">年龄:</i><span class="form-controller width-3"></span>
+					<i class="form-name">年龄:</i><span class="form-controller width-3">{$body['age']}</span>
 				</div>
 			</div>
 
 			<div class="form-group width-1">
 				<div class="context-a">
-					<i class="form-name">身份证号:</i><span class="form-controller width-2"></span>
+					<i class="form-name">身份证号:</i><span class="form-controller width-2">{$body['identitycard']}</span>
 				</div>
 				<div class="context-a">
-					<i class="form-name">联系电话:</i><span class="form-controller width-2"></span>
+					<i class="form-name">联系电话:</i><span class="form-controller width-2">{$body['phone']}</span>
 				</div>
 			</div>
 			<div class="form-group width-1">
 				<div class="context-a">
-					<i class="form-name">登记号:</i><span class="form-controller width-2"></span>
+					<i class="form-name">登记号:</i><span class="form-controller width-2">{$body['order_serial_number']}</span>
 				</div>
 				<div class="context-a">
-					<i class="form-name">从业类别:</i><span class="form-controller width-2"></span>
+					<i class="form-name">从业类别:</i><span class="form-controller width-2">{$body['name']}</span>
 				</div>
 			</div>
 			<div id="avatar_ad"></div>
 		</div>
 		<hr>
-		<form id="edit-form" role="form" method="POST"
-			action="{:url('inspectresult.resultcheck/save')}">
-			<!-- data-toggle="validator"  -->
+		<form id="edit-form" role="form" data-toggle="validator" method="POST"
+			action="inspectresult/resultcheck/save">
 
 			<div class="result">
 				<div class="result-a">
@@ -63,12 +62,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="row[body-{$v.name}]"
-									id="inspect-s" style="width: 100px;"> {foreach
-									$v.value as $s}
+								<select class="first form-control" name="pid" id="inspect-s"
+									style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									style="width: 100px;" name="row[body-1-{$v.name}]">
+									style="width: 100px;" name="name">
 								</select>
 							</div>
 						</div>
@@ -83,12 +81,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="row[tous-{$v.name}]"
-									id="inspect-s " style="width: 100px;"> {foreach
-									$v.value as $s}
+								<select class="first form-control" name="pid" id="inspect-s "
+									style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									name="row[tous-1-{$v.name}]" style="width: 100px;">
+									name="name" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -105,12 +102,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="row[conven-{$v.name}]"
-									id="inspect-s" style="width: 100px;"> {foreach
-									$v.value as $s}
+								<select class="first form-control" name="pid" id="inspect-s"
+									style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									name="row[conven-1-{$v.name}]" style="width: 100px;">
+									name="name" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -125,12 +121,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="row[blood-{$v.name}]"
-									id="inspect-s" style="width: 100px;"> {foreach
-									$v.value as $s}
+								<select class="first form-control" name="pid" id="inspect-s"
+									style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									name="row[blood-1-{$v.name}]" style="width: 100px;">
+									name="name" style="width: 100px;">
 								</select>
 							</div>
 						</div>

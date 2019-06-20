@@ -2,6 +2,7 @@
 namespace app\admin\controller\inspectresult;
 
 use app\common\controller\Backend;
+use app\admin\controller\Common;
 
 /**
  *
@@ -11,6 +12,10 @@ class Resultcheck extends Backend
 {
 
     protected $blood = 0;
+
+    protected $type = 0;
+
+    protected $comm = '';
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -25,31 +30,33 @@ class Resultcheck extends Backend
     public function _initialize()
     {
         parent::_initialize();
+
+        $this->comm = new Common();
     }
 
     public function index()
     {
-        $where = array();
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $where['order_serial_number'] = [
-                    'like',
-                    date("Ymd", time()) . "%"
+                $uid = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                // if (! $uid) {
+                // $this->error("用户不存在");
+                // }
+                $where = [
+                    "user_id" => $uid["id"],
+                    'physical' => $this->type
                 ];
+                $result = db("order")->alias("o")
+                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
+                    ->where($where)
+                    ->select();
+                $this->view->assign("body", $uid);
+                return $this->view->fetch("search");
+            } else {
+                $this->error();
             }
         }
-        /**
-         * 客户信息
-         *
-         * @var Ambiguous $result
-         */
-        $user = db('physical_users')->alias("pu")
-            ->join("order o", "pu.id=o.user_id", "left")
-            ->join("order_detail od", "o.order_serial_number=od.order_serial_number", "left")
-            ->field("pu.id,pu.name,pu.sex,pu.age,pu.identitycard,pu.phone,pu.employee,o.order_serial_number,od.physical_result")
-            ->where($where)
-            ->select();
 
         /**
          * 血检信息
@@ -57,15 +64,9 @@ class Resultcheck extends Backend
          * @var Ambiguous $result
          */
         $blood = array();
-        $inspect = db('inspect')->where('type', '=', 0)
-            ->field('name,value')
-            ->select();
-        foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
-            $blood[] = array(
-                $inspect[$key]['name'] => $values
-            );
-        }
+
+        $blood = $this->comm->inspect(0);
+        $this->view->assign("blood", $blood);
 
         /**
          * 便检信息
@@ -74,15 +75,9 @@ class Resultcheck extends Backend
          */
 
         $conven = array();
-        $inspect = db('inspect')->where('type', '=', 1)
-            ->field('name,value')
-            ->select();
-        foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
-            $conven[] = array(
-                $inspect[$key]['name'] => $values
-            );
-        }
+
+        $conven = $this->comm->inspect(0);
+        $this->view->assign("conven", $conven);
 
         /**
          * 体检信息
@@ -90,15 +85,9 @@ class Resultcheck extends Backend
          * @var Ambiguous $result
          */
         $body = array();
-        $inspect = db('inspect')->where('type', '=', 2)
-            ->field('name,value')
-            ->select();
-        foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
-            $body[] = array(
-                $inspect[$key]['name'] => $values
-            );
-        }
+
+        $body = $this->comm->inspect(0);
+        $this->view->assign("body", $body);
 
         /**
          * 透視信息
@@ -106,26 +95,16 @@ class Resultcheck extends Backend
          * @var Ambiguous $result
          */
         $tous = array();
-        $inspect = db('inspect')->where('type', '=', 3)
-            ->field('name,value')
-            ->select();
-        foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
-            $tous[] = array(
-                $inspect[$key]['name'] => $values
-            );
-        }
-        $this->view->assign("user", $user);
-        $this->view->assign("blood", $blood);
-        $this->view->assign("conven", $conven);
-        $this->view->assign("body", $body);
+        $tous = $this->comm->inspect(0);
         $this->view->assign("tous", $tous);
+        // $this->view->assign("user", $user);
         return $this->view->fetch();
     }
 
-    public function saveCheck()
+    public function save()
     {
-        $user_id = $this->request->post('userId');
+        $params = $this->request->post('row/a');
+        file_put_contents("resultcheck-save.txt", print_r($params,true));
         $where = [
             'user_id' => $user_id
         ];

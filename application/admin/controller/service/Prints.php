@@ -15,40 +15,67 @@ class Prints extends Backend
      *
      * @var \app\admin\model\business\Register
      */
+    protected $model = null;
+
+    // 开关权限开启
+    protected $noNeedRight = [
+        'index'
+    ];
+
     public function _initialize()
     {
         parent::_initialize();
+        $this->model = model("PhysicalUsers");
     }
 
     public function index()
     {
         if ($this->request->isPost()) {
-            $param = $this->request->post("row/a");
-            if ($param) {
-                // ->join("order_detail do", "do.order_serial_number=o.order_serial_number")
-                $param['user_id'] = "0001";
-                $result = db("physical_users")->alias("pu")
-                    ->join("order o", "pu.id=o.user_id")
-                    ->where("o.order_serial_number", "=", date("Ymd", time()) . $param['user_id'])
-                    ->field("pu.*,o.order_serial_number")
-                    ->find();
-                echo db()->getLastSql();
+            $params = $this->request->post("row/a");
+            if ($params) {
+                $uid = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                // if (! $uid) {
+                // $this->error("用户不存在");
+                // }
+                $where = [
+                    "user_id" => $uid["id"],
+                    'physical' => $this->type
+                ];
+                $result = db("order")->alias("o")
+                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
+                    ->where($where)
+                    ->select();
+                $this->view->assign("body", $uid);
+                return $this->view->fetch("search");
+            } else {
+                $this->error();
             }
         }
-        $this->view->fetch();
+        return $this->view->fetch();
     }
 
-    public function printCard()
+    /**
+     * 获取从业类别
+     */
+    public function getEmployee()
     {
-        $param = $this->request->post("row/a");
-        $param['user_id'] = "0001";
-        $result = db("physical_users")->alias("pu")
-            ->join("order o", "pu.id=o.user_id")
-            ->where("o.order_serial_number", "=", date("Ymd", time()) . $param['user_id'])
-            ->field("pu.*,o.order_serial_number")
-            ->find();
+        $pid = $this->request->get('pid');
+        $where['pid'] = [
+            '=',
+            $type
+        ];
+        $categorylist = null;
+        if ($type !== '') {
+            $categorylist = $employee = db("employee")->field("id,pid,name")
+                ->where('pid', '=', '0')
+                ->select();
+        }
+        $this->success('', null, $categorylist);
     }
 
-    public function printBill()
+    /**
+     * 获取体结果
+     */
+    public function getInspect()
     {}
 }
