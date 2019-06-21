@@ -5,9 +5,12 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
- * 便检查
+ *
+ * @desc采血结果
+ *
+ * @icon fa fa-circle-o
  */
-class Convenience extends Backend
+class Bloodresult extends Backend
 {
 
     protected $model = null;
@@ -73,6 +76,7 @@ class Convenience extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
+            file_put_contents("bloodresult.txt", db()->getLastSql());
             foreach ($list as $row) {}
             $list = collection($list)->toArray();
             $result = array(

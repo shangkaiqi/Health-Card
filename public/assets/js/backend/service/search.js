@@ -6,11 +6,11 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'service/express//index' + location.search,
-					add_url : 'service/express//add',
-					edit_url : 'service/express//edit',
-					del_url : 'service/express//del',
-					multi_url : 'service/express//multi',
+					index_url : 'service/search//index' + location.search,
+					add_url : 'service/search//add',
+					edit_url : 'service/search//edit',
+					del_url : 'service/search//del',
+					multi_url : 'service/search//multi',
 					table : 'order',
 				}
 			});
@@ -24,11 +24,11 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				pk : 'id',
 				sortName : 'id',
 				// 禁用默认搜索
-				 search: false,
+				search : false,
 				// 启用普通表单搜索
-				 commonSearch: true,
+				commonSearch : true,
 				// 可以控制是否默认显示搜索单表,false则隐藏,默认为false
-				 searchFormVisible: true,
+				searchFormVisible : true,
 				columns : [ [ {
 					checkbox : true
 				}, {

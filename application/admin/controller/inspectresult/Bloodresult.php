@@ -6,8 +6,6 @@ use app\admin\controller\Common;
 
 /**
  *
- * @desc采血结果
- *
  * @icon fa fa-circle-o
  */
 class Bloodresult extends Backend
@@ -76,7 +74,6 @@ class Bloodresult extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            file_put_contents("bloodresult.txt", db()->getLastSql());
             foreach ($list as $row) {}
             $list = collection($list)->toArray();
             $result = array(
