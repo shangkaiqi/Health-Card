@@ -67,64 +67,23 @@ class Express extends Backend
         }
         return $this->view->fetch();
     }
-    // public function index()
-    // {
-    // if ($this->request->isPost()) {
-    // $params = $this->request->post("row/a");
-    // if ($params) {
-    // $where = array();
-    // if ((! empty($params["start"])) && (! empty($params['end']))) {
-    // $where['employ_num_time'] = [
-    // '<',
-    // $params['end']
-    // ];
-    // $where['employ_num_time'] = [
-    // '>=',
-    // $params['start']
-    // ];
-    // }
-    // if ($params['status']) {
-    // $where['express_status'] = [
-    // '=',
-    // $params['status']
-    // ];
-    // }
-    // $result = db("order")->alias("o")
-    // ->join("physical_users pu", "o.user_id = pu.id")
-    // ->field("pu.name,pu.phone,o.express_status,o.express_num,o.address,o.obtain_employ_number")
-    // ->where("o.obtain_employ_number", 'neq', "")
-    // ->select();
-    // $this->view->assign("blood", $result);
-    // $this->success();
-    // }
-    // $this->error();
-    // }
-    // $params = array(
-    // "start" => 1000000000,
-    // "end" => 3000000000,
-    // "status" => 1
-    // );
-    // $where['employ_num_time'] = [
-    // 'BETWEEN',
-    // [
-    // $params['end'],
-    // $params['start']
-    // ]
-    // ];
-    // // $where['employ_num_time'] = [
-    // // '>=',
-    // // $params['start']
-    // // ];
-    // $where['express_status'] = [
-    // '=',
-    // $params['status']
-    // ];
-    // $result = db("order")->alias("o")
-    // ->join("physical_users pu", "o.user_id = pu.id")
-    // ->field("pu.name,pu.phone,o.express_status,o.express_num,o.address,o.obtain_employ_number")
-    // ->where("o.obtain_employ_number", 'neq', "")
-    // ->where($where)
-    // ->select();
-    // return $this->view->fetch();
-    // }
+
+    public function edit($ids = null)
+    {
+        $ids = $this->request->get([
+            "id" => $ids
+        ]);
+        if ($this->request->isPost()) {}
+
+        if (! $row)
+            $this->error(__('No Results were found'));
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            if ($params) {}
+            file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
+            $this->success("success");
+        }
+        $this->view->assign("row", $row);
+        return $this->view->fetch();
+    }
 }
