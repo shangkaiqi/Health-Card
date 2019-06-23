@@ -19,7 +19,7 @@ class Resultcheck extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index'
+        'index','save'
     ];
 
     /**

@@ -6,11 +6,28 @@ use app\common\controller\Backend;
 class Common extends Backend
 {
 
-    public function inspect($type)
+    protected $noNeedRight = [
+        '*'
+    ];
+
+    public function _initialize()
     {
-        $inspect = db("inspect")->field("id,value,name")
-            ->where('type', '=', $type)
-            ->select();
+        parent::_initialize();
+    }
+
+    public function inspect($type = '')
+    {
+        $where = array();
+        $inspect = array();
+        if ($type == '') {
+            $inspect = db("inspect")->field("id,value,name")
+                ->where('type', '=', $type)
+                ->select();
+        } else {
+            $inspect = db("inspect")->field("id,value,name")
+                ->where('type', '=', $type)
+                ->select();
+        }
         $ins = array();
         foreach ($inspect as $key => $val) {
             $values = json_decode($inspect[$key]['value'], TRUE);
@@ -30,15 +47,34 @@ class Common extends Backend
             ->join("physical_users pu", "o.user_id = pu.id")
             ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
             ->field("physical")
-            ->where("pu.id", '=', '1')
+            ->where("pu.id", '=', '0')
             ->select();
         $result = "wwwwwwwww";
         return $result;
     }
 
-    public function employess()
+    public function getemployee()
     {
-        $employee = db("employee")->field("pid,name")->select();
+        if ($this->request->isAjax()) {
+            $id = $this->request->get("id");
+            file_put_contents("comm-id.txt", $id);
+            $employee = db("employee")->field("id,pid,name")
+                ->where("pid", "=", $id)
+                ->select();
+            return json($employee);
+        } else {
+            $employee = db("employee")->field("id,pid,name")
+                ->where("pid", "=", 0)
+                ->select();
+            return $employee;
+        }
+    }
+
+    public function employee($emId)
+    {
+        $employee = db("employee")->field("name")
+            ->where("id", "=", $emId)
+            ->find();
         return $employee;
     }
 }

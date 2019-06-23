@@ -20,7 +20,7 @@ class Convenience extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index'
+        'index','edit'
     ];
 
     public function _initialize()
@@ -31,7 +31,7 @@ class Convenience extends Backend
         $this->view->assign("inspect", $ins);
 
         $this->view->assign("wait_physical", $comm->wait_physical());
-        $this->view->assign("pid", $comm->employess());
+        $this->view->assign("pid", $comm->getEmployee());
         // 获取结果检查信息
         $inspect_top = db("inspect")->field("id,name,value")
             ->where('type', '=', $this->type)

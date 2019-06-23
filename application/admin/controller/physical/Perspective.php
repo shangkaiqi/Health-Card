@@ -16,6 +16,8 @@ class Perspective extends Backend
 
     protected $user = null;
 
+    protected $comm = null;
+
     // 体检类别
     protected $type = 3;
 
@@ -27,15 +29,15 @@ class Perspective extends Backend
     public function _initialize()
     {
         $comm = new Common();
+        $this->comm = $comm;
         parent::_initialize();
-        // $this->user = model("PhysicalUsers");
         $this->model = model("Order");
 
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
 
         $this->view->assign("wait_physical", $comm->wait_physical());
-        $this->view->assign("pid", $comm->employess());
+        $this->view->assign("pid", $comm->getemployee());
         // 获取结果检查信息
         $inspect_top = db("inspect")->field("id,name,value")
             ->where('type', '=', $this->type)
@@ -48,20 +50,23 @@ class Perspective extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $uid = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
-                // if (! $uid) {
-                // $this->error("用户不存在");
-                // }
-                echo db()->getLastSql();
+                $user = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                if (! $user) {
+                    $this->error("用户不存在");
+                }
+                $em = json_decode($user['employee'], true);
+                $parent = $this->comm->employee($em[0]);
+                $son = $this->comm->employee($em[1]);
+                $user['employee'] = $parent['name'] . ">>" . $son['name'];
                 $where = [
-                    "user_id" => $uid["id"],
+                    "user_id" => $user["id"],
                     'physical' => $this->type
                 ];
-                $result = db("order")->alias("o")
-                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
-                    ->where($where)
-                    ->select();
-                $this->view->assign("body", $uid);
+                // $result = db("order")->alias("o")
+                // ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
+                // ->where($where)
+                // ->select();
+                $this->view->assign("body", $user);
                 return $this->view->fetch("search");
             } else {
                 $this->error();

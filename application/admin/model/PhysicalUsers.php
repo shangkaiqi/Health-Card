@@ -13,10 +13,10 @@ class PhysicalUsers extends Model
     protected $name = 'physical_users';
 
     // 自动写入时间戳字段
-    protected $autoWriteTimestamp = false;
+    protected $autoWriteTimestamp = true;
 
     // 定义时间戳字段名
-    protected $createTime = false;
+    protected $createTime = "registertime";
 
     protected $updateTime = false;
 

@@ -23,6 +23,12 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				url : $.fn.bootstrapTable.defaults.extend.index_url,
 				pk : 'id',
 				sortName : 'id',
+				// 禁用默认搜索
+				search : false,
+				// 启用普通表单搜索
+				commonSearch : true,
+				// 可以控制是否默认显示搜索单表,false则隐藏,默认为false
+				searchFormVisible : true,
 				columns : [ [
 						{
 							checkbox : true
