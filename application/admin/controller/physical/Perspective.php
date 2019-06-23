@@ -36,7 +36,6 @@ class Perspective extends Backend
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
 
-        $this->view->assign("wait_physical", $comm->wait_physical());
         $this->view->assign("pid", $comm->getemployee());
         // 获取结果检查信息
         $inspect_top = db("inspect")->field("id,name,value")
@@ -66,12 +65,14 @@ class Perspective extends Backend
                 // ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
                 // ->where($where)
                 // ->select();
+                $this->view->assign("wait_physical", $comm->wait_physical($user['id']));
                 $this->view->assign("body", $user);
                 return $this->view->fetch("search");
             } else {
                 $this->error();
             }
         }
+        $this->view->assign("wait_physical", $comm->wait_physical());
         return $this->view->fetch();
     }
 

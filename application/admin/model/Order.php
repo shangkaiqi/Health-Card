@@ -18,4 +18,9 @@ class Order extends Model
     protected $updateTime = false;
 
     protected $deleteTime = false;
+
+    public function OrderDetail()
+    {
+        return $this->belongsTo('OrderDetail', 'order_serial_number', 'order_serial_number', [], 'LEFT')->setEagerlyType(0);
+    }
 }

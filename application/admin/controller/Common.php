@@ -40,16 +40,40 @@ class Common extends Backend
         return $ins;
     }
 
-    public function wait_physical()
+    /**
+     * 获取待检测信息
+     *
+     * @return string
+     */
+    public function wait_physical($uid = '')
     {
+        if ($uid == '') {
+            return "";
+        }
         // 待体检项：
-        $result = db("order")->alias("o")
-            ->join("physical_users pu", "o.user_id = pu.id")
-            ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
+        $result = db('order')->alias('o')
+            ->join("order_detail od", "`o`.`order_serial_number` = `od`.`order_serial_number`")
             ->field("physical")
-            ->where("pu.id", '=', '0')
+            ->where("user_id", "=", $uid)
             ->select();
-        $result = "wwwwwwwww";
+        foreach ($result as $row) {
+            $arr[] = $row['physical'];
+        }
+        // 体检项：0.血检1.便检2体检3.透视4.视力
+        if (! in_array(0, $arr)) {
+            $uArr[] = "血检";
+        }
+        if (! in_array(1, $arr)) {
+            $uArr[] = "便检";
+        }
+        if (! in_array(2, $arr)) {
+            $uArr[] = "体检";
+        }
+        if (! in_array(3, $arr)) {
+            $uArr[] = "透视";
+        }
+
+        $result = implode(" ", $uArr);
         return $result;
     }
 
@@ -70,11 +94,33 @@ class Common extends Backend
         }
     }
 
+    /**
+     * 获取从业信息
+     *
+     * @param int $emId
+     * @return array|\think\Model
+     */
     public function employee($emId)
     {
         $employee = db("employee")->field("name")
             ->where("id", "=", $emId)
             ->find();
         return $employee;
+    }
+
+    /**
+     * 保存体检信息
+     *
+     * @param array $params
+     * @return boolean
+     */
+    public function saveOrderDetail($params)
+    {
+        $save = $this->orderDetail->save($params);
+        if ($save) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
