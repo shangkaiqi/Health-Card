@@ -17,7 +17,7 @@ class Saveresult extends Backend
 
     public function bodySave(){
         
-        $params = $this->request->post("row/a");
-        $this->view->fetch();
+        $params = $this->request->post("rows/a");
+        
     }
 }

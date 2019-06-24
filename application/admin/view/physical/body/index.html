@@ -59,17 +59,16 @@
 		<div class="wait_physical">
 			待体检项：<span>{$wait_physical}</span>
 		</div>
-		<form method="POST" action="saveresult/bodySave">
+		<form method="POST" action="/admin/saveresult/bodySave">
 			{foreach $inspect as $index=>$vo}
 			<div class="form-group">
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 				<div class="form-inline">
-					<select class="first form-control" name="pid-s"
-						name="row[parent{$vo.name}]"
+					<select class="first form-control" name="rows[parent-{$vo.id}]"
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
 						<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
 						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="row[son{$vo.name}]"
+					</select> <select class="second form-control" name="rows[son-{$vo.id}]"
 						id="inspace-1-{$vo.id}" style="width: 100px;">
 					</select>
 				</div>
