@@ -96,6 +96,8 @@ class Body extends Backend
     public function save()
     {
         $params = $this->request->post("row/a");
-        if ($params) {}
+        var_dump($params);
+        $this->view->fetch();
+        // if ($params) {}
     }
 }
