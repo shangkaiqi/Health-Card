@@ -67,45 +67,34 @@
 </form>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-						$("#pid-s")
-								.change(
-										function() {
-											var ids = $(
-													"#pid-s option:selected")
-													.val();
-											if (ids) {
-												$
-														.ajax({
-															url : "common/getEmployee",
-															data : {
-																'id' : ids
-															},
-															type : "get",
-															dataType : "json",
-															async : true,
-															success : function(
-																	obj) {
-																var html = "";
-																for (var i = 0; i < obj.length; i++) {
-																	html += "<option value="+obj[i]['id']+">"
-																			+ obj[i].name
-																			+ "</option>";
-																}
-																$("#names")
-																		.html(
-																				html);
-															},
-															error : function(
-																	msg) {
-															}
+	$(document).ready(function() {
+		$("#pid-s").change(function() {
+			var ids = $("#pid-s option:selected").val();
+			if (ids) {
+				$.ajax({
+					url : "common/getEmployee",
+					data : {
+						'id' : ids
+					},
+					type : "get",
+					dataType : "json",
+					async : true,
+					success : function(obj) {
+						var html = "";
+						for (var i = 0; i < obj.length; i++) {
+							html += "<option value="+obj[i]['id']+">"
+									+ obj[i].name
+									+ "</option>";
+						}
+						$("#names").html(html);
+					},
+					error : function(msg) {
+					}
 
-														})
-											}
-										});
-					});
+				})
+			}
+		});
+	});
 </script>
 <style>
 #avatar_ad {

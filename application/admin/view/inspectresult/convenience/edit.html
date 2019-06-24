@@ -41,13 +41,8 @@
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
-		<div class="form-inline" data-toggle="cxselect"
-			data-selects="pid,name">
-			<select class="first form-control" id="pid-s"> {foreach $pid
-				as $index=>$vo}
-				<option value="{$vo.pid}">{$vo.name}</option> {/foreach}
-			</select> <select id="names" class="second form-control" name="name">
-			</select>
+		<div class="col-xs-12 col-sm-4">
+			<span id="c-username" class="form-control">{$row.employee}</span>
 		</div>
 	</div>
 	<div id="avatar_ad">{$row.images}</div>
@@ -61,8 +56,8 @@
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$v.name}:</label>
 			<div class="form-inline" data-toggle="cxselect"
 				data-selects="pid,name">
-				<select class="first form-control" name="row[inspect-{$v.name}]" id="inspect-s">
-					{foreach $v.value as $s}
+				<select class="first form-control" name="row[inspect-{$v.name}]"
+					id="inspect-s"> {foreach $v.value as $s}
 					<option value="">{$s}</option> {/foreach}
 				</select> <select id="inspect-name" class="second form-control" name="name">
 				</select>

@@ -72,14 +72,6 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					formatter : Table.api.formatter.datetime
 
 				}, {
-					// field : 'order.create_date',
-					field : 'createtime',
-					title : '体检时间--',
-					operate : 'RANGE',
-					addclass : 'datetimerange',
-					formatter : Table.api.formatter.datetime
-
-				}, {
 					field : 'order.obtain_employ_number',
 					title : '健康证号',
 					operate : false

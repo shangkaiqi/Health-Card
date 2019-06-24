@@ -15,23 +15,26 @@ class Bloodresult extends Backend
 
     protected $user = null;
 
+    protected $comm = null;
+
     protected $blood = 0;
 
     protected $type = "0";
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index','edit'
+        'index',
+        'edit'
     ];
 
     public function _initialize()
     {
         parent::_initialize();
         $comm = new Common();
+        $this->comm = $comm;
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
 
-        $this->view->assign("wait_physical", $comm->wait_physical());
         $this->view->assign("pid", $comm->getEmployee());
         // 获取结果检查信息
         $inspect_top = db("inspect")->field("id,name,value")
@@ -95,10 +98,19 @@ class Bloodresult extends Backend
             $this->error(__('No Results were found'));
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            if ($params) {}
+            var_dump($params);
+            // if ($params) {
+
+            // // $this->comm->saveOrderDetail($params);
+            // }
             file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
             $this->success("success");
         }
+        $em = json_decode($row['employee'], true);
+        $parent = $this->comm->employee($em[0]);
+        $son = $this->comm->employee($em[1]);
+        $row['employee'] = $parent['name'] . ">>" . $son['name'];
+        $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();
     }

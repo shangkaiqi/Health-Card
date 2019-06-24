@@ -41,13 +41,8 @@
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
-		<div class="form-inline" data-toggle="cxselect"
-			data-selects="pid,name">
-			<select class="first form-control" id="pid-s"> {foreach $pid
-				as $index=>$vo}
-				<option value="{$vo.pid}">{$vo.name}</option> {/foreach}
-			</select> <select id="names" class="second form-control" name="name">
-			</select>
+		<div class="col-xs-12 col-sm-4">
+			<span id="c-username" class="form-control">{$row.employee}</span>
 		</div>
 	</div>
 	<div id="avatar_ad">{$row.images}</div>
@@ -61,10 +56,12 @@
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$v.name}:</label>
 			<div class="form-inline" data-toggle="cxselect"
 				data-selects="pid,name">
-				<select class="first form-control" name="row[inspect-{$v.name}]" id="inspect-s">
-					{foreach $v.value as $s}
-					<option value="">{$s}</option> {/foreach}
-				</select> <select id="inspect-name" class="second form-control" name="name">
+				<select class="first form-control" name="row[inspect-{$v.name}]" style="width:100px"> 
+				{foreach $v.value as $s}
+					<option value="">{$s}</option> 
+				{/foreach}
+				</select> 
+				<select id="inspect-name" class="second form-control" name="name" style="width:100px">
 				</select>
 			</div>
 		</div>
@@ -72,43 +69,13 @@
 		<div class="form-group layer-footer">
 			<label class="control-label col-xs-12 col-sm-2"></label>
 			<div class="col-xs-12 col-sm-8">
-				<button type="submit" class="btn btn-success btn-embossed disabled">保存登记信息</button>
+				<button type="submit" class="btn btn-success btn-embossed">保存登记信息</button>
 			</div>
 		</div>
 
 	</form>
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-	  $("#pid-s").change(function(){
-		  var ids = $("#pid-s").val();
-		  $.post("physical/body/getEmployee",{id:},function(result){
-			    obj = eval('(' + result.data + ')');
-				var html="";
-				for(var i=0;i<obj.length;i++){
-					html+="<option value="+json[i].id+">"+json[i].name+"</option>";
-			    }
-
-				$("#inspect-id").html(html);
-			});
-	  });
-	});
-	$(document).ready(function(){
-		  $("#pid-s").change(function(){
-			  var ids = $("#inspect-s").val();
-			  $.post("physical/body/getInspect",{id:},function(result){
-				    obj = eval('(' + result.data + ')');
-					var html="";
-					for(var i=0;i<obj.length;i++){
-						html+="<option value="+json[i].id+">"+json[i].name+"</option>";
-				    }
-					$("#inspect-name").html(html);
-			  alert(html);
-				});
-		  });
-		});
-</script>
 <style>
 h3 {
 	padding: 15px 10px;

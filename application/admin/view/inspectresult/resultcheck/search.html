@@ -48,8 +48,9 @@
 			<div id="avatar_ad"></div>
 		</div>
 		<hr>
-		<form id="edit-form" role="form" data-toggle="validator" method="POST"
-			action="inspectresult/resultcheck/save">
+		<form id="edit-form" role="form" method="POST"
+			action="{:url('inspectresult.resultcheck/save')}">
+			<!-- data-toggle="validator"  -->
 
 			<div class="result">
 				<div class="result-a">
@@ -62,11 +63,12 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="pid" id="inspect-s"
-									style="width: 100px;"> {foreach $v.value as $s}
+								<select class="first form-control" name="row[body-{$v.name}]"
+									id="inspect-s" style="width: 100px;"> 
+									{foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									style="width: 100px;" name="name">
+									style="width: 100px;" name="row[body-1-{$v.name}]">
 								</select>
 							</div>
 						</div>
@@ -81,11 +83,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="pid" id="inspect-s "
-									style="width: 100px;"> {foreach $v.value as $s}
+								<select class="first form-control" name="row[tous-{$v.name}]"
+									id="inspect-s " style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									name="name" style="width: 100px;">
+									name="row[tous-1-{$v.name}]" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -102,11 +104,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="pid" id="inspect-s"
-									style="width: 100px;"> {foreach $v.value as $s}
+								<select class="first form-control" name="row[conven-{$v.name}]"
+									id="inspect-s" style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									name="name" style="width: 100px;">
+									name="row[conven-1-{$v.name}]" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -121,11 +123,11 @@
 								{$v.name}: </label>
 							<div class="form-inline" data-toggle="cxselect"
 								data-selects="pid,name">
-								<select class="first form-control" name="pid" id="inspect-s"
-									style="width: 100px;"> {foreach $v.value as $s}
+								<select class="first form-control" name="row[blood-{$v.name}]"
+									id="inspect-s" style="width: 100px;"> {foreach $v.value as $s}
 									<option value="">{$s}</option> {/foreach}
 								</select> <select id="inspect-name" class="second form-control"
-									name="name" style="width: 100px;">
+									name="row[blood-1-{$v.name}]" style="width: 100px;">
 								</select>
 							</div>
 						</div>

@@ -15,25 +15,65 @@ class Common extends Backend
         parent::_initialize();
     }
 
+    // public function inspect($type = '')
+    // {
+    // $where = array();
+    // $inspect = array();
+    // if ($type == '') {
+    // $inspect = db("inspect")->field("id,value,name")
+    // ->where('type', '=', $type)
+    // ->select();
+    // } else {
+    // $inspect = db("inspect")->field("id,value,name")
+    // ->where('type', '=', $type)
+    // ->select();
+    // }
+    // $ins = array();
+    // foreach ($inspect as $key => $val) {
+    // $values = json_decode($inspect[$key]['value'], TRUE);
+    // $ins[] = array(
+    // "name" => $val["name"],
+    // "value" => $values,
+    // "id" => $val['id']
+    // );
+    // }
+    // return $ins;
+    // }
+    public function getInspece($parent)
+    {
+        $in_a = db("inspect")->field("id,name")
+            ->where("parent", "=", $parent)
+            ->select();
+        return $in_a;
+    }
+
     public function inspect($type = '')
     {
         $where = array();
         $inspect = array();
+        $where['type'] = [
+            "eq",
+            $type
+        ];
+        $where['parent'] = [
+            "eq",
+            0
+        ];
         if ($type == '') {
-            $inspect = db("inspect")->field("id,value,name")
-                ->where('type', '=', $type)
+            $inspect = db("inspect")->field("id,name")
+                ->where($where)
                 ->select();
         } else {
-            $inspect = db("inspect")->field("id,value,name")
-                ->where('type', '=', $type)
+            $inspect = db("inspect")->field("id,name")
+                ->where($where)
                 ->select();
         }
         $ins = array();
         foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
+            $in_a = $this->getInspece($val['id']);
             $ins[] = array(
-                "name" => $val["name"],
-                "value" => $values,
+                "name" => $val['name'],
+                "value" => $in_a,
                 "id" => $val['id']
             );
         }
@@ -122,5 +162,19 @@ class Common extends Backend
         } else {
             return false;
         }
+    }
+
+    /**
+     * 获取体结果选项检项
+     */
+    public function getInspect()
+    {
+        $id = $this->request->get('id');
+        $inspect = array();
+        $inspect = array();
+        $inspect = db("inspect")->field("id,name")
+            ->where('parent', '=', $id)
+            ->select();
+        return json($inspect);
     }
 }

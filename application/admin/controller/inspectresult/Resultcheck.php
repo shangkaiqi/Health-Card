@@ -19,7 +19,8 @@ class Resultcheck extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index','save'
+        'index',
+        'save'
     ];
 
     /**
@@ -32,32 +33,6 @@ class Resultcheck extends Backend
         parent::_initialize();
 
         $this->comm = new Common();
-    }
-
-    public function index()
-    {
-        if ($this->request->isPost()) {
-            $params = $this->request->post("row/a");
-            if ($params) {
-                $uid = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
-                // if (! $uid) {
-                // $this->error("用户不存在");
-                // }
-                $where = [
-                    "user_id" => $uid["id"],
-                    'physical' => $this->type
-                ];
-                $result = db("order")->alias("o")
-                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
-                    ->where($where)
-                    ->select();
-                $this->view->assign("body", $uid);
-                return $this->view->fetch("search");
-            } else {
-                $this->error();
-            }
-        }
-
         /**
          * 血检信息
          *
@@ -97,14 +72,38 @@ class Resultcheck extends Backend
         $tous = array();
         $tous = $this->comm->inspect(0);
         $this->view->assign("tous", $tous);
-        // $this->view->assign("user", $user);
+    }
+
+    public function index()
+    {
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            if ($params) {
+                $uid = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                if (! $uid) {
+                    $this->error("用户不存在");
+                }
+                // $where = [
+                // "user_id" => $uid["id"],
+                // 'physical' => $this->type
+                // ];
+                $result = db("order")->alias("o")
+                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
+                    ->select();
+                $this->view->assign("body", $uid);
+                return $this->view->fetch("search");
+            } else {
+                $this->error();
+            }
+        }
+
         return $this->view->fetch();
     }
 
     public function save()
     {
         $params = $this->request->post('row/a');
-        file_put_contents("resultcheck-save.txt", print_r($params,true));
+        file_put_contents("resultcheck-save.txt", print_r($params, true));
         $where = [
             'user_id' => $user_id
         ];

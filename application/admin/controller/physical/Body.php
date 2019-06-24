@@ -63,18 +63,14 @@ class Body extends Backend
                     "user_id" => $user["id"],
                     'physical' => $this->type
                 ];
-                // $result = db("order")->alias("o")
-                // ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
-                // ->where($where)
-                // ->select();
-                $this->view->assign("wait_physical", $comm->wait_physical($user['id']));
+                $this->view->assign("wait_physical", $this->comm->wait_physical($user['id']));
                 $this->view->assign("body", $user);
                 return $this->view->fetch("search");
             } else {
                 $this->error();
             }
         }
-        $this->view->assign("wait_physical", $comm->wait_physical());
+        $this->view->assign("wait_physical", $this->comm->wait_physical());
         return $this->view->fetch();
     }
 
@@ -95,34 +91,6 @@ class Body extends Backend
                 ->select();
         }
         $this->success('', null, $categorylist);
-    }
-
-    /**
-     * 获取体结果选项检项
-     */
-    public function getInspect()
-    {
-        // $pid = $this->request->get('pid');
-        // $where['pid'] = [
-        // '=',
-        // $type
-        // ];
-        $inspect = null;
-        // if ($type !== '') {
-        $inspect = db("inspect")->field("id,value,name")
-            ->where('type', '=', $this->type)
-            ->select();
-        $ins = array();
-        foreach ($inspect as $key => $val) {
-            $values = json_decode($inspect[$key]['value'], TRUE);
-            $ins[] = array(
-                "name" => $val["name"],
-                "value" => $values,
-                "id" => $val['id']
-            );
-        }
-        $this->view->assign("inspect", $ins);
-        return $this->view->fetch("demo");
     }
 
     public function save()
