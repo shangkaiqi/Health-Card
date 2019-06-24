@@ -38,7 +38,6 @@ class Demo extends Backend
         $inspect = db("inspect")->field("id,name")
             ->where('parent', '=', 4)
             ->select();
-        var_dump($inspect);
         return json($inspect);
         // $where = array();
         // $inspect = array();

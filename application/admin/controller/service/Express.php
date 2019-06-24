@@ -57,7 +57,7 @@ class Express extends Backend
                 ->limit($offset, $limit)
                 ->select();
             foreach ($list as $row) {
-                $list[$row]['registertime'] = date("Y-m-d H:i:s", $list[$row]['createtime']);
+                $row['registertime'] = date("Y-m-d H:i:s", $row['registertime']);
             }
             $list = collection($list)->toArray();
 

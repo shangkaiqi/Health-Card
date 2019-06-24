@@ -105,7 +105,6 @@ class Bloodresult extends Backend
             $this->error(__('No Results were found'));
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            var_dump($params);
             // if ($params) {
 
             // // $this->comm->saveOrderDetail($params);
