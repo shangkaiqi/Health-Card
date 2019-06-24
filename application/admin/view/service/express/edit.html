@@ -41,8 +41,13 @@
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
-		<div class="col-xs-12 col-sm-4">
-			<span id="c-username" class="form-control">{$row.employee}</span>
+		<div class="form-inline" data-toggle="cxselect"
+			data-selects="pid,name">
+			<select class="first form-control" id="pid-s"> {foreach $pid
+				as $index=>$vo}
+				<option value="{$vo.pid}">{$vo.name}</option> {/foreach}
+			</select> <select id="names" class="second form-control" name="name">
+			</select>
 		</div>
 	</div>
 	<div id="avatar_ad">{$row.images}</div>
@@ -51,21 +56,19 @@
 	</div>
 	<form id="edit-form" role="form" data-toggle="validator" method="POST"
 		action="">
-		{foreach $inspect as $index=>$vo}
-			<div class="form-group">
-				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
-				<div class="form-inline">
-					<select class="first form-control" name="pid"
-						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="">请选择</option>
-						{foreach $vo['value'] as $i=>$v}
-						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="name"
-						id="inspace-1-{$vo.id}" style="width: 100px;">
-					</select>
-				</div>
+		{foreach $inspect as $k=>$v}
+		<div class="form-group">
+			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$v.name}:</label>
+			<div class="form-inline" data-toggle="cxselect"
+				data-selects="pid,name">
+				<select class="first form-control" name="row[inspect-{$v.name}]" id="inspect-s">
+					{foreach $v.value as $s}
+					<option value="">{$s}</option> {/foreach}
+				</select> <select id="inspect-name" class="second form-control" name="name">
+				</select>
 			</div>
-			{/foreach}
+		</div>
+		{/foreach}
 		<div class="form-group layer-footer">
 			<label class="control-label col-xs-12 col-sm-2"></label>
 			<div class="col-xs-12 col-sm-8">
@@ -77,29 +80,34 @@
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 <script type="text/javascript">
-	function getInspect(id,value){
-		$.ajax({
-			url : "common/getInspect",
-			data : {
-				'id' : value
-			},
-			type : "get",
-			dataType : "json",
-			async : true,
-			success : function(obj) {
-				var html = "";
-				for (var i = 0; i < obj.length; i++) {
-					html += "<option value="+obj[i]['id']+">"
-							+ obj[i].name
-							+ "</option>";
-				}
-				$("#inspace-1-"+id).html(html);
-			},
-			error : function(msg) {
-			}
+	$(document).ready(function(){
+	  $("#pid-s").change(function(){
+		  var ids = $("#pid-s").val();
+		  $.post("physical/body/getEmployee",{id:},function(result){
+			    obj = eval('(' + result.data + ')');
+				var html="";
+				for(var i=0;i<obj.length;i++){
+					html+="<option value="+json[i].id+">"+json[i].name+"</option>";
+			    }
 
-		})
-	}
+				$("#inspect-id").html(html);
+			});
+	  });
+	});
+	$(document).ready(function(){
+		  $("#pid-s").change(function(){
+			  var ids = $("#inspect-s").val();
+			  $.post("physical/body/getInspect",{id:},function(result){
+				    obj = eval('(' + result.data + ')');
+					var html="";
+					for(var i=0;i<obj.length;i++){
+						html+="<option value="+json[i].id+">"+json[i].name+"</option>";
+				    }
+					$("#inspect-name").html(html);
+			  alert(html);
+				});
+		  });
+		});
 </script>
 <style>
 h3 {

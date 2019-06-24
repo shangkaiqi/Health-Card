@@ -6,12 +6,12 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'inspectresult/bloodresult//index'
+					index_url : 'inspectresult/convenience//index'
 							+ location.search,
-					add_url : 'inspectresult/bloodresult//add',
-					edit_url : 'inspectresult/bloodresult//edit',
-					del_url : 'inspectresult/bloodresult//del',
-					multi_url : 'inspectresult/bloodresult//multi',
+					add_url : 'inspectresult/convenience//add',
+					edit_url : 'inspectresult/convenience//edit',
+					del_url : 'inspectresult/convenience//del',
+					multi_url : 'inspectresult/convenience//multi',
 					table : 'physical_users',
 				}
 			});
@@ -23,42 +23,66 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				url : $.fn.bootstrapTable.defaults.extend.index_url,
 				pk : 'id',
 				sortName : 'id',
-				columns : [ [ {
-					checkbox : true
-				}, {
-					field : 'id',
-					title : 'Id'
-				}, {
-					field : 'name',
-					title : "姓名"
-				}, {
-					field : 'identitycard',
-					title : '身份证'
-				}, {
-					field : 'sex',
-					title : '性别'
-				}, {
-					field : 'age',
-					title : '年龄'
-				}, {
-					field : 'phone',
-					title : '手机号'
-				}, {
-					field : 'employee',
-					title : '从业类别'
-				}, {
-					field : 'order_serial_number',
-					title : '登记编号'
-				}, {
-					field : 'order.physical_result',
-					title : '结果'
-				}, {
-					field : 'operate',
-					title : __('Operate'),
-					table : table,
-					events : Table.api.events.operate,
-					formatter : Table.api.formatter.operate
-				} ] ]
+				// 禁用默认搜索
+				search : false,
+				// 启用普通表单搜索
+				commonSearch : true,
+				// 可以控制是否默认显示搜索单表,false则隐藏,默认为false
+				searchFormVisible : true,
+				columns : [ [
+						{
+							checkbox : true
+						},
+						{
+							field : 'id',
+							title : 'Id'
+						},
+						{
+							field : 'name',
+							title : "姓名"
+						},
+						{
+							field : 'identitycard',
+							title : '身份证'
+						},
+						{
+							field : 'sex',
+							title : '性别'
+						},
+						{
+							field : 'age',
+							title : '年龄'
+						},
+						{
+							field : 'phone',
+							title : '手机号'
+						},
+						{
+							field : 'employee',
+							title : '从业类别'
+						},
+						{
+							field : 'order_serial_number',
+							title : '登记编号'
+						},
+						{
+							field : 'order.physical_result',
+							title : '结果'
+						},
+						{
+							field : 'operate',
+							title : __('Operate'),
+							table : table,
+							events : Table.api.events.operate,
+							formatter : function(value, row, index) {
+								var that = $.extend({}, this);
+								var table = $(that.table).clone(true);
+								$(table).data("operate-del", null);
+								that.table = table;
+								return Table.api.formatter.operate.call(that,
+										value, row, index);
+							}
+						} ] ]
 			});
 
 			// 为表格绑定事件

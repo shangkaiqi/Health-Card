@@ -2,10 +2,11 @@
 namespace app\admin\controller\physical;
 
 use app\common\controller\Backend;
+use app\admin\controller\Common;
 
 /**
  *
- * @desc采便检测
+ * @desc采血检查
  *
  * @icon fa fa-circle-o
  */
@@ -16,6 +17,8 @@ class Convenience extends Backend
 
     protected $user = null;
 
+    protected $type = 1;
+
     // 开关权限开启
     protected $noNeedRight = [
         'index'
@@ -23,17 +26,20 @@ class Convenience extends Backend
 
     public function _initialize()
     {
+        $comm = new Common();
+        $this->comm = $comm;
         parent::_initialize();
-        // 操作人
-        $where = [
-            'id' => $this->auth->id
-        ];
-        $operate = db('admin')->where($where)
-            ->field('nickname')
-            ->find();
-        $this->view->assign("operate", $operate);
-        // $this->user = model("PhysicalUsers");
         $this->model = model("Order");
+
+        $ins = $comm->inspect($this->type);
+        $this->view->assign("inspect", $ins);
+
+        $this->view->assign("pid", $comm->getemployee());
+        // 获取结果检查信息
+        $inspect_top = db("inspect")->field("id,name,value")
+            ->where('type', '=', $this->type)
+            ->select();
+        $this->view->assign("ins", $inspect_top);
     }
 
     public function index()
@@ -41,25 +47,45 @@ class Convenience extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $uid = db("physical_users")->field("user_id")
-                    ->where($params)
-                    ->find();
-                if (! user_id) {
+                $user = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                if (! $user) {
                     $this->error("用户不存在");
                 }
+                $em = json_decode($user['employee'], true);
+                $parent = $this->comm->employee($em[0]);
+                $son = $this->comm->employee($em[1]);
+                $user['employee'] = $parent['name'] . ">>" . $son['name'];
                 $where = [
-                    "user_id" => $uid["user_id"],
-                    'physical' => 1
+                    "user_id" => $user["id"],
+                    'physical' => $this->type
                 ];
-                $result = db("order")->alias("o")
-                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
-                    ->where($where)
-                    ->select();
-                $this->view->assign("convenience", $result);
-                $this->success();
+                $this->view->assign("wait_physical", $this->comm->wait_physical($user['id']));
+                $this->view->assign("body", $user);
+                return $this->view->fetch("search");
+            } else {
+                $this->error();
             }
-            $this->error();
         }
+        $this->view->assign("wait_physical", $this->comm->wait_physical());
         return $this->view->fetch();
+    }
+
+    /**
+     * 获取从业类别
+     */
+    public function getEmployee()
+    {
+        $pid = $this->request->get('pid');
+        $where['pid'] = [
+            '=',
+            $type
+        ];
+        $categorylist = null;
+        if ($type !== '') {
+            $categorylist = $employee = db("employee")->field("id,pid,name")
+                ->where('pid', '=', '0')
+                ->select();
+        }
+        $this->success('', null, $categorylist);
     }
 }

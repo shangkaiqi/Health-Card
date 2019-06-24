@@ -58,6 +58,9 @@ class Search extends Backend
                 ->select();
             foreach ($list as $row) {
                 $list[$row]['registertime'] = date("Y-m-d H:i:s", $list[$row]['createtime']);
+                //$row->visible(['name','identitycard','type','sex','age','phone','employee','company','order_serial_number']);
+                //$row->visible(['order']);
+                //$row->getRelation('order')->visible(['order_id', 'order_serial_number', 'bus_number']);
             }
             $list = collection($list)->toArray();
 
