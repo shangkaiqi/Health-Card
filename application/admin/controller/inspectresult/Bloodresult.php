@@ -120,4 +120,11 @@ class Bloodresult extends Backend
         $this->view->assign("row", $row);
         return $this->view->fetch();
     }
+    
+    /**
+     * 批量操作通过
+     */
+    public function mulit(){
+        
+    }
 }

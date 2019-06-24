@@ -114,4 +114,11 @@ class Convenience extends Backend
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         return $this->view->fetch();
     }
+    
+    /**
+     * 批量操作通过
+     */
+    public function mulit(){
+        
+    }
 }

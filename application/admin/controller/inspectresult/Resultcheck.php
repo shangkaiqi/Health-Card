@@ -19,8 +19,7 @@ class Resultcheck extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index',
-        'save'
+        '*'
     ];
 
     /**
@@ -32,7 +31,7 @@ class Resultcheck extends Backend
     {
         parent::_initialize();
 
-        $this->comm = new Common();
+        $comm = new Common();
         /**
          * 血检信息
          *
@@ -40,7 +39,7 @@ class Resultcheck extends Backend
          */
         $blood = array();
 
-        $blood = $this->comm->inspect(0);
+        $blood = $comm->inspect(0);
         $this->view->assign("blood", $blood);
 
         /**
@@ -51,7 +50,7 @@ class Resultcheck extends Backend
 
         $conven = array();
 
-        $conven = $this->comm->inspect(0);
+        $conven = $comm->inspect(0);
         $this->view->assign("conven", $conven);
 
         /**
@@ -61,7 +60,7 @@ class Resultcheck extends Backend
          */
         $body = array();
 
-        $body = $this->comm->inspect(0);
+        $body = $comm->inspect(0);
         $this->view->assign("body", $body);
 
         /**
@@ -70,8 +69,12 @@ class Resultcheck extends Backend
          * @var Ambiguous $result
          */
         $tous = array();
-        $tous = $this->comm->inspect(0);
+        $tous = $comm->inspect(0);
         $this->view->assign("tous", $tous);
+        var_dump($body);
+        var_dump($conven);
+        var_dump($tous);
+        var_dump($blood);
     }
 
     public function index()

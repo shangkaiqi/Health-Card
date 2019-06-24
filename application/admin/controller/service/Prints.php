@@ -19,7 +19,7 @@ class Prints extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index'
+        '*'
     ];
 
     public function _initialize()
@@ -38,8 +38,7 @@ class Prints extends Backend
                 // $this->error("用户不存在");
                 // }
                 $where = [
-                    "user_id" => $uid["id"],
-                    'physical' => $this->type
+                    "user_id" => $uid["id"]
                 ];
                 $result = db("order")->alias("o")
                     ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
@@ -53,29 +52,4 @@ class Prints extends Backend
         }
         return $this->view->fetch();
     }
-
-    /**
-     * 获取从业类别
-     */
-    public function getEmployee()
-    {
-        $pid = $this->request->get('pid');
-        $where['pid'] = [
-            '=',
-            $type
-        ];
-        $categorylist = null;
-        if ($type !== '') {
-            $categorylist = $employee = db("employee")->field("id,pid,name")
-                ->where('pid', '=', '0')
-                ->select();
-        }
-        $this->success('', null, $categorylist);
-    }
-
-    /**
-     * 获取体结果
-     */
-    public function getInspect()
-    {}
 }

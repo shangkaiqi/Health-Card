@@ -48,27 +48,25 @@
 			<div id="avatar_ad"></div>
 		</div>
 		<hr>
-		<form id="edit-form" role="form" method="POST"
+	<!-- 	<form id="edit-form" role="form" method="POST"
 			action="{:url('inspectresult.resultcheck/save')}">
-			<!-- data-toggle="validator"  -->
+			data-toggle="validator" 
 
 			<div class="result">
 				<div class="result-a">
 					<div class="result-blood">
 						<h4>体征</h4>
-						{foreach $body as $k=>$v}
+						{foreach $body as $index=>$vo}
 						<div class="form-group">
-							<label for="c-nickname"
-								class="control-label col-xs-12 col-sm-2 width-4 ">
-								{$v.name}: </label>
-							<div class="form-inline" data-toggle="cxselect"
-								data-selects="pid,name">
-								<select class="first form-control" name="row[body-{$v.name}]"
-									id="inspect-s" style="width: 100px;"> {foreach
-									$v.value as $s}
-									<option value="">{$s}</option> {/foreach}
-								</select> <select id="inspect-name" class="second form-control"
-									style="width: 100px;" name="row[body-1-{$v.name}]">
+							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+							<div class="form-inline">
+								<select class="first form-control" name="pid"
+									onchange="getInspect({$vo.id},this.value)"
+									style="width: 100px;">
+									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
+									<option value="{$v.id}">{$v.name}</option> {/foreach}
+								</select> <select class="second form-control" name="name"
+									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -76,19 +74,17 @@
 					</div>
 					<div class="result-blood">
 						<h4>X线胸透或胸部拍片</h4>
-						{foreach $tous as $k=>$v}
+						{foreach $tous as $index=>$vo}
 						<div class="form-group">
-							<label for="c-nickname"
-								class="control-label col-xs-12 col-sm-2 width-4 ">
-								{$v.name}: </label>
-							<div class="form-inline" data-toggle="cxselect"
-								data-selects="pid,name">
-								<select class="first form-control" name="row[tous-{$v.name}]"
-									id="inspect-s " style="width: 100px;"> {foreach
-									$v.value as $s}
-									<option value="">{$s}</option> {/foreach}
-								</select> <select id="inspect-name" class="second form-control"
-									name="row[tous-1-{$v.name}]" style="width: 100px;">
+							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+							<div class="form-inline">
+								<select class="first form-control" name="pid"
+									onchange="getInspect({$vo.id},this.value)"
+									style="width: 100px;">
+									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
+									<option value="{$v.id}">{$v.name}</option> {/foreach}
+								</select> <select class="second form-control" name="name"
+									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -98,39 +94,36 @@
 				<div class="result-a">
 					<div class="result-blood">
 						<h4>便检</h4>
-						{foreach $conven as $k=>$v}
+						
+						{foreach $conven as $index=>$vo}
 						<div class="form-group">
-							<label for="c-nickname"
-								class="control-label col-xs-12 col-sm-2 width-4">
-								{$v.name}: </label>
-							<div class="form-inline" data-toggle="cxselect"
-								data-selects="pid,name">
-								<select class="first form-control" name="row[conven-{$v.name}]"
-									id="inspect-s" style="width: 100px;"> {foreach
-									$v.value as $s}
-									<option value="">{$s}</option> {/foreach}
-								</select> <select id="inspect-name" class="second form-control"
-									name="row[conven-1-{$v.name}]" style="width: 100px;">
+							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+							<div class="form-inline">
+								<select class="first form-control" name="pid"
+									onchange="getInspect({$vo.id},this.value)"
+									style="width: 100px;">
+									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
+									<option value="{$v.id}">{$v.name}</option> {/foreach}
+								</select> <select class="second form-control" name="name"
+									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
 						</div>
 						{/foreach}
 					</div>
 					<div class="result-blood">
-						<h4>血检结果</h4>
-						{foreach $blood as $k=>$v}
+						<h4>血检结果</h4>						
+						{foreach $blood as $index=>$vo}
 						<div class="form-group">
-							<label for="c-nickname"
-								class="control-label col-xs-12 col-sm-2 width-4">
-								{$v.name}: </label>
-							<div class="form-inline" data-toggle="cxselect"
-								data-selects="pid,name">
-								<select class="first form-control" name="row[blood-{$v.name}]"
-									id="inspect-s" style="width: 100px;"> {foreach
-									$v.value as $s}
-									<option value="">{$s}</option> {/foreach}
-								</select> <select id="inspect-name" class="second form-control"
-									name="row[blood-1-{$v.name}]" style="width: 100px;">
+							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+							<div class="form-inline">
+								<select class="first form-control" name="pid"
+									onchange="getInspect({$vo.id},this.value)"
+									style="width: 100px;">
+									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
+									<option value="{$v.id}">{$v.name}</option> {/foreach}
+								</select> <select class="second form-control" name="name"
+									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -146,7 +139,7 @@
 						class="btn btn-success btn-embossed disabled">保存登记信息</button>
 				</div>
 			</div>
-		</form>
+		</form> -->
 
 	</div>
 

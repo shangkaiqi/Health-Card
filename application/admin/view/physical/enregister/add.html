@@ -7,6 +7,10 @@
 			['0'=>'个人', '1'=>'团体','2'=>'临时登记'])}</div>
 	</div>
 	<div class="form-group">
+		<label for="c-gender" class="control-label col-xs-12 col-sm-2">体检类型:</label>
+		<div class="col-xs-12 col-sm-8">{:build_radios('row[physictype]',['0'=>'食药', '1'=>'卫生监督'])}</div>
+	</div>
+	<div class="form-group">
 		<label for="c-username" class="control-label col-xs-12 col-sm-2">姓名:</label>
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-username" class="form-control" name="row[name]"
@@ -54,6 +58,12 @@
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-nickname" data-rule="required" class="form-control"
 				name="row[company]" type="text" value="">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">是否选择邮寄:</label>
+		<div class="col-xs-12 col-sm-4">
+			{:build_radios('row[express]',['0'=>'自取', '1'=>'邮寄'])}<!-- 隐藏菜单 -->
 		</div>
 	</div>
 	<div id="avatar_ad"></div>
