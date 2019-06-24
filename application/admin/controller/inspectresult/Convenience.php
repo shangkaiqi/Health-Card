@@ -76,7 +76,12 @@ class Convenience extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            foreach ($list as $row) {}
+            foreach ($list as $row) {
+                $em = json_decode($row['employee'], true);
+                $parent = $this->comm->employee($em[0]);
+                $son = $this->comm->employee($em[1]);
+                $row['employee'] = $parent['name'] . ">>" . $son['name'];
+            }
             $list = collection($list)->toArray();
             $result = array(
                 "total" => $total,
