@@ -17,7 +17,7 @@ class Bloodresult extends Backend
 
     protected $user = null;
 
-    protected $blood = 0;
+    protected $blood = "0";
 
     protected $type = "0";
 
@@ -70,13 +70,12 @@ class Bloodresult extends Backend
                 ->count();
 
             $list = $this->model->with([
-                'order'
-            ])
+                    'order'
+                ])
                 ->where($where)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            file_put_contents("bloodresult.txt", db()->getLastSql());
             foreach ($list as $row) {}
             $list = collection($list)->toArray();
             $result = array(
