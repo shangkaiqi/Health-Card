@@ -63,6 +63,13 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						if (value == 2)
 							return '临时';
 					}
+				
+
+                /*align: 'left',
+                searchList: $.getJSON('example/bootstraptable/searchlist?search=a&field=row[user_id]'),
+                formatter: Controller.api.formatter.url*/
+				
+				
 				}, {
 					// field : 'order.create_date',
 					field : 'registertime',
@@ -89,12 +96,36 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				}, {
 					field : 'physical_result',
 					title : '体检结果'
-				}
-				/*
-				 * , { field : 'operate', title : __('Operate'), table : table,
-				 * events : Table.api.events.operate, formatter :
-				 * Table.api.formatter.operate }
-				 */] ]
+				}, { 
+					field : 'operate', 
+					title : __('Operate'), 
+					table : table,
+					events : Table.api.events.operate, formatter : function(value, row, index) {
+						var that = $.extend({}, this);
+						var table = $(that.table).clone(true);
+						$(table).data("operate-del", null);
+						$(table).data("operate-edit", null);
+						that.table = table;
+						return Table.api.formatter.operate.call(that,
+								value, row, index);
+					},					
+				    buttons: [
+				        {
+				            name: 'physical_table',
+				            text: __('打印健康证'),
+//				            icon: 'fa fa-list',
+				            classname: 'btn btn-xs btn-primary  btn-addtabs',
+				            url: 'physical/enregister/physical_table/{ids}',
+				        },
+				        {
+				            name: 'nav_table',
+				            text: __('打印复印单'),
+//				            icon: 'fa fa-list',
+				            classname: 'btn btn-xs btn-primary  btn-addtabs',
+				            url: 'physical/enregister/nav_table/{ids}',
+				        }
+				    ],					
+				}] ]
 			});
 
 			// 为表格绑定事件
