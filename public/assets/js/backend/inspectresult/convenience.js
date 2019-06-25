@@ -94,6 +94,10 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 		edit : function() {
 			Controller.api.bindevent();
 		},
+		withdraw : function() {
+			alert("aaaaaa");
+			Controller.api.bindevent();
+		},
 		api : {
 			bindevent : function() {
 				Form.api.bindevent($("form[role=form]"));

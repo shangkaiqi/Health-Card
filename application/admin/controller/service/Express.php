@@ -14,7 +14,8 @@ class Express extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index','edit'
+        'index',
+        'edit'
     ];
 
     /**
@@ -73,8 +74,8 @@ class Express extends Backend
 
     public function edit($ids = null)
     {
-        $ids = $this->request->get([
-            "id" => $ids
+        $row = $this->model->get([
+            'id' => $ids
         ]);
         if ($this->request->isPost()) {}
 
@@ -82,7 +83,12 @@ class Express extends Backend
             $this->error(__('No Results were found'));
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            if ($params) {}
+            if ($params) {
+                $db("order")->where("user_id", "=", $ids)->update([
+                    'express_num' => $params['express_num'],
+                    'express_status' => 1
+                ]);
+            }
             file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
             $this->success("success");
         }

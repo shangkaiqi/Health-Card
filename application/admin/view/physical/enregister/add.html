@@ -46,7 +46,7 @@
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
 		<div class="form-inline" style="margin-left: 10px;">
-			<select class="first form-control" name="row[parent]" id="pid-s">
+			<select class="first form-control" name="row[parent]" id="pid-s" style="margin-left: 15px;">
 				<option>请选择</option> {foreach $pid as $index=>$vo}
 				<option value="{$vo.id}">{$vo.name}</option> {/foreach}
 			</select> <select id="names" class="second form-control" name="row[son]">
@@ -63,9 +63,19 @@
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">是否选择邮寄:</label>
 		<div class="col-xs-12 col-sm-4">
-			{:build_radios('row[express]',['0'=>'自取', '1'=>'邮寄'])}<!-- 隐藏菜单 -->
+			{:build_radios('row[express]',['0'=>'自取', '1'=>'邮寄'],null,'express')}<!-- 隐藏菜单 -->
 		</div>
 	</div>
+	
+	
+	<div class="form-group" id="express" style="display:none;">
+		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">邮寄地址:</label>
+		<div class="col-xs-12 col-sm-4">
+			<input id="c-nickname" data-rule="required" class="form-control"
+				name="row[address]" type="text" value="">
+		</div>
+	</div>
+	
 	<div id="avatar_ad"></div>
 	<div class="form-group layer-footer">
 		<label class="control-label col-xs-12 col-sm-2"></label>
@@ -104,6 +114,15 @@
 				})
 			}
 		});
+
+		$("#express-1").click(function(){
+			//alert("a");
+			$("#express").css("display","block");
+		});
+		$("#express-0").click(function(){
+			//alert("b");
+			$("#express").css("display","none");
+		})
 	});
 </script>
 <style>
@@ -115,4 +134,5 @@
 	top: 27%;
 	right: 20%;
 }
+
 </style>

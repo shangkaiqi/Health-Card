@@ -37,11 +37,40 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				}, {
 					field : 'identitycard',
 					title : '身份证'
-				}, /*
-					 * { field : 'operate', title : __('Operate'), table :
-					 * table, events : Table.api.events.operate, formatter :
-					 * Table.api.formatter.operate }
-					 */
+				}, {
+					field : 'operate',
+					title : __('Operate'),
+					table : table,
+					events : Table.api.events.operate,
+//					formatter : Table.api.formatter.operate,
+					formatter : function(value, row, index) {
+						var that = $.extend({}, this);
+						var table = $(that.table).clone(true);
+						$(table).data("operate-del", null);
+						$(table).data("operate-edit", null);
+						that.table = table;
+						return Table.api.formatter.operate.call(that,
+								value, row, index);
+					},					
+				    buttons: [
+				        {
+				            name: 'physical_table',
+				            text: __('打印体检表'),
+//				            icon: 'fa fa-list',
+				            classname: 'btn btn-xs btn-primary  btn-addtabs',
+				            url: 'physical/enregister/physical_table/{ids}',
+				        },
+				        {
+				            name: 'nav_table',
+				            text: __('打印引导表'),
+//				            icon: 'fa fa-list',
+				            classname: 'btn btn-xs btn-primary  btn-addtabs',
+				            url: 'physical/enregister/nav_table/{ids}',
+				        }
+				    ],
+		
+					
+				}					 
 				] ]
 			});
 
@@ -54,11 +83,11 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 		edit : function() {
 			Controller.api.bindevent();
 		},
-	// api : {
-	// bindevent : function() {
-	// Form.api.bindevent($("form[role=form]"));
-	// }
-	// }
+		 api : {
+			 bindevent : function() {
+				 Form.api.bindevent($("form[role=form]"));
+			 }
+		 }
 	};
 	return Controller;
 });

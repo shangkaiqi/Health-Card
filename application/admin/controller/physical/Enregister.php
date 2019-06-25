@@ -130,4 +130,10 @@ class Enregister extends Backend
 
         return $this->view->fetch();
     }
+
+    public function physical_table()
+    {}
+
+    public function nav_table()
+    {}
 }

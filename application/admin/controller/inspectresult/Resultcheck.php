@@ -71,10 +71,6 @@ class Resultcheck extends Backend
         $tous = array();
         $tous = $comm->inspect(0);
         $this->view->assign("tous", $tous);
-        var_dump($body);
-        var_dump($conven);
-        var_dump($tous);
-        var_dump($blood);
     }
 
     public function index()

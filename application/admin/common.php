@@ -31,13 +31,16 @@ if (!function_exists('build_radios')) {
      * @param mixed $selected
      * @return string
      */
-    function build_radios($name, $list = [], $selected = null)
+    function build_radios($name, $list = [], $selected = null,$id='')
     {
         $html = [];
         $selected = is_null($selected) ? key($list) : $selected;
         $selected = is_array($selected) ? $selected : explode(',', $selected);
+        if($id == ''){
+            $id = $name;
+        }
         foreach ($list as $k => $v) {
-            $html[] = sprintf(Form::label("{$name}-{$k}", "%s {$v}"), Form::radio($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}"]));
+            $html[] = sprintf(Form::label("{$name}-{$k}", "%s {$v}"), Form::radio($name, $k, in_array($k, $selected), ['id' => "{$id}-{$k}"]));
         }
         return '<div class="radio">' . implode(' ', $html) . '</div>';
     }
