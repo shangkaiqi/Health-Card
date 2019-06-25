@@ -4,14 +4,14 @@
  Source Server         : 192.168.182.140
  Source Server Type    : MySQL
  Source Server Version : 50725
- Source Host           : localhost:3306
+ Source Host           : 127.0.0.1:3306
  Source Schema         : fastadmin
 
  Target Server Type    : MySQL
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 24/06/2019 22:09:47
+ Date: 26/06/2019 07:36:14
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `fa_admin`  (
 -- ----------------------------
 -- Records of fa_admin
 -- ----------------------------
-INSERT INTO `fa_admin` VALUES (1, 'admin', 'Admin', '68312e053b050e9ec0682a382517f49b', '1dde00', '/assets/img/avatar.png', 'admin@admin.com', 0, 1561382207, 1492186163, 1561382207, '9bb595a1-f9b8-42c4-8a16-cc5af674050a', 'normal', 24);
+INSERT INTO `fa_admin` VALUES (1, 'admin', 'Admin', '68312e053b050e9ec0682a382517f49b', '1dde00', '/assets/img/avatar.png', 'admin@admin.com', 0, 1561505695, 1492186163, 1561505695, 'baecb74d-6476-4299-82cd-de24b1ab0a46', 'normal', 24);
 INSERT INTO `fa_admin` VALUES (10, 'test', '内丘体检中心', 'd60f1b5f23d561a688130dad2120b2a6', 'jUnrtz', '/assets/img/avatar.png', 'test@test.com', 0, 1560300500, 1560231607, 1560307722, '', 'normal', 24);
 INSERT INTO `fa_admin` VALUES (11, 'test1', 'sdf', '8854dab4f2e7f8f5f94e8992a01429c5', 'Xf4Uac', '/assets/img/avatar.png', 'sdfsaf@sin.cn', 0, 1561382038, 1560233246, 1561382189, '', 'normal', 25);
 
@@ -63,7 +63,7 @@ CREATE TABLE `fa_admin_log`  (
   `createtime` int(10) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 554 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 556 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of fa_admin_log
@@ -621,6 +621,8 @@ INSERT INTO `fa_admin_log` VALUES (550, 1, 'admin', '/admin/auth/rule/multi/ids/
 INSERT INTO `fa_admin_log` VALUES (551, 1, 'admin', '/admin/index/index', '', '{\"action\":\"refreshmenu\"}', '192.168.182.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1561384187);
 INSERT INTO `fa_admin_log` VALUES (552, 1, 'admin', '/admin/auth/rule/multi/ids/189', '', '{\"ids\":\"189\",\"params\":\"status=hidden\"}', '192.168.182.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1561384211);
 INSERT INTO `fa_admin_log` VALUES (553, 1, 'admin', '/admin/index/index', '', '{\"action\":\"refreshmenu\"}', '192.168.182.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1561384211);
+INSERT INTO `fa_admin_log` VALUES (554, 1, 'admin', '/admin/auth/admin/index', '权限管理 管理员管理 查看', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"id\",\"desc\"]],\"searchTable\":\"tbl\",\"showField\":\"username\",\"keyField\":\"username\",\"searchField\":[\"username\"],\"username\":\"\"}', '192.168.182.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36', 1561474614);
+INSERT INTO `fa_admin_log` VALUES (555, 1, 'admin', '/admin/index/login', '登录', '{\"__token__\":\"8ea110eedd162368462592501cf3bbab\",\"username\":\"admin\",\"captcha\":\"inzp\"}', '192.168.182.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36', 1561505695);
 
 -- ----------------------------
 -- Table structure for fa_area
