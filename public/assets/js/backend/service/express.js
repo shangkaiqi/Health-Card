@@ -41,8 +41,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						{
 							field : 'name',
 							title : "姓名",
-						// Table.api.formatter.search,
-						// operate: 'LIKE %...%'
+							operate: 'LIKE %...%', 
+							placeholder: '模糊搜索，*表示任意字符'
 						},
 						{
 							field : 'phone',
@@ -50,17 +50,14 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'order.obtain_employ_number',
-							title : '健康正号'
+							title : '健康正号',
+							operate : false
 						},
 						{
 							field : 'order.express_status',
 							title : '状态',
-							formatter : function(value, row) {
-								if (value == 0)
-									"已下单";
-								if (value == 1)
-									"代下单";
-							}
+							formatter: Table.api.formatter.label,
+							searchList: {1: __('已下单'), 0: __('待下单')}
 						},
 						{
 							field : 'order.addr',

@@ -154,14 +154,10 @@ class Common extends Backend
      * @param array $params
      * @return boolean
      */
-    public function saveOrderDetail($params)
+    public function saveOrderDetail()
     {
-        $save = $this->orderDetail->save($params);
-        if ($save) {
-            return true;
-        } else {
-            return false;
-        }
+        $save = $this->request->post();
+        var_dump($save);
     }
 
     /**

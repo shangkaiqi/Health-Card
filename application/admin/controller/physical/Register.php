@@ -15,8 +15,9 @@ class Register extends Backend
     protected $multiFields = 'switch';
 
     protected $model = null;
-
+    
     protected $order = null;
+    protected $orderd = null;
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -33,6 +34,7 @@ class Register extends Backend
         parent::_initialize();
         $this->model = model("PhysicalUsers");
         $this->order = model("Order");
+        $this->orderd = model("OrderDetail");
         $comm = new Common();
 
         $ins = $comm->inspect();
@@ -72,16 +74,17 @@ class Register extends Backend
     {
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            file_put_contents("register-params.txt", print_r($params, true));
             if ($params) {
                 // 获取订单最后一条id
                 // $orderId = $this->model->order('registertime', 'desc')->find();
+                $ordernum = array();
                 $ordernum = $result = db('physical_users')->field("order_serial_number")
                     ->where("order_serial_number", "like", date("Ymd", time()) . "%")
                     ->order("registertime desc")
                     ->find();
-                if ($orderNum) {
-                    $resultNum = $orderNum['order_serial_number'] + 1;
+                echo db()->getLastSql();
+                if ($ordernum) {
+                    $resultNum = $ordernum['order_serial_number'] + 1;
                 } else {
                     $resultNum = date("Ymd", time()) . "0001";
                 }
@@ -92,6 +95,8 @@ class Register extends Backend
                 $param['sex'] = $params['sex'];
                 $param['age'] = $params['age'];
                 $param['phone'] = $params['phone'];
+                $param['physictype'] = $params['physictype'];
+                $param['express'] = $params['express'];
                 $param['employee'] = json_encode(array(
                     $params['parent'],
                     $params['son']
@@ -117,18 +122,59 @@ class Register extends Backend
                 $par['bus_number'] = $bs_id['bs_uuid'];
                 $par['charge'] = $bs_id['charge'];
                 $par['order_status'] = '0';
-                $par['obtain_employ_type'] = $params['employee'];
+                $par['obtain_employ_type'] = $param['employee'];
                 $par['obtain_employ_number'] = '';
+                if ($params['express']) {
+                    $par['address'] = $params['address'];
+                }
                 $order = $this->order->save($par);
                 if (! $order) {
                     $this->error($this->model->getError());
                 }
-                $this->success("登记成功", "register/index");
+                $this->order_detial($resultNum, $params['physictype']);
+//                 $this->success("登记成功", "physical/register/index");
+                $this->success();
             }
             $this->error();
         }
 
         return $this->view->fetch();
+    }
+
+    // 创建订单详细信息
+    public function order_detial($orderNum, $physictype)
+    {
+        $ins = db('inspect')->field("name,type")->where("parent","=","0")->select();
+        $list = array();
+        if($physictype){            
+            foreach ($ins as $res) {
+                if($res['type'] == 3){
+                    continue;
+                }
+                $param['order_serial_number'] = $orderNum;
+                $param['physical'] = $res['type'];
+                $param['physical_result'] = '';
+                $param['physical_result_ext'] = '';
+                $param['doctor'] = '';
+                $param['item'] = $res['name'];
+                $list[] = $param;
+            }
+        }else{            
+            foreach ($ins as $res) {
+                if($res['type'] == 3){
+                    continue;
+                }
+                $param['order_serial_number'] = $orderNum;
+                $param['physical'] = $res['type'];
+                $param['physical_result'] = '';
+                $param['physical_result_ext'] = '';
+                $param['doctor'] = '';
+                $param['item'] = $res['name'];
+                $list[] = $param;
+            }
+        }
+        
+        $this->orderd->saveAll($list);
     }
 
     public function physical_table()

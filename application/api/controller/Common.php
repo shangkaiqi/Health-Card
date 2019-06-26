@@ -7,6 +7,7 @@ use app\common\model\Area;
 use app\common\model\Version;
 use fast\Random;
 use think\Config;
+use think\File;
 
 /**
  * 公共接口

@@ -48,28 +48,17 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					operate : false
 				}, {
 					field : 'order.order_serial_number',
-					title : '登记号码'
+					title : '登记号码',
+					operate : false
 				}, {
 					field : 'company',
-					title : '行业'
+					title : '行业',
+					operate : false
 				}, {
 					field : 'type',
 					title : '体检类别',
-					formatter : function(value, row) {
-						if (value == 0)
-							return "个人";
-						if (value == 1)
-							return '团体';
-						if (value == 2)
-							return '临时';
-					}
-				
-
-                /*align: 'left',
-                searchList: $.getJSON('example/bootstraptable/searchlist?search=a&field=row[user_id]'),
-                formatter: Controller.api.formatter.url*/
-				
-				
+					formatter: Table.api.formatter.label,
+					searchList: {1: __('团队'), 0: __('个人'),2:__('临时')}				
 				}, {
 					// field : 'order.create_date',
 					field : 'registertime',
@@ -85,17 +74,12 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				}, {
 					field : 'order.order_status',
 					title : '体检状态',
-					formatter : function(value, row) {
-						if (value == 0)
-							return "未开始";
-						if (value == 1)
-							return '已体检';
-						if (value == 2)
-							return '已出证';
-					}
+					formatter: Table.api.formatter.label,
+					searchList: {1: __('已体检'), 0: __('未体检'),2:__('已出证')}
 				}, {
 					field : 'physical_result',
-					title : '体检结果'
+					title : '体检结果',
+					operate : false
 				}, { 
 					field : 'operate', 
 					title : __('Operate'), 

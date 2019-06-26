@@ -541,7 +541,7 @@ class Auth
     /**
      * 设置错误信息
      *
-     * @param $error 错误信息
+     * @param string $error 错误信息
      * @return Auth
      */
     public function setError($error)

@@ -35,11 +35,14 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'id',
-							title : 'Id'
+							title : 'Id',
+							operate : false
 						},
 						{
 							field : 'name',
-							title : "姓名"
+							title : "姓名",
+							operate: 'LIKE %...%', 
+							placeholder: '模糊搜索，*表示任意字符'
 						},
 						{
 							field : 'identitycard',
@@ -47,11 +50,15 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'sex',
-							title : '性别'
+							title : '性别',
+							operate : false,
+							formatter: Table.api.formatter.label,
+							searchList: {1: __('女'), 0: __('男')}
 						},
 						{
 							field : 'age',
-							title : '年龄'
+							title : '年龄',
+							operate : false
 						},
 						{
 							field : 'phone',
@@ -59,15 +66,18 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'employee',
-							title : '从业类别'
+							title : '从业类别',
+							operate : false
 						},
 						{
 							field : 'order_serial_number',
-							title : '登记编号'
+							title : '登记编号',
+							operate : false
 						},
 						{
 							field : 'order.physical_result',
-							title : '结果'
+							title : '结果',
+							operate : false
 						},
 						{
 							field : 'operate',

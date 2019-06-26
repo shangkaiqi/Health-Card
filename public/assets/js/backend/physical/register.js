@@ -22,15 +22,24 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				url : $.fn.bootstrapTable.defaults.extend.index_url,
 				pk : 'id',
 				sortName : 'user.id',
+				// 禁用默认搜索
+				search : false,
+				// 启用普通表单搜索
+				commonSearch : true,
+				// 可以控制是否默认显示搜索单表,false则隐藏,默认为false
+				searchFormVisible : true,
 				columns : [ [ {
 					checkbox : true
 				}, {
 					field : 'id',
 					title : 'Id',
-					sortable : true
+					sortable : true,
+					operate : false
 				}, {
 					field : 'type',
-					title : '类别'
+					title : '类别',
+					formatter: Table.api.formatter.label,
+					searchList: {1: __('团队'), 0: __('个人'),2:__('临时')}
 				}, {
 					field : 'name',
 					title : "姓名"
