@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\controller\result;
+namespace app\admin\controller\windows;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
@@ -10,7 +10,7 @@ use app\admin\controller\Common;
  *
  * @icon fa fa-circle-o
  */
-class Blood extends Backend
+class Body extends Backend
 {
 
     protected $model = null;

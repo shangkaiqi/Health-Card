@@ -62,7 +62,8 @@ class Resultcheck extends Backend
 
         $body = $comm->inspect(0);
         $this->view->assign("body", $body);
-
+        
+        var_dump($body);
         /**
          * 透視信息
          *
