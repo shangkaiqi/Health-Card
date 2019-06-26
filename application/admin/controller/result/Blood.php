@@ -1,29 +1,27 @@
 <?php
-namespace app\admin\controller\physical;
+namespace app\admin\controller\result;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
- * 透视检查
+ *
+ * @desc采血检查
  *
  * @icon fa fa-circle-o
  */
-class Perspective extends Backend
+class Blood extends Backend
 {
 
     protected $model = null;
 
     protected $user = null;
 
-    protected $comm = null;
-
-    // 体检类别
-    protected $type = 3;
+    protected $type = 0;
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index'
+        '*'
     ];
 
     public function _initialize()
@@ -89,11 +87,5 @@ class Perspective extends Backend
                 ->select();
         }
         $this->success('', null, $categorylist);
-    }
-
-    public function save()
-    {
-        $params = $this->request->post("row/a");
-        if ($params) {}
     }
 }

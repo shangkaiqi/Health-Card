@@ -6,12 +6,12 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'inspectresult/bloodresult//index'
+					index_url : 'result/bloodresult//index'
 							+ location.search,
-					add_url : 'inspectresult/bloodresult//add',
-					edit_url : 'inspectresult/bloodresult//edit',
-					del_url : 'inspectresult/bloodresult//del',
-					multi_url : 'inspectresult/bloodresult//multi',
+					add_url : 'result/bloodresult//add',
+					edit_url : 'result/bloodresult//edit',
+					del_url : 'result/bloodresult//del',
+					multi_url : 'result/bloodresult//multi',
 					table : 'physical_users',
 				}
 			});

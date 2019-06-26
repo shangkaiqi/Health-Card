@@ -1,31 +1,21 @@
 <?php
-namespace app\admin\controller\inspectresult;
-
+namespace app\admin\controller\result;
 use app\common\controller\Backend;
 use app\admin\controller\Common;
-
 /**
  * 便检查
  */
 class Convenience extends Backend
 {
-
     protected $model = null;
-
     protected $user = null;
-
     protected $blood = 0;
-
     protected $comm = null;
-
     protected $type = "0";
-
     // 开关权限开启
     protected $noNeedRight = [
-        'index',
-        'edit'
+        '*'
     ];
-
     public function _initialize()
     {
         parent::_initialize();
@@ -33,16 +23,14 @@ class Convenience extends Backend
         $this->comm = $comm;
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
-
         $this->view->assign("pid", $comm->getEmployee());
         // 获取结果检查信息
         $inspect_top = db("inspect")->field("id,name,value")
-            ->where('type', '=', $this->type)
-            ->select();
+        ->where('type', '=', $this->type)
+        ->select();
         $this->view->assign("ins", $inspect_top);
         $this->model = model("PhysicalUsers");
     }
-
     /**
      * 血检用户列表
      *
@@ -65,17 +53,16 @@ class Convenience extends Backend
             $total = $this->model->with([
                 'order'
             ])
-                ->where($where)
-                ->order($sort, $order)
-                ->count();
-
+            ->where($where)
+            ->order($sort, $order)
+            ->count();
             $list = $this->model->with([
                 'order'
             ])
-                ->where($where)
-                ->order($sort, $order)
-                ->limit($offset, $limit)
-                ->select();
+            ->where($where)
+            ->order($sort, $order)
+            ->limit($offset, $limit)
+            ->select();
             foreach ($list as $row) {
                 $em = json_decode($row['employee'], true);
                 $parent = $this->comm->employee($em[0]);
@@ -87,12 +74,10 @@ class Convenience extends Backend
                 "total" => $total,
                 "rows" => $list
             );
-
             return json($result);
         }
         return $this->view->fetch();
     }
-
     public function edit($ids = null)
     {
         $row = $this->model->get([
@@ -100,19 +85,19 @@ class Convenience extends Backend
         ]);
         if (! $row)
             $this->error(__('No Results were found'));
-        if ($this->request->isPost()) {
-            $params = $this->request->post("row/a");
-            if ($params) {}
-            file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
-            $this->success("success");
-        }
-        $em = json_decode($row['employee'], true);
-        $parent = $this->comm->employee($em[0]);
-        $son = $this->comm->employee($em[1]);
-        $row['employee'] = $parent['name'] . ">>" . $son['name'];
-        $this->view->assign("row", $row);
-        $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
-        return $this->view->fetch();
+            if ($this->request->isPost()) {
+                $params = $this->request->post("row/a");
+                if ($params) {}
+                file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
+                $this->success("success");
+            }
+            $em = json_decode($row['employee'], true);
+            $parent = $this->comm->employee($em[0]);
+            $son = $this->comm->employee($em[1]);
+            $row['employee'] = $parent['name'] . ">>" . $son['name'];
+            $this->view->assign("row", $row);
+            $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
+            return $this->view->fetch();
     }
     
     /**

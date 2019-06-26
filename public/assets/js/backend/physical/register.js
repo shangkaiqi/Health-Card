@@ -6,11 +6,11 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'physical/enregister/index',
-					add_url : 'physical/enregister/add',
-					edit_url : 'physical/enregister/edit',
-					del_url : 'physical/enregister/del',
-					multi_url : 'physical/enregister',
+					index_url : 'physical/register/index',
+					add_url : 'physical/register/add',
+					edit_url : 'physical/register/edit',
+					del_url : 'physical/register/del',
+					multi_url : 'physical/register',
 					table : 'physical_users',
 				}
 			});
@@ -58,14 +58,14 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				            text: __('打印体检表'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'physical/enregister/physical_table/{ids}',
+				            url: 'physical/register/physical_table/{ids}',
 				        },
 				        {
 				            name: 'nav_table',
 				            text: __('打印引导表'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'physical/enregister/nav_table/{ids}',
+				            url: 'physical/register/nav_table/{ids}',
 				        }
 				    ],
 		

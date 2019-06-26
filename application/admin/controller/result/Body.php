@@ -1,23 +1,27 @@
 <?php
-namespace app\admin\controller\physical;
+namespace app\admin\controller\result;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
+use think\Db;
 
 /**
  *
- * @desc采血检查
+ * 身体检查
  *
  * @icon fa fa-circle-o
  */
-class Convenience extends Backend
+class Body extends Backend
 {
 
     protected $model = null;
 
     protected $user = null;
 
-    protected $type = 1;
+    protected $comm = null;
+
+    // 体检类别
+    protected $type = 2;
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -87,5 +91,13 @@ class Convenience extends Backend
                 ->select();
         }
         $this->success('', null, $categorylist);
+    }
+
+    public function save()
+    {
+        $params = $this->request->post("row/a");
+        var_dump($params);
+        $this->view->fetch();
+        // if ($params) {}
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\controller\inspectresult;
+namespace app\admin\controller\result;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
@@ -23,8 +23,7 @@ class Bloodresult extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index',
-        'edit'
+        '*'
     ];
 
     public function _initialize()

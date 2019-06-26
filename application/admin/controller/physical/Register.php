@@ -9,7 +9,7 @@ use app\admin\controller\Common;
  *
  * @icon fa fa-circle-o
  */
-class Enregister extends Backend
+class Register extends Backend
 {
 
     protected $multiFields = 'switch';
@@ -123,7 +123,7 @@ class Enregister extends Backend
                 if (! $order) {
                     $this->error($this->model->getError());
                 }
-                $this->success("登记成功", "Enregister/index");
+                $this->success("登记成功", "register/index");
             }
             $this->error();
         }
