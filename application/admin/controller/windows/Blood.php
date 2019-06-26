@@ -1,31 +1,27 @@
 <?php
-namespace app\admin\controller\result;
+namespace app\admin\controller\windows;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
-use think\Db;
 
 /**
  *
- * 身体检查
+ * @desc采血检查
  *
  * @icon fa fa-circle-o
  */
-class Body extends Backend
+class Blood extends Backend
 {
 
     protected $model = null;
 
     protected $user = null;
 
-    protected $comm = null;
-
-    // 体检类别
-    protected $type = 2;
+    protected $type = 0;
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index'
+        '*'
     ];
 
     public function _initialize()
@@ -91,13 +87,5 @@ class Body extends Backend
                 ->select();
         }
         $this->success('', null, $categorylist);
-    }
-
-    public function save()
-    {
-        $params = $this->request->post("row/a");
-        var_dump($params);
-        $this->view->fetch();
-        // if ($params) {}
     }
 }

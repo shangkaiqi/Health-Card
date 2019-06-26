@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\controller\result;
+namespace app\admin\controller\windows;
 use app\common\controller\Backend;
 use app\admin\controller\Common;
 /**
