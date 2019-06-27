@@ -6,12 +6,12 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'result/convenience//index'
+					index_url : 'result/conveniresult//index'
 							+ location.search,
-					add_url : 'result/convenience//add',
-					edit_url : 'result/convenience//edit',
-					del_url : 'result/convenience//del',
-					multi_url : 'result/convenience//multi',
+					add_url : 'result/conveniresult//add',
+					edit_url : 'result/conveniresult//edit',
+					del_url : 'result/conveniresult//del',
+					multi_url : 'result/conveniresult//multi',
 					table : 'physical_users',
 				}
 			});

@@ -4,7 +4,7 @@ namespace app\admin\controller\service;
 use app\common\controller\Backend;
 
 /**
- *
+ * @desc 打印健康证
  * @icon fa fa-circle-o
  */
 class Prints extends Backend

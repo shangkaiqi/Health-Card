@@ -5,7 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
- *
+ * @desc结果录入
  * @icon fa fa-circle-o
  */
 class Resultcheck extends Backend

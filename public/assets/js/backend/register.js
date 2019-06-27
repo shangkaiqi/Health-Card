@@ -6,11 +6,11 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'physical/register/index',
-					add_url : 'physical/register/add',
-					edit_url : 'physical/register/edit',
-					del_url : 'physical/register/del',
-					multi_url : 'physical/register',
+					index_url : 'register/index',
+					add_url : 'register/add',
+					edit_url : 'register/edit',
+					del_url : 'register/del',
+					multi_url : 'register',
 					table : 'physical_users',
 				}
 			});

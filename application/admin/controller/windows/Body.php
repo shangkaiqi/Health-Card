@@ -6,7 +6,7 @@ use app\admin\controller\Common;
 
 /**
  *
- * @desc采血检查
+ * @desc采血窗口
  *
  * @icon fa fa-circle-o
  */

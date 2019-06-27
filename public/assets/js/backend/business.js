@@ -5,11 +5,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    index_url: 'business/register/index' + location.search,
-                    add_url: 'business/register/add',
-                    edit_url: 'business/register/edit',
-                    del_url: 'business/register/del',
-                    multi_url: 'business/register/multi',
+                    index_url: 'business/index' + location.search,
+                    add_url: 'business/add',
+                    edit_url: 'business/edit',
+                    del_url: 'business/del',
+                    multi_url: 'business/multi',
                     table: 'business',
                 }
             });
@@ -24,9 +24,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 columns: [
                     [
                         {checkbox: true},
-                        {field: 'bs_id', title: __('Bs_id')},
-                        {field: 'bs_uuid', title: __('Bs_uuid')},
+                        {field: 'bs_id', title: __('Id')},
                         {field: 'busisess_name', title: __('Busisess_name')},
+                        {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', formatter: Table.api.formatter.datetime},
+                        {field: 'phone', title: __('Phone')},
+                        {field: 'address', title: __('Address')},
+                        {field: 'physical_num', title: __('Physical_num')},
+                        {field: 'profession', title: __('Profession')},
+                        {field: 'area', title: __('Area')},
+                        {field: 'charge', title: __('Charge')},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]

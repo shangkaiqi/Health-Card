@@ -4,7 +4,7 @@ namespace app\admin\controller\service;
 use app\common\controller\Backend;
 
 /**
- *
+ * @desc 体检列表
  * @icon fa fa-circle-o
  */
 class Search extends Backend

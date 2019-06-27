@@ -4,7 +4,7 @@ namespace app\admin\controller\service;
 use app\common\controller\Backend;
 
 /**
- *
+ * @desc快递
  * @icon fa fa-circle-o
  */
 class Express extends Backend

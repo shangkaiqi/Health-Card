@@ -1,11 +1,11 @@
 <?php
-namespace app\admin\controller\physical;
+namespace app\admin\controller;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
- * 体检登记
+ * @desc体检登记
  *
  * @icon fa fa-circle-o
  */
@@ -27,7 +27,7 @@ class Register extends Backend
     /**
      * Register模型对象
      *
-     * @var \app\admin\model\business\Register
+//      * @var \app\admin\model\business\Register
      */
     public function _initialize()
     {
@@ -82,7 +82,6 @@ class Register extends Backend
                     ->where("order_serial_number", "like", date("Ymd", time()) . "%")
                     ->order("registertime desc")
                     ->find();
-                echo db()->getLastSql();
                 if ($ordernum) {
                     $resultNum = $ordernum['order_serial_number'] + 1;
                 } else {

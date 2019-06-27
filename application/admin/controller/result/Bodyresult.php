@@ -5,10 +5,10 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
- *
+ * @desc体检结果录入
  * @icon fa fa-circle-o
  */
-class Bloodresult extends Backend
+class Bodyresult extends Backend
 {
 
     protected $model = null;

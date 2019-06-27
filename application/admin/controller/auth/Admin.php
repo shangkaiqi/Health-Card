@@ -34,7 +34,7 @@ class Admin extends Backend
     {
         parent::_initialize();
         $this->model = model('Admin');
-        // $this->buss = model("Business");
+        $this->buss = model("Business");
 
         $this->childrenAdminIds = $this->auth->getChildrenAdminIds(true);
         $this->childrenGroupIds = $this->auth->getChildrenGroupIds(true);
@@ -135,21 +135,14 @@ class Admin extends Backend
                     'area' => $params['area'],
                     'physical_num' => $params['number'],
                     'phone' => $params['phone'],
-                    'busisess_name' => $params['connect'],
+                    'busisess_name' => $params['nickname'],
+                    'connect' => $params['connect'],
                     'address' => $params['address'],
                     'bs_uuid' => create_uuid()
                 ];
-                // $data = [
-                // 'area' => 'sssssssssss',
-                // 'physical_num' => 10,
-                // 'phone' => "18545688515",
-                // 'busisess_name' => "wang",
-                // 'address' => "ddddd",
-                // 'bs_uuid' => create_uuid()
-                // ];
-                // // $busResult = $this->buss->save($buss);
-                $busResult = db('business')->insert($data);
-                $last_id = db()->getLastInsID();
+
+                $busResult = $this->buss->save($data);
+                $last_id = $this->buss->id;
 
                 $user['salt'] = Random::alnum();
                 $user['password'] = md5(md5($params['password']) . $user['salt']);

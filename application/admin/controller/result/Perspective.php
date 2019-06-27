@@ -5,7 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
- * 透视检查
+ * @desc透视结果录入
  *
  * @icon fa fa-circle-o
  */

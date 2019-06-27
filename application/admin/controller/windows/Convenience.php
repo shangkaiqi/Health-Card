@@ -3,7 +3,7 @@ namespace app\admin\controller\windows;
 use app\common\controller\Backend;
 use app\admin\controller\Common;
 /**
- * 便检查
+ * @desc便检窗口
  */
 class Convenience extends Backend
 {
