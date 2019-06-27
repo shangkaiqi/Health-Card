@@ -59,7 +59,10 @@
 				</span>
 			</div>
 		</div>
-		<div id="avatar_ad">{$body['images']}</div>
+		<div id="avatar_ad">
+			<img width="102" height="126" src="data:image/jpeg;base64,{$body['images']}" border="0">
+		</div>
+		
 		<div class="wait_physical"style="padding-left: 45px;">
 			待体检项：<span style="color:red;">{$wait_physical}</span>
 		</div>

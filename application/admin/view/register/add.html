@@ -1,15 +1,6 @@
-<!-- <OBJECT
-	  classid="clsid:F1317711-6BDE-4658-ABAA-39E31D3704D3"
-	  codebase="SDRdCard.cab#version=2,0,1,0"	  
-	  width=390
-	  height=10
-	  align=center
-	  hspace=0
-	  vspace=0
-	  id=idcard
-	  name=rdcard	
->
-</OBJECT> -->
+<OBJECT classid="clsid:F1317711-6BDE-4658-ABAA-39E31D3704D3" codebase="SDRdCard.cab#version=2,0,1,0" width=0
+        height=0 id=idcard name=rdcard>
+</OBJECT>
 <form id="edit-form" class="form-horizontal" method="POST" action="">
 
 	<div class="form-group">
@@ -89,8 +80,10 @@
 		</div>
 	</div>
 	
-	<div id="avatar_ad"></div> 
-	<input name="row[avatar]" type="hidden" value="">
+	<div id="avatar_ad">
+		<img width="102" id="img" height="126" src="data:image/jpeg;base64,{$body['images']}" border="0">
+	</div>
+	<input name="row[avatar]" id="row-avatar" type="hidden" value="">
 	</div>
 	<div class="form-group layer-footer">
 		<label class="control-label col-xs-12 col-sm-2"></label>
@@ -101,6 +94,19 @@
 	</div>
 </form>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script for=idcard event="Readed()">
+    alert('Readed');
+    getinfo_onclick();
+</script>
+
+<script for=idcard event="Closed()">
+        //window.close();
+</script>
+
+<script for=idcard event="Opened()">
+    alert('Opened');
+        //window.close();
+</script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -138,24 +144,33 @@
 		$("#express-1").click(function(){
 			$("#express").show();
 		});
-	/* 	$("#physictype-1").click(function(){
-			var ids = $("#pid-s option:selected").val();
-			if(ids == 2){
-				$("#pid-s").attr("selected","selected");
-			}
-		});
-		$("#physictype-0").click(function(){
-			$("#pid-s").hide();
-		}); */
 		
-/* 		var openrd,startrd,model;
-		openrd=rdcard.openport();   //  打开读身份证信息
-		startrd = rdcard.ReadCard2(); //开始读取身份证
-		model = rdcard.ReadSecurityNum();  //读取设备信息
-		rdcard.strSavePath= "c:\\aa"  //设置文件路径
-		rdcard.ExportBMP("D:\\");   //保存身份证图片 */
+		
+		
+//js读取身份证信息		
+	   function test() {
+	        var pp1;
+	        pp1 = rdcard.openport();
+	        alert(pp1);
+	        setTimeout(st, 3000, true);
+	    }
 
-		
+	    function st() {
+	        pp = rdcard.ReadCard2();
+	        alert(pp);
+	    }
+
+	    function getinfo_onclick() {
+	        document.getElementById("ENname").innerText = rdcard.NameS;
+	        document.getElementById("CNname").innerText = rdcard.NameL;
+	        document.getElementById("sexNum").innerText = rdcard.Sex;
+	        document.getElementById("sex").innerText = rdcard.SexL;
+	        document.getElementById("jpg").innerText = rdcard.JPGBuffer;
+	        document.getElementById("bmp").innerText = rdcard.BMPBuffer;
+	        document.getElementById("years").innerText = rdcard.Born;
+	        document.getElementById("year").innerText = rdcard.BornL;
+	        document.getElementById("card").innerText = rdcard.CardNo;
+	    }
 	});
 	
 	
