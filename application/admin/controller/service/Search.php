@@ -2,9 +2,11 @@
 namespace app\admin\controller\service;
 
 use app\common\controller\Backend;
+use app\admin\controller\Common;
 
 /**
- * @desc 体检列表
+ * 体检列表
+ *
  * @icon fa fa-circle-o
  */
 class Search extends Backend
@@ -14,18 +16,21 @@ class Search extends Backend
 
     // 开关权限开启
     protected $noNeedRight = [
-        'index'
+        '*'
     ];
 
     /**
      * Register模型对象
      *
-     * @var \app\admin\model\business\Register
+     * // * @var \app\admin\model\business\Register
      */
     public function _initialize()
     {
         parent::_initialize();
         $this->model = model("PhysicalUsers");
+        $comm = new Common();
+        $this->comm = $comm;
+        $this->view->assign("pid", $comm->getEmployee());
     }
 
     public function index()
@@ -58,13 +63,15 @@ class Search extends Backend
                 ->select();
             foreach ($list as $row) {
                 $row['registertime'] = date("Y-m-d H:i:s", $row['registertime']);
-                //$row->visible(['name','identitycard','type','sex','age','phone','employee','company','order_serial_number']);
-                //$row->visible(['order']);
-                //$row->getRelation('order')->visible(['order_id', 'order_serial_number', 'bus_number']);
+                $em = json_decode($row['employee'], true);
+                $parent = $this->comm->employee($em[0]);
+                $son = $this->comm->employee($em[1]);
+                $row['employee'] = $parent['name'] . ">>" . $son['name'];
+                // $row->visible(['name','identitycard','type','sex','age','phone','employee','company','order_serial_number']);
+                // $row->visible(['order']);
+                // $row->getRelation('order')->visible(['order_id', 'order_serial_number', 'bus_number']);
             }
             $list = collection($list)->toArray();
-
-            file_put_contents("search.txt", print_r($list, TRUE));
             $result = array(
                 "total" => $total,
                 "rows" => $list
@@ -75,50 +82,18 @@ class Search extends Backend
         return $this->view->fetch();
     }
 
-    // /**
-    // * Register模型对象
-    // *
-    // * @var \app\admin\model\business\Register
-    // */
-    // public function _initialize()
-    // {
-    // parent::_initialize();
-    // }
-
-    // public function index()
-    // {
-    // if ($this->request->isPost()) {
-    // $param = $this->request->get("row/a");
-    // if ($param['card']) {}
-    // }
-    // $param = array(
-    // 'start' => 1000,
-    // 'end' => 3000,
-    // 'card' => 123232132312,
-    // 'status' => 1
-    // );
-    // $where['create_date'] = [
-    // "between",
-    // [
-    // $param['start'],
-    // $param['end']
-    // ]
-    // ];
-    // $where['identitycard'] = [
-    // 'eq',
-    // $param['card']
-    // ];
-    // $where['order_status'] = [
-    // 'eq',
-    // $param['status']
-    // ];
-    // $result = db("physical_users")->alias("pu")
-    // ->join("order o", "pu.id=o.user_id")
-    // ->field("pu.name,pu.identitycard,pu.type,pu.phone,pu.employee,o.order_serial_number,o.create_date,o.obtain_employ_number,o.order_status")
-    // ->where($where)
-    // ->select();
-    // echo db()->getLastSql();
-    // $this->view->assign("list", $result);
-    // $this->view->fetch();
-    // }
+    public function edit($ids = '')
+    {
+        $list = $this->model->get([
+            'id' => $ids
+        ]);
+        if ($this->request->isPost()) {
+            $params = $this->request->isPost("row/a");
+            if($params){
+                
+            }
+        }
+        $this->view->assign("row", $list);
+        return $this->view->fetch();
+    }
 }

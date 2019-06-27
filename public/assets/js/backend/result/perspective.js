@@ -62,7 +62,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'phone',
-							title : '手机号'
+							title : '手机号',
+							operate : false
 						},
 						{
 							field : 'employee',
@@ -71,8 +72,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'order_serial_number',
-							title : '登记编号',
-							operate : false
+							title : '登记编号'
 						},
 						{
 							field : 'order.physical_result',

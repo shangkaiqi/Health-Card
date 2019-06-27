@@ -15,9 +15,11 @@ class Body extends Backend
 
     protected $model = null;
 
+    protected $orderde = null;
+
     protected $user = null;
 
-    protected $type = 0;
+    protected $type = 2;
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -29,6 +31,7 @@ class Body extends Backend
         $comm = new Common();
         $this->comm = $comm;
         parent::_initialize();
+        $this->orderde = model("OrderDetail");
         $this->model = model("Order");
 
         $ins = $comm->inspect($this->type);
@@ -47,10 +50,20 @@ class Body extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $user = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                $order_id = date("Ymd", time()) . $params['search'];
+                $user = db("physical_users")->where('order_serial_number', "=", $order_id)->find();
                 if (! $user) {
                     $this->error("用户不存在");
                 }
+
+                // 修改用户是否采血
+                $this->orderde->update([
+                    'status' => '1',
+                    'physical' => $this->type
+                ], [
+                    'order_serial_number' => $order_id
+                ]);
+
                 $em = json_decode($user['employee'], true);
                 $parent = $this->comm->employee($em[0]);
                 $son = $this->comm->employee($em[1]);

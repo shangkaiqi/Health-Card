@@ -15,6 +15,8 @@ class Blood extends Backend
 
     protected $model = null;
 
+    protected $orderde = null;
+
     protected $user = null;
 
     protected $type = 0;
@@ -30,6 +32,7 @@ class Blood extends Backend
         $this->comm = $comm;
         parent::_initialize();
         $this->model = model("Order");
+        $this->orderde = model("OrderDetail");
 
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
@@ -47,10 +50,20 @@ class Blood extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $user = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
+                $order_id = date("Ymd", time()) . $params['search'];
+                $user = db("physical_users")->where('order_serial_number', "=", $order_id)->find();
                 if (! $user) {
                     $this->error("用户不存在");
                 }
+                // 修改用户是否采血
+
+                $this->orderde->update([
+                    'status' => '1',
+                    'physical' => $this->type
+                ], [
+                    'order_serial_number' => $order_id
+                ]);
+
                 $em = json_decode($user['employee'], true);
                 $parent = $this->comm->employee($em[0]);
                 $son = $this->comm->employee($em[1]);

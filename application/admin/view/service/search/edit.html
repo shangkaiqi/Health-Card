@@ -1,58 +1,46 @@
-<!-- <OBJECT
-	  classid="clsid:F1317711-6BDE-4658-ABAA-39E31D3704D3"
-	  codebase="SDRdCard.cab#version=2,0,1,0"	  
-	  width=390
-	  height=10
-	  align=center
-	  hspace=0
-	  vspace=0
-	  id=idcard
-	  name=rdcard	
->
-</OBJECT> -->
 <form id="edit-form" class="form-horizontal" method="POST" action="">
 
 	<div class="form-group">
 		<label for="c-gender" class="control-label col-xs-12 col-sm-2">预约类型:</label>
 		<div class="col-xs-12 col-sm-8">
-			{:build_radios('row[type]',	['0'=>'个人', '1'=>'团体','2'=>'临时登记'])}
+			{:build_radios('row[type]',	['0'=>'个人', '1'=>'团体','2'=>'临时登记'],$row.type)}
 		</div>
 	</div>
  	<div class="form-group">
 		<label for="c-gender" class="control-label col-xs-12 col-sm-2">体检类型:</label>
-		<div class="col-xs-12 col-sm-8">{:build_radios('row[physictype]',['0'=>'食药', '1'=>'卫生监督'],null,'physictype')}</div>
+		<div class="col-xs-12 col-sm-8">{:build_radios('row[physictype]',['0'=>'食药', '1'=>'卫生监督'],$row.physictype,'physictype')}</div>
 	</div>
 	<div class="form-group">
 		<label for="c-username" class="control-label col-xs-12 col-sm-2">姓名:</label>
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-username" class="form-control" name="row[name]"
-				type="text" value="">
+				type="text" value="{$row.name}">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">身份证号:</label>
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-nickname" class="form-control" name="row[identitycard]"
-				type="text" value="">
+				type="text" value="{$row.identitycard}">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">性别:</label>
 		<div class="col-xs-12 col-sm-4">{:build_radios('row[sex]',
-			['0'=>'男', '1'=>'女'])}</div>
+			['0'=>'男', '1'=>'女'],$row.sex)}</div>
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">年龄:</label>
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-nickname" class="form-control" name="row[age]"
-				type="text" value="">
+				type="text" value="{$row.age}">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">手机:</label>
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-nickname" class="form-control" name="row[phone]"
-				type="text" value="">
+				type="text" value="{$row.phone}">
 		</div>
 	</div>
 	<div class="form-group">
@@ -73,23 +61,10 @@
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业单位:</label>
 		<div class="col-xs-12 col-sm-4">
 			<input id="c-nickname" class="form-control"
-				name="row[company]" type="text" value="">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">是否选择邮寄:</label>
-		<div class="col-xs-12 col-sm-4">
-			{:build_radios('row[express]',['0'=>'自取', '1'=>'邮寄'],null,'express')}
+				name="row[company]" type="text" value="{$row.company}">
 		</div>
 	</div>	
-	<div class="form-group" id="express">
-		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">邮寄地址:</label>
-		<div class="col-xs-12 col-sm-4">
-			<input id="c-nickname" class="form-control"	name="row[address]" type="text" value="">
-		</div>
-	</div>
-	
-	<div id="avatar_ad"></div> 
+	<div id="avatar_ad"></div>
 	<input name="row[avatar]" type="hidden" value="">
 	</div>
 	<div class="form-group layer-footer">
@@ -148,12 +123,6 @@
 			$("#pid-s").hide();
 		}); */
 		
-/* 		var openrd,startrd,model;
-		openrd=rdcard.openport();   //  打开读身份证信息
-		startrd = rdcard.ReadCard2(); //开始读取身份证
-		model = rdcard.ReadSecurityNum();  //读取设备信息
-		rdcard.strSavePath= "c:\\aa"  //设置文件路径
-		rdcard.ExportBMP("D:\\");   //保存身份证图片 */
 
 		
 	});

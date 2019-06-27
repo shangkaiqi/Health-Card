@@ -48,11 +48,10 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					operate : false
 				}, {
 					field : 'order.order_serial_number',
-					title : '登记号码',
-					operate : false
+					title : '登记号码'
 				}, {
-					field : 'company',
-					title : '行业',
+					field : 'employee',
+					title : '从业类别',
 					operate : false
 				}, {
 					field : 'type',
@@ -84,14 +83,13 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					field : 'operate', 
 					title : __('Operate'), 
 					table : table,
-					events : Table.api.events.operate, formatter : function(value, row, index) {
+					events : Table.api.events.operate, 
+					formatter : function(value, row, index) {
 						var that = $.extend({}, this);
 						var table = $(that.table).clone(true);
 						$(table).data("operate-del", null);
-						$(table).data("operate-edit", null);
 						that.table = table;
-						return Table.api.formatter.operate.call(that,
-								value, row, index);
+						return Table.api.formatter.operate.call(that,value, row, index);
 					},					
 				    buttons: [
 				        {

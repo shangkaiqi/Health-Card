@@ -46,8 +46,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'identitycard',
-							title : '身份证',
-							operate : false
+							title : '身份证'
 						},
 						{
 							field : 'sex',
@@ -73,8 +72,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'order_serial_number',
-							title : '登记编号',
-							operate : false
+							title : '登记编号'
 						},
 						{
 							field : 'order.physical_result',

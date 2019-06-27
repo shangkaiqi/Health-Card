@@ -15,30 +15,6 @@ class Common extends Backend
         parent::_initialize();
     }
 
-    // public function inspect($type = '')
-    // {
-    // $where = array();
-    // $inspect = array();
-    // if ($type == '') {
-    // $inspect = db("inspect")->field("id,value,name")
-    // ->where('type', '=', $type)
-    // ->select();
-    // } else {
-    // $inspect = db("inspect")->field("id,value,name")
-    // ->where('type', '=', $type)
-    // ->select();
-    // }
-    // $ins = array();
-    // foreach ($inspect as $key => $val) {
-    // $values = json_decode($inspect[$key]['value'], TRUE);
-    // $ins[] = array(
-    // "name" => $val["name"],
-    // "value" => $values,
-    // "id" => $val['id']
-    // );
-    // }
-    // return $ins;
-    // }
     public function getInspece($parent)
     {
         $in_a = db("inspect")->field("id,name")
