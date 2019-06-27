@@ -8,7 +8,7 @@
 				<div class="form-inline" data-toggle="cxselect"
 					data-selects="pid,name">
 					<input id="search-a" class="form-control" name="row[search]"
-						type="text" value="">
+						type="text" value="" style="margin-left: 15px;">
 					<button type="submit" class="btn btn-success btn-embossed">查询</button>
 				</div>
 			</div>
@@ -57,11 +57,11 @@
 			</div>
 		</div>
 		<div id="avatar_ad">{$body['images']}</div>
-		<div class="wait_physical">
-			待体检项：<span>{$wait_physical}</span>
+		<div class="wait_physical"style="padding-left: 45px;">
+			待体检项：<span style="color:red;">{$wait_physical}</span>
 		</div>
 				<form id="edit-form" role="form" data-toggle="validator" method="POST"
-			action="result/body/save">
+			action="/admin/windows/perspective/save">
 			{foreach $inspect as $index=>$vo}
 			<div class="form-group">
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>

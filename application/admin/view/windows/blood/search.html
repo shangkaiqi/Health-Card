@@ -8,7 +8,7 @@
 				<div class="form-inline" data-toggle="cxselect"
 					data-selects="pid,name">
 					<input id="search-a" class="form-control" name="row[search]"
-						type="text" value="">
+						type="text" value="" style="margin-left: 15px;">
 					<button type="submit" class="btn btn-success btn-embossed">查询</button>
 				</div>
 			</div>
@@ -29,7 +29,8 @@
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">性别:</label>
 			<div class="col-xs-12 col-sm-4">
-				<span id="c-username" class="form-control">{if condition="$body['sex'] eq 0"}男{else/}女{/if}</span>
+				<span id="c-username" class="form-control">{if
+					condition="$body['sex'] eq 0"}男{else/}女{/if}</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -47,37 +48,38 @@
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业单位:</label>
 			<div class="col-xs-12 col-sm-4">
-				<span id="c-username" class="form-control">{$body['company']} </span>
+				<span id="c-username" class="form-control">{$body['company']}
+				</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
 			<div class="col-xs-12 col-sm-4">
-				<span id="c-username" class="form-control">{$body['employee']} </span>
+				<span id="c-username" class="form-control">{$body['employee']}
+				</span>
 			</div>
 		</div>
 		<div id="avatar_ad">{$body['images']}</div>
-		<div class="wait_physical">
-			待体检项：<span>{$wait_physical}</span>
+		<div class="wait_physical"style="padding-left: 45px;">
+			待体检项：<span style="color:red;">{$wait_physical}</span>
 		</div>
-				<form id="edit-form" role="form" data-toggle="validator" method="POST"
-			action="result/body/save">
+		<form id="edit-form" role="form" method="POST"
+			action="/admin/windows/blood/save">
 			{foreach $inspect as $index=>$vo}
 			<div class="form-group">
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 				<div class="form-inline">
-					<select class="first form-control" name="pid"
+					<select class="first form-control" name=""
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="">请选择</option>
-						{foreach $vo['value'] as $i=>$v}
+						<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
 						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="name"
+					</select> <select class="second form-control" name="rows[phitem][]"
 						id="inspace-1-{$vo.id}" style="width: 100px;">
 					</select>
 				</div>
 			</div>
-			{/foreach}
-
+			{/foreach} <input type="hidden" name="rows[ordernum]"
+				value="{$body['order_serial_number']}">
 			<div class="form-group layer-footer">
 				<label class="control-label col-xs-12 col-sm-2"></label>
 				<div class="col-xs-12 col-sm-8">
@@ -93,7 +95,29 @@
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 <script type="text/javascript">
+function getInspect(id,value){
+	$.ajax({
+		url : "common/getInspect",
+		data : {
+			'id' : value
+		},
+		type : "get",
+		dataType : "json",
+		async : true,
+		success : function(obj) {
+			var html = "";
+			for (var i = 0; i < obj.length; i++) {
+				html += "<option value="+obj[i]['id']+">"
+						+ obj[i].name
+						+ "</option>";
+			}
+			$("#inspace-1-"+id).html(html);
+		},
+		error : function(msg) {
+		}
 
+	})
+}
 </script>
 <style>
 h3 {

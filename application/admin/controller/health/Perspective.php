@@ -37,11 +37,6 @@ class Perspective extends Backend
         $this->view->assign("inspect", $ins);
 
         $this->view->assign("pid", $comm->getemployee());
-        // 获取结果检查信息
-        $inspect_top = db("inspect")->field("id,name,value")
-            ->where('type', '=', $this->type)
-            ->select();
-        $this->view->assign("ins", $inspect_top);
     }
 
     public function index()

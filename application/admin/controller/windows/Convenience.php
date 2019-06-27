@@ -10,7 +10,7 @@ use app\admin\controller\Common;
  *
  * @icon fa fa-circle-o
  */
-class Body extends Backend
+class Convenience extends Backend
 {
 
     protected $model = null;
@@ -38,11 +38,6 @@ class Body extends Backend
         $this->view->assign("inspect", $ins);
 
         $this->view->assign("pid", $comm->getemployee());
-        // 获取结果检查信息
-        $inspect_top = db("inspect")->field("id,name,value")
-            ->where('type', '=', $this->type)
-            ->select();
-        $this->view->assign("ins", $inspect_top);
     }
 
     public function index()
@@ -100,5 +95,46 @@ class Body extends Backend
                 ->select();
         }
         $this->success('', null, $categorylist);
+    }
+
+    public function save()
+    {
+        $params = $this->request->post("rows/a");
+        $username = $this->user->get([
+            'id' => $this->auth->id
+        ]);
+        $status = 0;
+        if ($params) {
+            foreach ($params['phitem'] as $index) {
+                $inspectInfo = $this->inspect->get([
+                    "id" => $index
+                ]);
+                $inspectStatus = $this->inspect->get([
+                    "id" => $inspectInfo['parent']
+                ]);
+                // echo $inspectInfo['id'] . "-" . $inspectInfo['name'] . "-" . $inspectInfo['type'] . "-" . $inspectInfo['parent'];
+                $where = [
+                    'physical' => $this->type,
+                    'order_serial_number' => $params['ordernum'],
+                    'item' => $index
+                ];
+
+                $list = [
+                    "physical_result" => 1,
+                    "status" => 1,
+                    "physical_result" => $inspectStatus['name'],
+                    "physical_result_ext" => $inspectInfo['name'],
+                    "doctor" => $username['nickname']
+                ];
+                $update = $this->orderde->where($where)->update($list);
+                if (! $update) {
+                    $status = 1;
+                }
+            }
+            if ($status) {
+                $this->success('', null, $provincelist);
+            } else
+                $this->error();
+        }
     }
 }

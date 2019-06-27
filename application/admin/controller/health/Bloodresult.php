@@ -36,7 +36,7 @@ class Bloodresult extends Backend
 
         $this->view->assign("pid", $comm->getEmployee());
         // 获取结果检查信息
-        $inspect_top = db("inspect")->field("id,name,value")
+        $inspect_top = db("inspect")->field("id,name")
             ->where('type', '=', $this->type)
             ->select();
 

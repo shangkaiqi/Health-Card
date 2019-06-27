@@ -56,7 +56,6 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						var that = $.extend({}, this);
 						var table = $(that.table).clone(true);
 						$(table).data("operate-del", null);
-						$(table).data("operate-edit", null);
 						that.table = table;
 						return Table.api.formatter.operate.call(that,
 								value, row, index);

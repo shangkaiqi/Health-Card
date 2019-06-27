@@ -143,7 +143,7 @@ class Register extends Backend
     // 创建订单详细信息
     public function order_detial($orderNum, $physictype)
     {
-        $ins = db('inspect')->field("name,type")->where("parent","=","0")->select();
+        $ins = db('inspect')->field("id,name,type")->where("parent","=","0")->select();
         $list = array();
         if($physictype){            
             foreach ($ins as $res) {
@@ -155,7 +155,7 @@ class Register extends Backend
                 $param['physical_result'] = '';
                 $param['physical_result_ext'] = '';
                 $param['doctor'] = '';
-                $param['item'] = $res['name'];
+                $param['item'] = $res['id'];
                 $list[] = $param;
             }
         }else{            
@@ -168,12 +168,27 @@ class Register extends Backend
                 $param['physical_result'] = '';
                 $param['physical_result_ext'] = '';
                 $param['doctor'] = '';
-                $param['item'] = $res['name'];
+                $param['item'] = $res['id'];
                 $list[] = $param;
             }
         }
         
         $this->orderd->saveAll($list);
+    }
+    
+    public function edit($ids = '')
+    {
+        $list = $this->model->get([
+            'id' => $ids
+        ]);
+        if ($this->request->isPost()) {
+            $params = $this->request->isPost("row/a");
+            if($params){
+                
+            }
+        }
+        $this->view->assign("row", $list);
+        return $this->view->fetch();
     }
 
     public function physical_table()

@@ -72,6 +72,7 @@ class Common extends Backend
             ->field("physical")
             ->where("user_id", "=", $uid)
             ->select();
+        $arr = array();
         foreach ($result as $row) {
             $arr[] = $row['physical'];
         }
@@ -130,10 +131,10 @@ class Common extends Backend
      * @param array $params
      * @return boolean
      */
-    public function saveOrderDetail()
-    {
-        $save = $this->request->post();
-        var_dump($save);
+    public function saveOrderDetail($data,$where)
+    {        
+        $result = $this->orderde->where($where)->update($data);
+        return $result;
     }
 
     /**
