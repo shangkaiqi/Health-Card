@@ -18,6 +18,8 @@ class Register extends Backend
     
     protected $order = null;
     protected $orderd = null;
+    
+    protected $layout = 'register';
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -32,6 +34,7 @@ class Register extends Backend
     public function _initialize()
     {
         parent::_initialize();
+        
         $this->model = model("PhysicalUsers");
         $this->order = model("Order");
         $this->orderd = model("OrderDetail");
