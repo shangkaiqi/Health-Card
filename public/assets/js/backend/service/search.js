@@ -97,14 +97,14 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				            text: __('打印健康证'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'physical/enregister/physical_table/{ids}',
+				            url: 'common/physical_table/{ids}',
 				        },
 				        {
 				            name: 'nav_table',
 				            text: __('打印复印单'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'physical/enregister/nav_table/{ids}',
+				            url: 'common/nav_table/{ids}',
 				        }
 				    ],					
 				}] ]

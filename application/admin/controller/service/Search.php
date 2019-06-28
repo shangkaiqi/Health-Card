@@ -96,4 +96,25 @@ class Search extends Backend
         $this->view->assign("row", $list);
         return $this->view->fetch();
     }
+    
+    /**
+     *
+     * @desc导出Excel
+     */
+    function expUser(){//导出Excel
+        $xlsCell  = array(
+            array('id','账号序列'),
+            array('name','名字'),
+            array('sex','性别'),
+            array('age','院系'),
+            array('phone','电话'),
+        );
+        $xlsData = db('physical_users')->field("id,name,sex,age,phone")->select();
+        foreach ($xlsData as $k => $v)
+        {
+            $xlsData[$k]['sex']=$v['sex']==0?'男':'女';
+        }
+        $this->exportExcel("userPhysial",$xlsCell,$xlsData);
+        
+    }
 }
