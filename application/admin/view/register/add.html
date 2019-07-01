@@ -124,7 +124,7 @@
 	            var card = $("#identitycard").val();
 	            var birthday = card.substring(6, 14);
 	            var age = jsGetAge(birthday);
-	            $("#age").val(age);
+	            $("#c-age").val(age);
 	        })
 		})
 		
@@ -171,9 +171,9 @@
 	
     function jsGetAge(strBirthday){       
         var returnAge;
-        var birthYear = str.substring(0, 4);
-        var birthMonth = str.substring(4, 6);
-        var birthDay = str.substring(6, 8);
+        var birthYear = strBirthday.substring(0, 4);
+        var birthMonth = strBirthday.substring(4, 6);
+        var birthDay = strBirthday.substring(6, 8);
         
         d = new Date();
         var nowYear = d.getFullYear();

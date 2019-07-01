@@ -100,8 +100,8 @@ class Register extends Backend
                 $param['physictype'] = $params['physictype'];
                 $param['express'] = $params['express'];
                 $param['employee'] = json_encode(array(
-                    $params['parent'],
-                    $params['son']
+                    $params['parent']
+//                     $params['son']
                 ));
                 $param['company'] = $params['company'];
                 $param['order_serial_number'] = $resultNum;

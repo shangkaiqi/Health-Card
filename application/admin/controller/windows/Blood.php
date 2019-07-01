@@ -18,6 +18,8 @@ class Blood extends Backend
     protected $orderde = null;
 
     protected $user = null;
+    
+    protected $puser = null;
 
     protected $inspect = null;
 
@@ -37,6 +39,7 @@ class Blood extends Backend
         $this->orderde = model("OrderDetail");
         $this->user = model("admin");
         $this->inspect = model("Inspect");
+        $this->puser = model("PhysicalUsers");
 
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
@@ -63,10 +66,13 @@ class Blood extends Backend
                     'order_serial_number' => $order_id
                 ]);
 
+                
                 $em = json_decode($user['employee'], true);
                 $parent = $this->comm->employee($em[0]);
-                $son = $this->comm->employee($em[1]);
-                $user['employee'] = $parent['name'] . ">>" . $son['name'];
+                //         $son = $this->comm->employee($em[1]);
+                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
+                $user['employee'] = $parent['name'];
+                
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type
@@ -104,7 +110,7 @@ class Blood extends Backend
     public function save()
     {
         $params = $this->request->post("rows/a");
-        $username = $this->user->get([
+        $username = $this->puser->get([
             'id' => $this->auth->id
         ]);
         $status = 0;

@@ -74,10 +74,12 @@ class Perspective extends Backend
                 ->select();
 
             foreach ($list as $row) {
+                
                 $em = json_decode($row['employee'], true);
                 $parent = $this->comm->employee($em[0]);
-                $son = $this->comm->employee($em[1]);
-                $row['employee'] = $parent['name'] . ">>" . $son['name'];
+                //         $son = $this->comm->employee($em[1]);
+                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
+                $row['employee'] = $parent['name'];
             }
             $list = collection($list)->toArray();
             $result = array(
@@ -106,10 +108,12 @@ class Perspective extends Backend
             file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
             $this->success("success");
         }
+        
         $em = json_decode($row['employee'], true);
         $parent = $this->comm->employee($em[0]);
-        $son = $this->comm->employee($em[1]);
-        $row['employee'] = $parent['name'] . ">>" . $son['name'];
+        //         $son = $this->comm->employee($em[1]);
+        //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
+        $row['employee'] = $parent['name'];
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();

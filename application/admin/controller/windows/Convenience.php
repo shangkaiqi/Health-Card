@@ -59,10 +59,12 @@ class Convenience extends Backend
                     'order_serial_number' => $order_id
                 ]);
 
+                
                 $em = json_decode($user['employee'], true);
                 $parent = $this->comm->employee($em[0]);
-                $son = $this->comm->employee($em[1]);
-                $user['employee'] = $parent['name'] . ">>" . $son['name'];
+                //         $son = $this->comm->employee($em[1]);
+                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
+                $user['employee'] = $parent['name'];
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type

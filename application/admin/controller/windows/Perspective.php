@@ -33,6 +33,7 @@ class Perspective extends Backend
         parent::_initialize();
         $this->orderde = model("OrderDetail");
         $this->model = model("Order");
+        $this->user = model("PhysicalUsers");
 
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
@@ -59,10 +60,12 @@ class Perspective extends Backend
                     'order_serial_number' => $order_id
                 ]);
 
+                
                 $em = json_decode($user['employee'], true);
                 $parent = $this->comm->employee($em[0]);
-                $son = $this->comm->employee($em[1]);
-                $user['employee'] = $parent['name'] . ">>" . $son['name'];
+                //         $son = $this->comm->employee($em[1]);
+                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
+                $user['employee'] = $parent['name'];
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type

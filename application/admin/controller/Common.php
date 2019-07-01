@@ -2,7 +2,6 @@
 namespace app\admin\controller;
 
 use app\common\controller\Backend;
-use PHPExcel_IOFactory;
 require './phpexcel/PHPExcel.php';
 class Common extends Backend
 {
