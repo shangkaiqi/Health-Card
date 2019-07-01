@@ -193,4 +193,18 @@ class Common extends Backend
         $objWriter->save('php://output');
         exit;
     }
+    
+    public function muilts($type){
+        // 根据用户查询属于哪个医院
+        $medicine = $db("admin")->alias("a")
+            ->join("business b", "b.bs_id=a.businessid")
+            ->field("bs_uuid")
+            ->where("id", "=", $this->auth->id)
+            ->find();
+        $where['type'] = $type;
+        $where['status'] = 1;
+        $where['bus_number'] = $medicine['bs_uuid'];
+        $data['physical_result'] = 0;
+        $result = db("order_detail")->where($where)->update($data);
+    }
 }

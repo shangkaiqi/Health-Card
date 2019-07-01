@@ -117,7 +117,13 @@ class Conveniresult extends Backend
     /**
      * 批量操作通过
      */
-    public function mulit(){
+    public function mulit()
+    {
         
+        $type = $this->request->get();
+        $result = $this->comm->muilts($type);
+        if ($result) {
+            $this->success("通过");
+        }
     }
 }

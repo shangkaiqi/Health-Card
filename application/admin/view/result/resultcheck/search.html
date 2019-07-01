@@ -1,5 +1,5 @@
 <div class="panel panel-default panel-intro" style="width: 1000px;">
-	<h3>结果录入--search</h3>
+	<h3>结果录入</h3>
 	<div class="panel-body" style="position: relative; min-height: 400px">
 		<form id="edit-form" class="form-horizontal" role="form"
 			data-toggle="validator" method="POST" action="">
@@ -19,34 +19,35 @@
 			style="border-bottom: 1px solid #eee; height: 215px; background-color: #eee; padding: 10px">
 			<div class="form-group width-1">
 				<div class="context-b">
-					<i class="form-name">姓名:</i><span class="form-controller width-2">{$body['name']}</span>
+					<i class="form-name">姓名:</i><span class="form-controller width-2">{$userinfo['name']}</span>
 				</div>
 				<div class="context-b">
-					<i class="form-name">性别:</i><span class="form-controller width-3">{$body['sex']}</span>
+					<i class="form-name">性别:</i><span class="form-controller width-3">{$userinfo['sex']}</span>
 				</div>
 				<div class="context-b">
-					<i class="form-name">年龄:</i><span class="form-controller width-3">{$body['age']}</span>
+					<i class="form-name">年龄:</i><span class="form-controller width-3">{$userinfo['age']}</span>
 				</div>
 			</div>
 
 			<div class="form-group width-1">
 				<div class="context-a">
-					<i class="form-name">身份证号:</i><span class="form-controller width-2">{$body['identitycard']}</span>
+					<i class="form-name">身份证号:</i><span class="form-controller width-2">{$userinfo['identitycard']}</span>
 				</div>
 				<div class="context-a">
-					<i class="form-name">联系电话:</i><span class="form-controller width-2">{$body['phone']}</span>
+					<i class="form-name">联系电话:</i><span class="form-controller width-2">{$userinfo['phone']}</span>
 				</div>
 			</div>
 			<div class="form-group width-1">
 				<div class="context-a">
-					<i class="form-name">登记号:</i><span class="form-controller width-2">{$body['order_serial_number']}</span>
+					<i class="form-name">登记号:</i><span class="form-controller width-2">{$userinfo['order_serial_number']}</span>
 				</div>
 				<div class="context-a">
-					<i class="form-name">从业类别:</i><span class="form-controller width-2">{$body['name']}</span>
+					<i class="form-name">从业类别:</i><span class="form-controller width-2">{$userinfo['name']}</span>
 				</div>
 			</div>
 			<div id="avatar_ad">
-				<img width="102" height="126" src="data:image/jpeg;base64,{$body['images']}" border="0">
+				<img width="102" height="126"
+					src="data:image/jpeg;base64,{$userinfo['images']}" border="0">
 			</div>
 		</div>
 		<hr>
@@ -65,12 +66,10 @@
 								<select class="first form-control" name="pid"
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
-									<option value="">请选择</option> 
-									{foreach $vo.value as $i=>$v}
-									<option value="{$v.id}">{$v.name}</option> 
-									{/foreach}
-								</select> 
-								<select class="second form-control" name="name"	id="inspace-1-{$vo.id}" style="width: 100px;">
+									<option value="">请选择</option>
+
+								</select> <select class="second form-control" name="name"
+									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
 						</div>
@@ -78,7 +77,7 @@
 					</div>
 					<div class="result-blood">
 						<h4>X线胸透或胸部拍片</h4>
-						<!-- {foreach $tous as $index=>$vo}
+						{foreach $tous as $index=>$vo}
 						<div class="form-group">
 							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
@@ -92,14 +91,14 @@
 								</select>
 							</div>
 						</div>
-						{/foreach} -->
+						{/foreach}
 					</div>
 				</div>
 				<div class="result-a">
 					<div class="result-blood">
 						<h4>便检</h4>
 
-						<!-- {foreach $conven as $index=>$vo}
+						{foreach $conven as $index=>$vo}
 						<div class="form-group">
 							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
@@ -113,11 +112,11 @@
 								</select>
 							</div>
 						</div>
-						{/foreach} -->
+						{/foreach}
 					</div>
 					<div class="result-blood">
 						<h4>血检结果</h4>
-						<!-- {foreach $blood as $index=>$vo}
+						{foreach $blood as $index=>$vo}
 						<div class="form-group">
 							<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
@@ -131,7 +130,7 @@
 								</select>
 							</div>
 						</div>
-						{/foreach} -->
+						{/foreach}
 					</div>
 				</div>
 			</div>

@@ -17,10 +17,10 @@
                             </ul>
                         </div> -->
 
-						<a href="" data-name="withdraw" class="btn btn-default"
+						
+						<a href="javascript:;" id="mulit" class="btn btn-default"
 							style="font-size: 14px; color: white; background: #18bc9c;">
-							<span class="extend"> 批量结果通过</span> </span>
-						</a>
+							批量结果通过 </a>
 					</div>
 					<table id="table"
 						class="table table-striped table-bordered table-hover"
@@ -32,7 +32,6 @@
 		</div>
 	</div>
 </div>
-<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 <script type="text/javascript">
 	//批了操作
 	/* 	$(document).on("click", ".btn-register", function() {
@@ -53,6 +52,27 @@
 	 }
 	 });
 	 }); */
+	 $(document).ready(function() {
+			$("#mulit").click(function() {
+				$.ajax({
+					url : "/admin/result/bodyresult/mulit",
+					data : {
+						"type":2
+						},
+					type : "get",
+					dataType : "json",
+					async : true,
+					success : function(obj) {
+						alert("aaaaaa");
+					},
+					error : function(msg) {
+						alert("bbbb");
+						$("#aaa").html(msg.responseText);
+					}
+
+				})
+			})
+		})
 </script>
 <style>
 h3 {

@@ -5,6 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
+ *
  * @desc血检结果录入
  * @icon fa fa-circle-o
  */
@@ -65,8 +66,8 @@ class Bloodresult extends Backend
                 ->count();
 
             $list = $this->model->with([
-                    'order'
-                ])
+                'order'
+            ])
                 ->where($where)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
@@ -113,11 +114,16 @@ class Bloodresult extends Backend
         $this->view->assign("row", $row);
         return $this->view->fetch();
     }
-    
+
     /**
      * 批量操作通过
      */
-    public function mulit(){
-        
+    public function mulit()
+    {        
+        $type = $this->request->get();
+        $result = $this->comm->muilts($type);
+        if ($result) {
+            $this->success("通过");
+        }
     }
 }

@@ -5,6 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
+ *
  * @desc结果录入
  * @icon fa fa-circle-o
  */
@@ -24,8 +25,6 @@ class Resultcheck extends Backend
 
     /**
      * Register模型对象
-     *
-     * @var \app\admin\model\business\Register
      */
     public function _initialize()
     {
@@ -62,8 +61,6 @@ class Resultcheck extends Backend
 
         $body = $comm->inspect(0);
         $this->view->assign("body", $body);
-        
-        var_dump($body);
         /**
          * 透視信息
          *
@@ -90,7 +87,7 @@ class Resultcheck extends Backend
                 $result = db("order")->alias("o")
                     ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
                     ->select();
-                $this->view->assign("body", $uid);
+                $this->view->assign("userinfo", $uid);
                 return $this->view->fetch("search");
             } else {
                 $this->error();
