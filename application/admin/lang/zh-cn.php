@@ -3,7 +3,8 @@
 return [
     'User id'                                               => '会员ID',
     'Username'                                              => '用户名',
-    'Nickname'                                              => '医院名称',
+    'Nickname'                                              => '体检医师',
+    'Hospital'                                              => '医院名称',
     'Password'                                              => '密码',
     'Sign up'                                               => '注 册',
     'Sign in'                                               => '登 录',

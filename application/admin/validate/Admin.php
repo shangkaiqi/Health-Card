@@ -19,13 +19,13 @@ class Admin extends Validate
     //
     protected $rule = [
         'username' => 'require|max:50|unique',
-//         'identitycard' => 'require',
-//         'type' => 'require',
-//         'sex' => 'require|',
-//         'age' => 'require|number|between:1,120',
-//         'phone' => 'require|mobile',
+        'businessid' => 'require',
+        'email' => 'require|email',
+        'nickname' => 'require'
+        // 'age' => 'require|number|between:1,120',
+        // 'phone' => 'require|mobile',
         // 'employee' => 'require|email|unique:admin,email',
-//         'company' => 'require'
+        // 'company' => 'require'
     ];
 
     /**
@@ -44,12 +44,9 @@ class Admin extends Validate
     protected $scene = [
         'add' => [
             'name',
-//             'identitycard',
-//             'type',
-//             'sex',
-//             'age',
-//             'phone',
-//             'company'
+            'businessid',
+            'email',
+            'nickname'
         ]
         // 'edit' => [
         // 'username',

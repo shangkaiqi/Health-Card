@@ -6,6 +6,7 @@ use app\admin\model\AuthGroupAccess;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
+use app\admin\controller\Business;
 
 /**
  * 管理员管理
@@ -132,17 +133,17 @@ class Admin extends Backend
             $params = $this->request->post("row/a");
             if ($params) {
                 $data = [
-                    'area' => $params['area'],
+//                     'area' => $params['area'],
                     'physical_num' => $params['number'],
                     'phone' => $params['phone'],
-                    'busisess_name' => $params['nickname'],
+                    'busisess_name' => $params['hospital'],
                     'connect' => $params['connect'],
                     'address' => $params['address'],
                     'bs_uuid' => create_uuid()
                 ];
 
-                $busResult = $this->buss->save($data);
-                $last_id = $this->buss->id;
+                $busResult = $this->buss->validate('Business.add')->save($data);
+                $last_id = $this->buss->bs_id;
 
                 $user['salt'] = Random::alnum();
                 $user['password'] = md5(md5($params['password']) . $user['salt']);

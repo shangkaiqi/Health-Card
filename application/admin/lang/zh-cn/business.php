@@ -9,6 +9,6 @@ return [
     'Physical_num'  => '体检量',
     'Profession'    => '从业行业',
     'Area'          => '所属地区',
-    'Charge'        => '收费
-'
+    'Charge'        => '收费',
+    'Connect'       => '联系人'
 ];
