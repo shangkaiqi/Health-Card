@@ -33,6 +33,7 @@ class Convenience extends Backend
         parent::_initialize();
         $this->orderde = model("OrderDetail");
         $this->model = model("Order");
+        $this->user = model("PhysicalUsers");
 
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
@@ -129,7 +130,7 @@ class Convenience extends Backend
                 }
             }
             if ($status) {
-                $this->success('', null, $provincelist);
+                $this->success('保存成功', null);
             } else
                 $this->error();
         }

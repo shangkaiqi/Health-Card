@@ -137,7 +137,7 @@ class Blood extends Backend
                 }
             }
             if ($status) {
-                $this->success('', null, $provincelist);
+                $this->success('保存成功', null);
             } else
                 $this->error();
         }

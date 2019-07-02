@@ -254,7 +254,7 @@ class Common extends Backend
     public function muilts($type)
     {
         // 根据用户查询属于哪个医院
-        $medicine = $db("admin")->alias("a")
+        $medicine = db("admin")->alias("a")
             ->join("business b", "b.bs_id=a.businessid")
             ->field("bs_uuid")
             ->where("id", "=", $this->auth->id)

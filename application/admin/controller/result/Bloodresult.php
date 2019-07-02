@@ -21,6 +21,7 @@ class Bloodresult extends Backend
     protected $blood = 0;
 
     protected $type = "0";
+    protected $admin = null;
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -32,6 +33,7 @@ class Bloodresult extends Backend
         parent::_initialize();
         $comm = new Common();
         $this->comm = $comm;
+        $this->admin = model("admin");
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
 
@@ -110,6 +112,51 @@ class Bloodresult extends Backend
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();
+    }
+    
+    /**
+     * @desc 保存检查结果
+     */
+    public function save()
+    {
+        $params = $this->request->post();
+        $username = $this->admin->get([
+            'id' => $this->auth->id
+        ]);
+        $status = 0;
+        if ($params) {
+            foreach ($params['phitem'] as $index) {
+                $inspectInfo = $this->inspect->get([
+                    "id" => $index
+                ]);
+                $inspectStatus = $this->inspect->get([
+                    "id" => $inspectInfo['parent']
+                ]);
+                $where = [
+                    'physical' => $this->type,
+                    'order_serial_number' => $params["order_serial_number"],
+                    'item' => $index
+                ];
+                
+                $list = [
+                    "physical_result" => 1,
+                    "status" => 1,
+                    "physical_result" => $inspectStatus['name'],
+                    "physical_result_ext" => $inspectInfo['name'],
+                    "doctor" => $username['nickname']
+                ];
+                $update = $this->orderde->where($where)->update($list);
+                echo db()->getLastSql();
+                if (! $update) {
+                    $status = 1;
+                }
+            }
+            if ($status) {
+                $this->success('保存成功', null);
+            } else {
+                $this->error();
+            }
+        }
     }
 
     /**
