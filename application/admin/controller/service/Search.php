@@ -14,6 +14,8 @@ class Search extends Backend
 
     protected $model = null;
 
+    protected $comm = null;
+
     // 开关权限开启
     protected $noNeedRight = [
         '*'
@@ -63,7 +65,6 @@ class Search extends Backend
                 ->select();
             foreach ($list as $row) {
                 $row['registertime'] = date("Y-m-d H:i:s", $row['registertime']);
-
                 $row['employee'] = $this->comm->getEmpName($row['employee']);
 
                 // $row->visible(['name','identitycard','type','sex','age','phone','employee','company','order_serial_number']);
@@ -94,12 +95,20 @@ class Search extends Backend
         return $this->view->fetch();
     }
 
+    public function printMulit()
+    {
+        $ids = $this->request->get();
+        
+        return json(array($ids));
+    }
+
     /**
      *
      * @desc导出Excel
      */
     function expUser()
-    { // 导出Excel
+    {
+        // 导出Excel
         $xlsCell = array(
             array(
                 'id',
@@ -108,6 +117,10 @@ class Search extends Backend
             array(
                 'name',
                 '名字'
+            ),
+            array(
+                'identitycard',
+                '身份证号'
             ),
             array(
                 'sex',
@@ -120,12 +133,30 @@ class Search extends Backend
             array(
                 'phone',
                 '电话'
+            ),
+            array(
+                'employee',
+                '从业类别'
+            ),
+            array(
+                'company',
+                '体检单位'
+            ),
+            array(
+                'physictype',
+                '体检类别'
+            ),
+            array(
+                'registertime',
+                '体检时间'
             )
         );
-        $xlsData = db('physical_users')->field("id,name,sex,age,phone")->select();
+        $xlsData = db('physical_users')->field("id,name,identitycard,sex,age,phone,employee,company,physictype,registertime")->select();
         foreach ($xlsData as $k => $v) {
             $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
+            $xlsData[$k]['employee'] = $this->comm->getEmpName($v['employee']);
+            $xlsData[$k]['registertime'] = date("Y-m-d H:m:s", $v['registertime']);
         }
-        $this->exportExcel("userPhysial", $xlsCell, $xlsData);
+        $this->comm->exportExcel("userPhysial", $xlsCell, $xlsData);
     }
 }

@@ -17,7 +17,7 @@
                             </ul>
                         </div> -->
 
-						<a href="javascript:;" id="mulit" class="btn btn-default"
+						<a href="javascript:;" id="mulit" class="btn btn-default btn-selected btn-disabled"
 							style="font-size: 14px; color: white; background: #18bc9c;">
 							批量结果通过 </a>
 					</div>
@@ -31,49 +31,7 @@
 		</div>
 	</div>
 </div>
-<div id="bbb"></div>
-<div id="aaa"></div>
 <script type="text/javascript">
-	//批了操作
-	/* 	$(document).on("click", ".btn-register", function() {
-	 Layer.open({
-	 content : Template("register", {}),
-	 yes : function(index, layero) {
-	 Fast.api.ajax({
-	 url : 'devicemanager/device_detail_manager/register',
-	 dataType : 'jsonp',
-	 data : {
-	 udid : $("#udid", layero).val(),
-	 _method : 'GET'
-	 }
-	 }, function(data, ret) {
-	 Layer.closeAll();
-	 Layer.alert(ret.msg);
-	 });
-	 }
-	 });
-	 }); */
-	$(document).ready(function() {
-		$("#mulit").click(function() {
-			$.ajax({
-				url : "/admin/result/bloodresult/mulit",
-				data : {
-					"type":0
-				},
-				type : "get",
-				dataType : "json",
-				async : true,
-				success : function(obj) {
-					alert("aaaaaa");
-				},
-				error : function(msg) {
-					alert("bbbb");
-					$("#aaa").html(msg.responseText);
-				}
-
-			})
-		})
-	})
 </script>
 <style>
 h3 {

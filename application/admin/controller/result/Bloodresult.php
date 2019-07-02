@@ -164,8 +164,8 @@ class Bloodresult extends Backend
      */
     public function mulit()
     {        
-        $type = $this->request->get();
-        $result = $this->comm->muilts($type);
+        $ids = $this->request->get();
+        $result = $this->comm->muilts($ids);
         if ($result) {
             $this->success("通过");
         }

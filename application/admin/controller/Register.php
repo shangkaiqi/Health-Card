@@ -146,32 +146,20 @@ class Register extends Backend
     }
 
     // 创建订单详细信息
-    public function order_detial($orderNum, $physictype)
+    public function order_detial($orderNum)
     {
         $ins = db('inspect')->field("id,name,type")
             ->where("parent", "=", "0")
             ->select();
         $list = array();
-        if ($physictype) {
-            foreach ($ins as $res) {
-                $param['order_serial_number'] = $orderNum;
-                $param['physical'] = $res['type'];
-                $param['physical_result'] = '';
-                $param['physical_result_ext'] = '';
-                $param['doctor'] = '';
-                $param['item'] = $res['id'];
-                $list[] = $param;
-            }
-        } else {
-            foreach ($ins as $res) {
-                $param['order_serial_number'] = $orderNum;
-                $param['physical'] = $res['type'];
-                $param['physical_result'] = '';
-                $param['physical_result_ext'] = '';
-                $param['doctor'] = '';
-                $param['item'] = $res['id'];
-                $list[] = $param;
-            }
+        foreach ($ins as $res) {
+            $param['order_serial_number'] = $orderNum;
+            $param['physical'] = $res['type'];
+            $param['physical_result'] = '';
+            $param['physical_result_ext'] = '';
+            $param['doctor'] = '';
+            $param['item'] = $res['id'];
+            $list[] = $param;
         }
 
         $this->orderd->saveAll($list);

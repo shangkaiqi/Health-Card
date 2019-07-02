@@ -16,13 +16,13 @@
                             </ul>
                         </div> -->
 
-						<a href="javascript:;" data-name="withdraw" class="btn btn-default btn-disabled"
+						<a href="javascript:;" data-name="withdraw" class="btn btn-default btn-selected btn-disabled"
 							style="font-size: 14px; color: white; background: #18bc9c;">
 							<span class="extend"> 打印所选用户</span> </span>
 						</a>
-						<a href="javascript:;" data-name="withdraw" class="btn btn-default btn-disabled"
+						<a href="{:url('service.search/expUser')}" class="btn btn-default btn-disabled"
 							style="font-size: 14px; color: white; background: #18bc9c;">
-							<span class="extend">导出excel</span> </span>
+							导出excel
 						</a>
 
 						<!-- <a href="" data-name="withdraw" class="btn btn-default"
@@ -42,8 +42,23 @@
 	</div>
 </div>
 <script>
-	//一键通过
-	//导出用户
+/* 	$("document").ready(function(){
+		$("#excel").click(function(){
+			$.ajax({
+				url : "service/search/expUser",
+				data : {},
+				type : "get",
+				dataType : "json",
+				async : true,
+				success : function(obj) {
+					
+				},
+				error : function(msg) {
+				}
+
+			})
+		})
+	}); */
 </script>
 <style>
 h3 {
