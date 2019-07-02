@@ -2,9 +2,11 @@
 namespace app\admin\controller\service;
 
 use app\common\controller\Backend;
+use app\admin\controller\Common;
 
 /**
- * @desc 打印健康证
+ * 打印健康证
+ *
  * @icon fa fa-circle-o
  */
 class Prints extends Backend
@@ -12,10 +14,10 @@ class Prints extends Backend
 
     /**
      * Register模型对象
-     *
-     * @var \app\admin\model\business\Register
      */
     protected $model = null;
+
+    protected $comm = null;
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -25,6 +27,8 @@ class Prints extends Backend
     public function _initialize()
     {
         parent::_initialize();
+        $comm = new Common();
+        $this->comm = $comm;
         $this->model = model("PhysicalUsers");
     }
 
@@ -44,6 +48,7 @@ class Prints extends Backend
                     ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
                     ->where($where)
                     ->select();
+                $uid['employee'] = $this->comm->getEmpName($uid['employee']);
                 $this->view->assign("body", $uid);
                 return $this->view->fetch("search");
             } else {
