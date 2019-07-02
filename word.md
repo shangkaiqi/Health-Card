@@ -1,3 +1,5 @@
+https://www.cnblogs.com/huaxie/p/9915872.html（打印背景图片）  例19
+
 <p class="MsoNormal">
 	<span style="font-size:16.0pt;font-family:仿宋_GB2312;">附件</span><span
 		style="font-size:16.0pt;font-family:仿宋_GB2312;">1<span>：</span></span>

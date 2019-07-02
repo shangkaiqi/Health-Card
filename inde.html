@@ -1,0 +1,72 @@
+<script src="http://www.card.com/LodopFuncs.js"></script>
+<button onclick="myPreview()">打印</button>
+
+
+<script>
+    function myPreview() {
+        CreatePrintPage1();
+        LODOP.PREVIEW();
+        CreatePrintPage1();
+        LODOP.PREVIEW();
+        CreatePrintPage1();
+        LODOP.PREVIEW();
+    };
+
+    //批量打印
+	// function Print5() {		
+	// 	LODOP=getLodop();  
+	// 	LODOP.PRINT_INIT("");	
+	// 	LODOP.SET_PRINT_PAGESIZE(1,document.getElementById('W1').value,document.getElementById('H1').value,"A3");
+	// 	AddPrintContent("10101010101010","郭德强");
+	//   	LODOP.PRINT();	
+	// 	LODOP.PRINT_INIT("");	  	
+	// 	LODOP.SET_PRINT_PAGESIZE(1,document.getElementById('W1').value,document.getElementById('H1').value,"A3");
+	// 	AddPrintContent("10101010101012","于谦");
+	//   	LODOP.PRINT();	}
+
+
+    //data:image/jpeg;base64,
+    function CreatePrintPage() {
+        LODOP = getLodop();
+        LODOP.PRINT_INITA("0", "0", "86.6mm", "56.4mm", "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
+        LODOP.ADD_PRINT_SETUP_BKIMG("C:\\Users\\Shilh\\Desktop\\QQ截图20190702132927.png");
+        LODOP.ADD_PRINT_TEXT("32mm", "25mm", "100", "30", "王经理");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+        LODOP.ADD_PRINT_TEXT("32mm", "48mm", "100", "30", "男");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+        LODOP.ADD_PRINT_TEXT("36mm", "25mm", "100", "30", "医疗卫生");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+        LODOP.ADD_PRINT_TEXT("40.5mm", "25mm", "100", "30", "冀13052585485");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+        LODOP.ADD_PRINT_TEXT("45mm", "25mm", "100", "30", "2019年6月30日");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+        LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1732022464,4158907838&fm=26&gp=0.jpg\"/>");
+        LODOP.ADD_PRINT_TEXT("50mm", "25mm", "100", "30", "河北中医院");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+    };
+
+
+    function CreatePrintPage1() {
+        LODOP.PRINT_INITA(0, 0, "86.6mm", "56mm", "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
+        LODOP.ADD_PRINT_TEXT("36mm", "48mm", 97, 30, "从业类别");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+        LODOP.ADD_PRINT_TEXT("40mm", "48mm", 100, 30, "姓名");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+        LODOP.ADD_PRINT_TEXT("40mm", "76mm", 50, 30, "男");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+        LODOP.SET_PRINT_STYLEA(0, "Angle", 4);
+        LODOP.ADD_PRINT_IMAGE("25mm","10mm","16.6mm","20mm","<img src=\"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1732022464,4158907838&fm=26&gp=0.jpg\"/>");
+        LODOP.ADD_PRINT_TEXT("44.5mm", "48mm", 157, 30, "2019年12月31日");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+        LODOP.ADD_PRINT_TEXT("50mm", "23mm", 230, 29, "冀158565855858");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+    }
+</script>
