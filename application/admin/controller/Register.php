@@ -182,7 +182,7 @@ class Register extends Backend
     {
     echo <<<EOF
 
-<script language="javascript" src="./LodopFuncs.js"></script>
+<script src="http://www.card.com/LodopFuncs.js"></script>
 <div id="print">
 <p class="MsoNormal">
 	<span style="font-size:16.0pt;font-family:仿宋_GB2312;">附件</span><span
@@ -710,18 +710,21 @@ tr{
 
 		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 <script>
+
+
+
     //点击事件
 	$(document).ready(function() {
 		$("#print").click(function() {
-            alert('aaaa');
-//             LODOP=getLodop();         
-//        		LODOP.PRINT_INIT("");		            
-//     		LODOP.ADD_PRINT_HTM(10,55,"100%","100%",document.getElementById("print").value);
+            setTimeout("print()","700");
 		});
-	   $("#print").trigger('click')
-//     setInterval(function () {
-//         $("#print").trigger('click')
-//     }, 3000);
+	   $("#print").trigger('click');
+        function print(){
+            LODOP=getLodop();         
+       		LODOP.PRINT_INIT("");		            
+    		LODOP.ADD_PRINT_HTM(0,0,"900px","1000px",document.getElementById("print").value);
+            LODOP.PREVIEW();
+        }
 	});
 
 </script>

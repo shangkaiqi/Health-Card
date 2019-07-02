@@ -14,7 +14,6 @@ class Business extends Backend
     /**
      * Business模型对象
      *
-     * @var \app\admin\model\Business
      */
     protected $model = null;
 
