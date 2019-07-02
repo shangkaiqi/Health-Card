@@ -5,6 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
+ *
  * @desc体检登记
  *
  * @icon fa fa-circle-o
@@ -15,10 +16,11 @@ class Register extends Backend
     protected $multiFields = 'switch';
 
     protected $model = null;
-    
+
     protected $order = null;
+
     protected $orderd = null;
-    
+
     protected $layout = 'register';
 
     // 开关权限开启
@@ -29,12 +31,12 @@ class Register extends Backend
     /**
      * Register模型对象
      *
-//      * @var \app\admin\model\business\Register
+     * // * @var \app\admin\model\business\Register
      */
     public function _initialize()
     {
         parent::_initialize();
-        
+
         $this->model = model("PhysicalUsers");
         $this->order = model("Order");
         $this->orderd = model("OrderDetail");
@@ -101,13 +103,13 @@ class Register extends Backend
                 $param['express'] = $params['express'];
                 $param['employee'] = json_encode(array(
                     $params['parent']
-//                     $params['son']
+                    // $params['son']
                 ));
                 $param['company'] = $params['company'];
                 $param['order_serial_number'] = $resultNum;
                 // $params['bsid'] = $this->auth->id;
                 // $result = $this->model->validate("Enregister.add")->save($params);
-                $result = $this->model->save($param);
+                $result = $this->model->validate("Register.add")->save($param);
 
                 if (! $result) {
                     $this->error($this->model->getError());
@@ -133,8 +135,8 @@ class Register extends Backend
                 if (! $order) {
                     $this->error($this->model->getError());
                 }
-                $this->order_detial($resultNum, $params['physictype']);
-//                 $this->success("登记成功", "physical/register/index");
+                $this->order_detial($resultNum);
+                // $this->success("登记成功", "physical/register/index");
                 $this->success();
             }
             $this->error();
@@ -146,13 +148,12 @@ class Register extends Backend
     // 创建订单详细信息
     public function order_detial($orderNum, $physictype)
     {
-        $ins = db('inspect')->field("id,name,type")->where("parent","=","0")->select();
+        $ins = db('inspect')->field("id,name,type")
+            ->where("parent", "=", "0")
+            ->select();
         $list = array();
-        if($physictype){            
+        if ($physictype) {
             foreach ($ins as $res) {
-                if($res['type'] == 3){
-                    continue;
-                }
                 $param['order_serial_number'] = $orderNum;
                 $param['physical'] = $res['type'];
                 $param['physical_result'] = '';
@@ -161,11 +162,8 @@ class Register extends Backend
                 $param['item'] = $res['id'];
                 $list[] = $param;
             }
-        }else{            
+        } else {
             foreach ($ins as $res) {
-                if($res['type'] == 3){
-                    continue;
-                }
                 $param['order_serial_number'] = $orderNum;
                 $param['physical'] = $res['type'];
                 $param['physical_result'] = '';
@@ -175,10 +173,10 @@ class Register extends Backend
                 $list[] = $param;
             }
         }
-        
+
         $this->orderd->saveAll($list);
     }
-    
+
     public function edit($ids = '')
     {
         $list = $this->model->get([
@@ -186,9 +184,7 @@ class Register extends Backend
         ]);
         if ($this->request->isPost()) {
             $params = $this->request->isPost("row/a");
-            if($params){
-                
-            }
+            if ($params) {}
         }
         $this->view->assign("row", $list);
         return $this->view->fetch();

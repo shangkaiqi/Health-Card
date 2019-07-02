@@ -6,7 +6,7 @@ use app\admin\controller\Common;
 
 /**
  *
- * @desc采血窗口
+ * @desc查体窗口
  *
  * @icon fa fa-circle-o
  */
@@ -18,6 +18,8 @@ class Perspective extends Backend
     protected $orderde = null;
 
     protected $user = null;
+
+    protected $admin = null;
 
     protected $type = 3;
 
@@ -34,6 +36,7 @@ class Perspective extends Backend
         $this->orderde = model("OrderDetail");
         $this->model = model("Order");
         $this->user = model("PhysicalUsers");
+        $this->admin = model("Admin");
 
         $ins = $comm->inspect($this->type);
         $this->view->assign("inspect", $ins);
@@ -54,18 +57,13 @@ class Perspective extends Backend
 
                 // 修改用户是否采血
                 $this->orderde->update([
-                    'status' => '1',
-                    'physical' => $this->type
+                    'status' => '1'
                 ], [
-                    'order_serial_number' => $order_id
+                    'order_serial_number' => $order_id,
+                    'physical' => $this->type
                 ]);
 
-                
-                $em = json_decode($user['employee'], true);
-                $parent = $this->comm->employee($em[0]);
-                //         $son = $this->comm->employee($em[1]);
-                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
-                $user['employee'] = $parent['name'];
+                $user['employee'] = $this->comm->getEmpName($user['employee']);
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type
@@ -102,8 +100,8 @@ class Perspective extends Backend
 
     public function save()
     {
-        $params = $this->request->post("rows/a");
-        $username = $this->user->get([
+        $params = $this->request->post();
+        $username = $this->admin->get([
             'id' => $this->auth->id
         ]);
         $status = 0;
@@ -115,10 +113,9 @@ class Perspective extends Backend
                 $inspectStatus = $this->inspect->get([
                     "id" => $inspectInfo['parent']
                 ]);
-                // echo $inspectInfo['id'] . "-" . $inspectInfo['name'] . "-" . $inspectInfo['type'] . "-" . $inspectInfo['parent'];
                 $where = [
                     'physical' => $this->type,
-                    'order_serial_number' => $params['ordernum'],
+                    'order_serial_number' => $params["order_serial_number"],
                     'item' => $index
                 ];
 
@@ -130,14 +127,16 @@ class Perspective extends Backend
                     "doctor" => $username['nickname']
                 ];
                 $update = $this->orderde->where($where)->update($list);
+                echo db()->getLastSql();
                 if (! $update) {
                     $status = 1;
                 }
             }
             if ($status) {
-                $this->success('', null, $provincelist);
-            } else
+                $this->success('', null);
+            } else {
                 $this->error();
+            }
         }
     }
 }

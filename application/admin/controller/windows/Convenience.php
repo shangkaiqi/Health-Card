@@ -53,18 +53,13 @@ class Convenience extends Backend
 
                 // 修改用户是否采血
                 $this->orderde->update([
-                    'status' => '1',
-                    'physical' => $this->type
+                    'status' => '1'
                 ], [
-                    'order_serial_number' => $order_id
+                    'order_serial_number' => $order_id,
+                    'physical' => $this->type
                 ]);
 
-                
-                $em = json_decode($user['employee'], true);
-                $parent = $this->comm->employee($em[0]);
-                //         $son = $this->comm->employee($em[1]);
-                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
-                $user['employee'] = $parent['name'];
+                $user['employee'] = $this->comm->getEmpName($user['employee']);
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type

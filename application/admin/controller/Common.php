@@ -2,7 +2,9 @@
 namespace app\admin\controller;
 
 use app\common\controller\Backend;
+use PHPExcel_IOFactory;
 require './phpexcel/PHPExcel.php';
+
 class Common extends Backend
 {
 
@@ -23,18 +25,18 @@ class Common extends Backend
         return $in_a;
     }
 
-    //打印健康证
-    public function physical_table(){
+    // 打印健康证
+    public function physical_table()
+    {
         $params = $this->request->get();
         var_dump($params);
-        //姓名   性别   从业列表   证号  有效期  体检单位
-        
-        
+        // 姓名 性别 从业列表 证号 有效期 体检单位
     }
-    //打印复验单
-    public function nav_table(){
-        
-    }
+
+    // 打印复验单
+    public function nav_table()
+    {}
+
     public function inspect($type = '')
     {
         $where = array();
@@ -78,17 +80,19 @@ class Common extends Backend
         if ($uid == '') {
             return "";
         }
+        $where['user_id'] = $uid;
+        $where['status'] = 1;
         // 待体检项：
         $result = db('order')->alias('o')
             ->join("order_detail od", "`o`.`order_serial_number` = `od`.`order_serial_number`")
             ->field("physical")
-            ->where("user_id", "=", $uid)
+            ->where($where)
             ->select();
         $arr = array();
         foreach ($result as $row) {
             $arr[] = $row['physical'];
         }
-        // 体检项：0.血检1.便检2体检3.透视4.视力
+        // 体检项：0.血检1.便检2体检3.透视
         if (! in_array(0, $arr)) {
             $uArr[] = "血检";
         }
@@ -143,8 +147,8 @@ class Common extends Backend
      * @param array $params
      * @return boolean
      */
-    public function saveOrderDetail($data,$where)
-    {        
+    public function saveOrderDetail($data, $where)
+    {
         $result = $this->orderde->where($where)->update($data);
         return $result;
     }
@@ -162,38 +166,93 @@ class Common extends Backend
             ->select();
         return json($inspect);
     }
-    
-    public function exportExcel($expTitle,$expCellName,$expTableData){
-        $xlsTitle = iconv('utf-8', 'gb2312', $expTitle);//文件名称
-        $fileName ='usersdd'.date('_YmdHis',time());//or $xlsTitle 文件名称可根据自己情况设定
+
+    public function exportExcel($expTitle, $expCellName, $expTableData)
+    {
+        $xlsTitle = iconv('utf-8', 'gb2312', $expTitle); // 文件名称
+        $fileName = 'usersdd' . date('_YmdHis', time()); // or $xlsTitle 文件名称可根据自己情况设定
         $cellNum = count($expCellName);
         $dataNum = count($expTableData);
-        //         vendor("PHPExcel");
-        
+        // vendor("PHPExcel");
+
         $objPHPExcel = new \PHPExcel();
-        $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
-        
-        $objPHPExcel->getActiveSheet(0)->mergeCells('A1:'.$cellName[$cellNum-1].'1');//合并单元格
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle.'  Export time:'.date('Y-m-d H:i:s'));
-        for($i=0;$i<$cellNum;$i++){
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);
+        $cellName = array(
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+            'AA',
+            'AB',
+            'AC',
+            'AD',
+            'AE',
+            'AF',
+            'AG',
+            'AH',
+            'AI',
+            'AJ',
+            'AK',
+            'AL',
+            'AM',
+            'AN',
+            'AO',
+            'AP',
+            'AQ',
+            'AR',
+            'AS',
+            'AT',
+            'AU',
+            'AV',
+            'AW',
+            'AX',
+            'AY',
+            'AZ'
+        );
+
+        $objPHPExcel->getActiveSheet(0)->mergeCells('A1:' . $cellName[$cellNum - 1] . '1'); // 合并单元格
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $expTitle . '  Export time:' . date('Y-m-d H:i:s'));
+        for ($i = 0; $i < $cellNum; $i ++) {
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i] . '2', $expCellName[$i][1]);
         }
         // Miscellaneous glyphs, UTF-8
-        for($i=0;$i<$dataNum;$i++){
-            for($j=0;$j<$cellNum;$j++){
-                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $expTableData[$i][$expCellName[$j][0]]);
+        for ($i = 0; $i < $dataNum; $i ++) {
+            for ($j = 0; $j < $cellNum; $j ++) {
+                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 3), $expTableData[$i][$expCellName[$j][0]]);
             }
         }
-        
+
         header('pragma:public');
-        header('Content-type:application/vnd.ms-excel;charset=GB2312;name="'.$xlsTitle.'.xls"');
-        header("Content-Disposition:attachment;filename=$fileName.xls");//attachment新窗口打印inline本窗口打印
+        header('Content-type:application/vnd.ms-excel;charset=GB2312;name="' . $xlsTitle . '.xls"');
+        header("Content-Disposition:attachment;filename=$fileName.xls"); // attachment新窗口打印inline本窗口打印
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
-        exit;
+        exit();
     }
-    
-    public function muilts($type){
+
+    public function muilts($type)
+    {
         // 根据用户查询属于哪个医院
         $medicine = $db("admin")->alias("a")
             ->join("business b", "b.bs_id=a.businessid")
@@ -205,5 +264,14 @@ class Common extends Backend
         $where['bus_number'] = $medicine['bs_uuid'];
         $data['physical_result'] = 0;
         $result = db("order_detail")->where($where)->update($data);
+    }
+
+    public function getEmpName($str)
+    {
+        $em = json_decode($str, true);
+        $parent = $this->employee($em[0]);
+        // $son = $this->comm->employee($em[1]);
+        // $row['employee'] = $parent['name'] . ">>" . $son['name'];
+        return $parent['name'];
     }
 }

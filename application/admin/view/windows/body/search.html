@@ -69,12 +69,13 @@
 			<div class="form-group">
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 				<div class="form-inline">
-					<select class="first form-control" name="pid"
+					<input type="hidden" name="order_serial_number" value="{$body['order_serial_number']}">
+					<select class="first form-control"
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
 						<option value="">请选择</option>
 						{foreach $vo['value'] as $i=>$v}
 						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="name"
+					</select> <select class="second form-control" name="phitem[]"
 						id="inspace-1-{$vo.id}" style="width: 100px;">
 					</select>
 				</div>

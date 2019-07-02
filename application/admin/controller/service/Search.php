@@ -63,12 +63,9 @@ class Search extends Backend
                 ->select();
             foreach ($list as $row) {
                 $row['registertime'] = date("Y-m-d H:i:s", $row['registertime']);
-                
-                $em = json_decode($row['employee'], true);
-                $parent = $this->comm->employee($em[0]);
-                //         $son = $this->comm->employee($em[1]);
-                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
-                $row['employee'] = $parent['name'];
+
+                $row['employee'] = $this->comm->getEmpName($row['employee']);
+
                 // $row->visible(['name','identitycard','type','sex','age','phone','employee','company','order_serial_number']);
                 // $row->visible(['order']);
                 // $row->getRelation('order')->visible(['order_id', 'order_serial_number', 'bus_number']);
@@ -91,32 +88,44 @@ class Search extends Backend
         ]);
         if ($this->request->isPost()) {
             $params = $this->request->isPost("row/a");
-            if($params){
-                
-            }
+            if ($params) {}
         }
         $this->view->assign("row", $list);
         return $this->view->fetch();
     }
-    
+
     /**
      *
      * @desc导出Excel
      */
-    function expUser(){//导出Excel
-        $xlsCell  = array(
-            array('id','账号序列'),
-            array('name','名字'),
-            array('sex','性别'),
-            array('age','院系'),
-            array('phone','电话'),
+    function expUser()
+    { // 导出Excel
+        $xlsCell = array(
+            array(
+                'id',
+                '账号序列'
+            ),
+            array(
+                'name',
+                '名字'
+            ),
+            array(
+                'sex',
+                '性别'
+            ),
+            array(
+                'age',
+                '院系'
+            ),
+            array(
+                'phone',
+                '电话'
+            )
         );
         $xlsData = db('physical_users')->field("id,name,sex,age,phone")->select();
-        foreach ($xlsData as $k => $v)
-        {
-            $xlsData[$k]['sex']=$v['sex']==0?'男':'女';
+        foreach ($xlsData as $k => $v) {
+            $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
         }
-        $this->exportExcel("userPhysial",$xlsCell,$xlsData);
-        
+        $this->exportExcel("userPhysial", $xlsCell, $xlsData);
     }
 }

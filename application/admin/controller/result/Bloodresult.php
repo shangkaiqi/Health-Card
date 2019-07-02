@@ -73,13 +73,8 @@ class Bloodresult extends Backend
                 ->limit($offset, $limit)
                 ->select();
 
-            foreach ($list as $row) {
-                
-                $em = json_decode($row['employee'], true);
-                $parent = $this->comm->employee($em[0]);
-                //         $son = $this->comm->employee($em[1]);
-                //         $row['employee'] = $parent['name'] . ">>" . $son['name'];
-                $row['employee'] = $parent['name'];
+            foreach ($list as $row) {                
+                $row['employee'] = $this->comm->getEmpName($row['employee']);
             }
             $list = collection($list)->toArray();
             $result = array(
@@ -108,11 +103,10 @@ class Bloodresult extends Backend
             file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
             $this->success("success");
         }
-        $em = json_decode($row['employee'], true);
-        $parent = $this->comm->employee($em[0]);
-//         $son = $this->comm->employee($em[1]);
-//         $row['employee'] = $parent['name'] . ">>" . $son['name'];
-        $row['employee'] = $parent['name'];
+
+        $row['employee'] = $this->comm->getEmpName($row['employee']);
+        
+        
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();

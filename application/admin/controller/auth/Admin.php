@@ -30,6 +30,7 @@ class Admin extends Backend
     protected $childrenGroupIds = [];
 
     protected $childrenAdminIds = [];
+    protected $pid ='';
 
     public function _initialize()
     {
@@ -67,6 +68,15 @@ class Admin extends Backend
         $this->assignconfig("admin", [
             'id' => $this->auth->id
         ]);
+
+        // 先判断会员组
+        $adminGroup = db("auth_group")->alias("ag")
+            ->field("pid")
+            ->join("auth_group_access aga", "ag.id = aga.group_id")
+            ->where("aga.uid", "=", $this->auth->id)
+            ->find();
+        $this->pid = $adminGroup['pid'];
+        $this->view->assign("pid", $adminGroup['pid'] == 0 ? 1 : 0);
     }
 
     /**
@@ -133,7 +143,7 @@ class Admin extends Backend
             $params = $this->request->post("row/a");
             if ($params) {
                 $data = [
-//                     'area' => $params['area'],
+                    // 'area' => $params['area'],
                     'physical_num' => $params['number'],
                     'phone' => $params['phone'],
                     'busisess_name' => $params['hospital'],
@@ -142,7 +152,8 @@ class Admin extends Backend
                     'bs_uuid' => create_uuid()
                 ];
 
-                $busResult = $this->buss->validate('Business.add')->save($data);
+                // $busResult = $this->buss->validate('Business.add')->save($data);
+                $busResult = $this->buss->save($data);
                 $last_id = $this->buss->bs_id;
 
                 $user['salt'] = Random::alnum();
@@ -174,7 +185,6 @@ class Admin extends Backend
             }
             $this->error();
         }
-
         return $this->view->fetch();
     }
 
