@@ -37,19 +37,41 @@ class Prints extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $uid = db("physical_users")->where('order_serial_number', "=", date("Ymd", time()) . $params['search'])->find();
-                // if (! $uid) {
-                // $this->error("用户不存在");
-                // }
-                $where = [
-                    "user_id" => $uid["id"]
-                ];
-                $result = db("order")->alias("o")
-                    ->join("order_detail od", "o.order_serial_number = od.order_serial_number")
-                    ->where($where)
-                    ->select();
+                $uid = db("physical_users")->where('order_serial_number', "=", $params['search'])->find();
+                if (! $uid) {
+                    $this->error("用户不存在");
+                }
+                
+//                 db()->where("")->select();
+                
+                
                 $uid['employee'] = $this->comm->getEmpName($uid['employee']);
                 $this->view->assign("body", $uid);
+                
+                
+                
+                //获取打印信息
+                $where['order_serial_number'] = $params['search'];
+                $printInfo = db("order")->where($where)->find();
+                
+                
+                //获取体检单位
+                $hosp = db("business")->field("busisess_name")->where("bs_uuid","=",$printInfo['bus_number'])->find();
+                
+                
+                $printInfo['name'] = $uid['name'];
+                $printInfo['sex'] = $uid['sex']==0?"男":"女";
+                $printInfo['employee'] = $uid['employee'];
+                $printInfo['employee'] = $uid['employee'];
+                $printInfo['company'] = $hosp['busisess_name'];
+                $printInfo['physictype'] = $uid['physictype'];
+                $this->view->assign("print",$printInfo);
+                
+                
+                
+                
+                
+                
                 return $this->view->fetch("search");
             } else {
                 $this->error();

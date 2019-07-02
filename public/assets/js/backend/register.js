@@ -66,14 +66,14 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				            text: __('打印体检表'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'physical/register/physical_table/{ids}',
+				            url: 'register/physical_table/{ids}',
 				        },
 				        {
 				            name: 'nav_table',
 				            text: __('打印引导表'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'physical/register/nav_table/{ids}',
+				            url: 'register/nav_table/{ids}',
 				        }
 				    ],
 		
