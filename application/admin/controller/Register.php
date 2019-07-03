@@ -23,6 +23,8 @@ class Register extends Backend
 
     protected $layout = 'register';
 
+    protected $comm = null;
+
     // 开关权限开启
     protected $noNeedRight = [
         'index'
@@ -41,6 +43,7 @@ class Register extends Backend
         $this->order = model("Order");
         $this->orderd = model("OrderDetail");
         $comm = new Common();
+        $this->comm = $comm;
 
         $ins = $comm->inspect();
         $this->view->assign("inspect", $ins);
@@ -61,10 +64,15 @@ class Register extends Backend
             }
 
             list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
-            $total = db("physical_users")->count("id");
+            // $total = db("physical_users")->count("id");
 
-            $userList = db("physical_users")->field("id,name,identitycard,type")->select();
-
+            // $userList = db("physical_users")->field("id,name,identitycard,type")->select();
+            $total = $this->model->count("id");
+            $userList = $this->model->select();
+            foreach ($userList as $row) {
+                $row['employee'] = $this->comm->getEmpName($row['employee']);
+                $row['registertime'] = date("Y-m-d H:i", $row['registertime']);
+            }
             $result = array(
                 "total" => $total,
                 "rows" => $userList
@@ -180,7 +188,11 @@ class Register extends Backend
 
     public function physical_table()
     {
-    echo <<<EOF
+        $print = array();
+        $params = $this->request->get();
+        $print = $this->getPrint($params['id']);
+        $time = date("Y年m月d日",time());
+    return <<<EOF
 	<!DOCTYPE html>
 	<html>	
 	<head>		
@@ -204,9 +216,9 @@ class Register extends Backend
 				LODOP.ADD_PRINT_SHAPE(4, 150, 46, 702, 2, 0, 1, "#000000");
 				LODOP.ADD_PRINT_TEXT(122, 50, 79, 26, "体检日期: ");
 				LODOP.SET_PRINT_STYLEA(0, "FontSize", 11);
-				LODOP.ADD_PRINT_TEXT(122, 537, 57, 26, "编号：");
+				LODOP.ADD_PRINT_TEXT(122, 570, 160, 26, "编号：{$print['order_serial_number']}");
 				LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-				LODOP.ADD_PRINT_TEXT(122, 140, 170, 26, "2019 年 12 月 23 日");
+				LODOP.ADD_PRINT_TEXT(122, 140, 170, 26, "{$time}");
 				LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 				LODOP.ADD_PRINT_HTM(160, 50, 465, 126, document.getElementById("print_6").innerHTML);
 				LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"https://s.cn.bing.net/th?id=ODL.9e05e5966ac2c0e81bd7a7d5b2bd29ec&w=146&h=146&c=7&rs=1&qlt=80&pid=RichNav\"/>");
@@ -218,27 +230,25 @@ class Register extends Backend
 	</head>
 	
 	<body>
-		<button onclick="print()">手动打印</button>
-		<button id="print">打印文件</button>
+		<button id="print" style="display:none">打印文件</button>
 		<div id="print_6" style="display:none">
 			<table width="500" style="float: left;">
 				<tr height="40">
-					<td>姓名：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-					<td>性别:<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-					<td>年龄:<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+					<td>姓名：<span style="text-decoration: underline; font-size: 16px;">{$print['name']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>性别:<span style="text-decoration: underline; font-size: 16px;">{$print['sex']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>年龄:<span style="text-decoration: underline; font-size: 16px;">{$print['age']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
 				</tr>
 				<tr height="40">
-					<td>从业类别：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-					<td>体检单位：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+					<td>从业类别：<span style="text-decoration: underline; font-size: 16px;">{$print['employee']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>体检单位：<span style="text-decoration: underline; font-size: 16px;">{$print['company']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
 				</tr>
 				<tr height="40">
-					<td>身份证号:<span style="text-decoration: underline; font-size: 16px;">aaaaaaaa</span></td>
+					<td>身份证号:<span style="text-decoration: underline; font-size: 16px;">{$print['identitycard']}&nbsp;&nbsp;&nbsp;</span></td>
 				</tr>
 			</table>
 		</div>
 		<div id="print_8" style="display:none">
-			<table class="MsoNormalTable" width="670" style="border-collapse:collapse;border:none;" cellspacing="0"
-				cellpadding="0" border="1">
+			<table class="MsoNormalTable" width="670" style="border-collapse:collapse;border:none;" cellspacing="0"	cellpadding="0" border="1">
 				<tbody>
 					<tr>
 						<td rowspan="2" style="border:solid windowtext 1.0pt;" width="73">
@@ -250,9 +260,7 @@ class Register extends Backend
 							</p>
 						</td>
 						<td colspan="3" style="border:solid windowtext 1.0pt;" width="66">
-							<p class="MsoNormal" style="margin-left:-2.4pt;text-align:center;" align="center">
-	
-	
+							<p class="MsoNormal" style="margin-left:-2.4pt;text-align:center;" align="center">	
 								<b><span style="font-family:宋体;">病</span></b><b><span style="font-family:宋体;"><span>&nbsp;
 										</span><span>名</span></span></b>
 							</p>
@@ -416,16 +424,15 @@ class Register extends Backend
 					<tr>
 						<td rowspan="2" style="border:solid windowtext 1.0pt;" width="73">
 							<p class="MsoNormal" style="font-size: 14px;">
-								视力及辨色力<br>
-								（直接接触药品质量检验、验收、养护人员）
+								视力及辨色力<br>（直接接触药品质量检验、验收、养护人员）
 							</p>
 							<p class="MsoNormal">
 							</p>
 						</td>
 						<td colspan="2" style="border:solid windowtext 1.0pt;" width="62">
 							<p class="MsoNormal" style="margin-left:-2.4pt;">
-								<span style="font-family:宋体; padding-left: 10px">视力</span><span
-									style="font-family:宋体;"></span>
+								<span style="font-family:宋体; padding-left: 10px">视力</span>
+                                <span style="font-family:宋体;"></span>
 							</p>
 	
 						</td>
@@ -700,8 +707,17 @@ class Register extends Backend
 	
 	</html>
 EOF;
+        $this->success("", "index");
     }
 
     public function nav_table()
     {}
+
+    protected function getPrint($userid)
+    {
+        $result = db("physical_users")->where("id", "=", $userid)->find();
+        $result['sex']  = $result['sex'] ==0?"男":"女";
+        $result['employee'] = $this->comm->getEmpName($result['employee']);
+        return $result;
+    }
 }

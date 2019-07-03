@@ -41,11 +41,30 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					formatter: Table.api.formatter.label,
 					searchList: {1: __('团队'), 0: __('个人'),2:__('临时')}
 				}, {
-					field : 'name',
-					title : "姓名"
-				}, {
 					field : 'identitycard',
 					title : '身份证'
+				},{
+					field : 'name',
+					title : "姓名"
+				},{
+					field : 'sex',
+					title : "性别",
+					formatter: Table.api.formatter.label,
+					searchList: {1: __('女'), 0: __('男')}
+				}, {
+					field : 'phone',
+					title : '联系方式'
+				}, {
+					field : 'registertime',
+					title : '体检时间'
+				}, {
+					field : 'physictype',
+					title : '从业类别',
+					formatter: Table.api.formatter.label,
+					searchList: {1: __('卫生监督'), 0: __('食药安全')}
+				},{
+					field : 'employee',
+					title : '从业类别'
 				}, {
 					field : 'operate',
 					title : __('Operate'),
@@ -66,15 +85,16 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				            text: __('打印体检表'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'register/physical_table/{ids}',
-				        },
+				            url: 'register/physical_table?id={ids}',
+				        }
+				        /*,
 				        {
 				            name: 'nav_table',
 				            text: __('打印引导表'),
 //				            icon: 'fa fa-list',
 				            classname: 'btn btn-xs btn-primary  btn-addtabs',
 				            url: 'register/nav_table/{ids}',
-				        }
+				        }*/
 				    ],
 		
 					
