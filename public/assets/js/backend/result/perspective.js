@@ -118,7 +118,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				basic = str.substr(0, str.length - 1);
 				Fast.api.ajax({
 						type: 'GET',
-						url: "result/perspective/mulit",,
+						url: "result/perspective/mulit",
 						data: {'id':basic},
 					}, function (data, ret) {
 						//成功的回调

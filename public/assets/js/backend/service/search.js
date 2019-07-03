@@ -130,7 +130,7 @@ define(
 													{
 														name : 'physical_table',
 														text : __('打印健康证'),
-														//				            icon: 'fa fa-list',
+														// icon: 'fa fa-list',
 														classname : 'btn btn-xs btn-primary  btn-addtabs',
 														url : 'common/physical_table/{ids}',
 													},
@@ -160,11 +160,22 @@ define(
 								url: "service/Search/printMulit",
 								data: {'id':basic},
 							}, function (data, ret) {
-								//成功的回调
+								// 成功的回调
 								return false;
 							}, function (data, ret) {
 								return false;
 						});
+					});
+					// 获取选中项
+					$(document).on("click", ".expUser", function() {
+						var rows = table.bootstrapTable('getSelections');
+						var str = '';
+						for (var i = 0; i < rows.length; i++) {
+							str += rows[i]['ids'] + ",";
+						}
+						basic = str.substr(0, str.length - 1);
+					    window.location.href = "/admin/service/search/expUser?id="+basic;
+
 					});
 				},
 				add : function() {

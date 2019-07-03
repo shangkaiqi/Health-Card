@@ -153,7 +153,12 @@ class Admin extends Backend
                         'bs_uuid' => create_uuid()
                     ];
     
-                    // $busResult = $this->buss->validate('Business.add')->save($data);
+//                     $busResult = $this->buss->validate('Business.add')->save($data);
+                    //验证医院是否存在
+                    $result = $this->buss->where("busisess_name","=",$params['hospital'])->find();
+                    if($result['busisess_name'] != null || $result['busisess_name'] != ''){
+                        $this->error("该体检单位已存在");
+                    }
                     $busResult = $this->buss->save($data);
                     $last_id = $this->buss->bs_id;
                 }

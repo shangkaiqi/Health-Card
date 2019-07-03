@@ -22,14 +22,23 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				url : $.fn.bootstrapTable.defaults.extend.index_url,
 				pk : 'bs_id',
 				sortName : 'bs_id',
+				// 禁用默认搜索
+				search : false,
+				// 启用普通表单搜索
+				commonSearch : true,
+				// 可以控制是否默认显示搜索单表,false则隐藏,默认为false
+				searchFormVisible : true,
 				columns : [ [ {
 					checkbox : true
 				}, {
 					field : 'bs_id',
-					title : __('Id')
+					title : __('Id'),
+					operate : false
 				}, {
 					field : 'busisess_name',
-					title : __('Busisess_name')
+					title : __('Busisess_name'),
+					operate: 'LIKE %...%', 
+					placeholder: '模糊搜索，*表示任意字符'
 				}, {
 					field : 'createtime',
 					title : __('Createtime'),
@@ -38,31 +47,39 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					formatter : Table.api.formatter.datetime
 				}, {
 					field : 'phone',
-					title : __('Phone')
+					title : __('Phone'),
+					operate : false
 				}, {
 					field : 'address',
 					title : __('Address')
 				}, {
 					field : 'physical_num',
-					title : __('Physical_num')
+					title : __('Physical_num'),
+					operate : false
 				}, {
 					field : 'profession',
-					title : __('Profession')
+					title : __('Profession'),
+					operate : false
 				}, {
 					field : 'area',
-					title : __('Area')
+					title : __('Area'),
+					operate : false
 				}, {
 					field : 'charge',
-					title : __('Charge')
+					title : __('Charge'),
+					operate : false
 				}, {
 					field : 'bus_num',
-					title : __('体检数量')
+					title : __('体检数量'),
+					operate : false
 				}, {
 					field : 'health',
-					title : __('卫生安全体检量')
+					title : __('卫生安全体检量'),
+					operate : false
 				}, {
 					field : 'medicine',
-					title : __('食药健康体检量')
+					title : __('食药健康体检量'),
+					operate : false
 				}, {
 					field : 'operate',
 					title : __('Operate'),

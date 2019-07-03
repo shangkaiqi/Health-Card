@@ -32,28 +32,6 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	 $(document).ready(function() {
-			$("#mulit").click(function() {
-				$.ajax({
-					url : "/admin/result/perspective/mulit",
-					data : {
-						"type":3},
-					type : "get",
-					dataType : "json",
-					async : true,
-					success : function(obj) {
-						alert("aaaaaa");
-					},
-					error : function(msg) {
-						alert("bbbb");
-						$("#aaa").html(msg.responseText);
-					}
-
-				})
-			})
-		})
-</script>
 <style>
 h3 {
 	padding: 15px 10px;

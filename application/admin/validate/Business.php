@@ -47,14 +47,14 @@ class Business extends Validate
         ]
     ];
     
-    public function __construct(array $rules = [], $message = [], $field = [])
-    {
-        $this->field = [
-            'phone' => __('联系人手机'),
-            'busisess_name' => __('Busisess_name'),
-            'connect' => __('Connect'),
-            'address' => __('Area'),
-        ];
-        parent::__construct($rules, $message, $field);
-    }
+//     public function __construct(array $rules = [], $message = [], $field = [])
+//     {
+//         $this->field = [
+//             'phone' => __('联系人手机'),
+//             'busisess_name' => __('Busisess_name'),
+//             'connect' => __('Connect'),
+//             'address' => __('Area'),
+//         ];
+//         parent::__construct($rules, $message, $field);
+//     }
 }

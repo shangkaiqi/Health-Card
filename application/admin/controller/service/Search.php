@@ -20,6 +20,7 @@ class Search extends Backend
     protected $noNeedRight = [
         '*'
     ];
+    protected $noNeedLogin = ['expUser'];
 
     /**
      * Register模型对象
@@ -97,17 +98,99 @@ class Search extends Backend
 
     public function printMulit()
     {
-        $ids = $this->request->get();
+        $params = $this->request->get("id");
+        $ids = explode(",", $params);
+        $uid = db("physical_users")->where('id', "in", $ids)->select();
+        //循环遍历每一个用户
+        $arr = array();
+        foreach ($uid as $row){            
+            $row['employee'] = $this->comm->getEmpName($row['employee']);
+            //获取订单信息
+            $where['order_serial_number'] = $row['order_serial_number'];
+            $printInfo = db("order")->where($where)->find();
+            //获取体检单位
+            $hosp = db("business")->field("busisess_name")->where("bs_uuid","=",$printInfo['bus_number'])->find();
+            $printInfo['name'] = $row['name'];
+            $printInfo['sex'] = $row['sex']==0?"男":"女";
+            $printInfo['employee'] = $row['employee'];
+            $printInfo['company'] = $hosp['busisess_name'];
+            $printInfo['physictype'] = $row['physictype'];
+            $arr[] = $printInfo;
+            
+            $this->html($printInfo);
+            
+            
+        }
+        var_dump($arr);
         
-        return json(array($ids));
+//         function myPreview() {
+//             if($type['physictype'] == 0){
+//                 CreatePrintPage();
+//             }else{
+//                 CreatePrintPage1();
+//             }
+//             LODOP.PREVIEW();
+//         };
+        
+        
+        
+        
+//         return json(array($ids));
     }
-
+    private function html($data){
+        $html = <<<EOF
+            	function CreatePrintPage() {       
+            		LODOP=getLodop();         	
+            		LODOP.PRINT_INITA("0.2292in","0.3646in","7.0104in","4.4688in","打印控件功能演示_Lodop功能_在线编辑获得程序代码");
+            		LODOP.ADD_PRINT_SETUP_BKIMG("C:\\Users\\Shilh\\Desktop\\QQ截图20190702132927.png");
+            		LODOP.ADD_PRINT_TEXT("2.5in","1.9479in","0.8542in","0.3646in","王经理");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT("2.5313in","3.8854in","1.0417in","0.3125in","男");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT("2.8854in","1.9375in","1.4583in","0.3646in","医疗卫生");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT("3.2813in","1.9479in","1.7188in","0.3646in","冀13052585485");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT("3.6771in","1.9479in","1.75in","0.3229in","2019年6月30日");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT("4.0104in","1.9479in","1.4479in","0.3646in","河北中医院");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            	};  
+            	
+            
+            	function CreatePrintPage1() {  
+            		LODOP.PRINT_INITA(0,0,678,426,"打印控件功能演示_Lodop功能_在线编辑获得程序代码");
+            		LODOP.ADD_PRINT_SETUP_BKIMG("C:\\Users\\Shilh\\Desktop\\QQ截图20190702132946.png");
+            		LODOP.ADD_PRINT_TEXT(311,371,97,30,"王经理");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT(278,375,100,30,"医药卫生");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT(310,579,50,30,"男");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.SET_PRINT_STYLEA(0,"Angle",4);
+            		LODOP.ADD_PRINT_TEXT(343,375,157,30,"2019年12月31日");
+            		LODOP.SET_PRINT_STYLEA(0,"FontName","华文楷体");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            		LODOP.ADD_PRINT_TEXT(389,167,230,29,"冀158565855858");
+            		LODOP.SET_PRINT_STYLEA(0,"FontSize",16);
+            	}
+EOF;
+    }
     /**
      *
      * @desc导出Excel
      */
-    function expUser()
+    public function expUser()
     {
+        $params = $this->request->get('id');
+        $ids = explode(",", $params);
         // 导出Excel
         $xlsCell = array(
             array(
@@ -151,7 +234,7 @@ class Search extends Backend
                 '体检时间'
             )
         );
-        $xlsData = db('physical_users')->field("id,name,identitycard,sex,age,phone,employee,company,physictype,registertime")->select();
+        $xlsData = db('physical_users')->where("id","in",$ids)->field("id,name,identitycard,sex,age,phone,employee,company,physictype,registertime")->select();
         foreach ($xlsData as $k => $v) {
             $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
             $xlsData[$k]['employee'] = $this->comm->getEmpName($v['employee']);

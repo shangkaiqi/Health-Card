@@ -5,6 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
+ *
  * @desc透视结果录入
  *
  * @icon fa fa-circle-o
@@ -18,7 +19,11 @@ class Perspective extends Backend
 
     protected $comm = null;
 
-    protected $blood = 0;
+    protected $inspect = null;
+
+    protected $orderde = null;
+
+    protected $admin = null;
 
     protected $type = "3";
 
@@ -30,6 +35,9 @@ class Perspective extends Backend
     public function _initialize()
     {
         parent::_initialize();
+        $this->inspect = model("Inspect");
+        $this->admin = model("admin");
+        $this->orderde = model("OrderDetail");
         $comm = new Common();
         $this->comm = $comm;
         $ins = $comm->inspect($this->type);
@@ -73,7 +81,7 @@ class Perspective extends Backend
                 ->limit($offset, $limit)
                 ->select();
 
-            foreach ($list as $row) {                
+            foreach ($list as $row) {
                 $row['employee'] = $this->comm->getEmpName($row['employee']);
             }
             $list = collection($list)->toArray();
@@ -96,22 +104,53 @@ class Perspective extends Backend
             $this->error(__('No Results were found'));
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            // if ($params) {
+            $params = $this->request->post();
+            if ($params) {
+                $username = $this->admin->get([
+                    'id' => $this->auth->id
+                ]);
 
-            // // $this->comm->saveOrderDetail($params);
-            // }
-            file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
-            $this->success("success");
+                foreach ($params['phitem'] as $index) {
+                    $inspectInfo = $this->inspect->get([
+                        "id" => $index
+                    ]);
+                    $inspectStatus = $this->inspect->get([
+                        "id" => $inspectInfo['parent']
+                    ]);
+                    $where = [
+                        'physical' => $this->type,
+                        'order_serial_number' => $params["order_serial_number"],
+                        'item' => $index
+                    ];
+
+                    $list = [
+                        "physical_result" => 1,
+                        "status" => 1,
+                        "physical_result" => $inspectStatus['name'],
+                        "physical_result_ext" => $inspectInfo['name'],
+                        "doctor" => $username['nickname']
+                    ];
+                    $update = $this->orderde->where($where)->update($list);
+                    if (! $update) {
+                        $status = 1;
+                    }
+                }
+                if ($status) {
+                    $this->success('', "index", '', 1);
+                } else {
+                    $this->error();
+                }
+            }
         }
-        
+
         $row['employee'] = $this->comm->getEmpName($row['employee']);
-        
+
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();
     }
 
-     /**
+    /**
      * 批量操作通过
      */
     public function mulit($ids = null)

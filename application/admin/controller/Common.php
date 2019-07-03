@@ -11,7 +11,9 @@ class Common extends Backend
     protected $noNeedRight = [
         '*'
     ];
-
+    
+    protected $noNeedLogin = ['*'];
+    
     public function _initialize()
     {
         parent::_initialize();
@@ -239,7 +241,7 @@ class Common extends Backend
         // Miscellaneous glyphs, UTF-8
         for ($i = 0; $i < $dataNum; $i ++) {
             for ($j = 0; $j < $cellNum; $j ++) {
-                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 3), $expTableData[$i][$expCellName[$j][0]]);
+                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 3), ''.$expTableData[$i][$expCellName[$j][0]]);
             }
         }
 

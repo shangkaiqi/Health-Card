@@ -132,7 +132,6 @@ class Body extends Backend
                     "doctor" => $username['nickname']
                 ];
                 $update = $this->orderde->where($where)->update($list);
-                echo db()->getLastSql();
                 if (! $update) {
                     $status = 1;
                 }
