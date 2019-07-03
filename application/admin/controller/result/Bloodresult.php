@@ -159,15 +159,18 @@ class Bloodresult extends Backend
         }
     }
 
-    /**
+     /**
      * 批量操作通过
      */
-    public function mulit()
-    {        
-        $ids = $this->request->get();
-        $result = $this->comm->muilts($ids);
+    public function mulit($ids = null)
+    {
+        $user = $this->request->get("id");
+        $users = explode(",", $user);
+        $result = $this->comm->muilts($users, $this->type);
         if ($result) {
-            $this->success("通过");
+            $this->success('', null);
+        } else {
+            $this->error("批量保存成功");
         }
     }
 }

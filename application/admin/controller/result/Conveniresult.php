@@ -5,6 +5,7 @@ use app\common\controller\Backend;
 use app\admin\controller\Common;
 
 /**
+ *
  * @desc便检结果录入
  * @icon fa fa-circle-o
  */
@@ -19,7 +20,7 @@ class Conveniresult extends Backend
 
     protected $blood = 0;
 
-    protected $type = "0";
+    protected $type = "1";
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -65,15 +66,15 @@ class Conveniresult extends Backend
                 ->count();
 
             $list = $this->model->with([
-                    'order'
-                ])
+                'order'
+            ])
                 ->where($where)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
 
             foreach ($list as $row) {
-                
+
                 $row['employee'] = $this->comm->getEmpName($row['employee']);
             }
             $list = collection($list)->toArray();
@@ -103,23 +104,25 @@ class Conveniresult extends Backend
             file_put_contents("bloodreslut_edit.txt", print_r($params, TRUE));
             $this->success("success");
         }
-        
+
         $row['employee'] = $this->comm->getEmpName($row['employee']);
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();
     }
-    
+
     /**
      * 批量操作通过
      */
-    public function mulit()
+    public function mulit($ids = null)
     {
-        
-        $type = $this->request->get();
-        $result = $this->comm->muilts($type);
+        $user = $this->request->get("id");
+        $users = explode(",", $user);
+        $result = $this->comm->muilts($users, $this->type);
         if ($result) {
-            $this->success("通过");
+            $this->success('', null);
+        } else {
+            $this->error("批量保存成功");
         }
     }
 }

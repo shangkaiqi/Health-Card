@@ -4,17 +4,18 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 	var Controller = {
 		index : function() {
 			// 初始化表格参数配置
-			Table.api.init({
-				extend : {
-					index_url : 'result/conveniresult//index'
-							+ location.search,
-					add_url : 'result/conveniresult//add',
-					edit_url : 'result/conveniresult//edit',
-					del_url : 'result/conveniresult//del',
-					multi_url : 'result/conveniresult//multi',
-					table : 'physical_users',
-				}
-			});
+			Table.api
+					.init({
+						extend : {
+							index_url : 'result/conveniresult//index'
+									+ location.search,
+							add_url : 'result/conveniresult//add',
+							edit_url : 'result/conveniresult//edit',
+							del_url : 'result/conveniresult//del',
+							multi_url : 'result/conveniresult//multi',
+							table : 'physical_users',
+						}
+					});
 
 			var table = $("#table");
 
@@ -41,8 +42,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						{
 							field : 'name',
 							title : "姓名",
-							operate: 'LIKE %...%', 
-							placeholder: '模糊搜索，*表示任意字符'
+							operate : 'LIKE %...%',
+							placeholder : '模糊搜索，*表示任意字符'
 						},
 						{
 							field : 'identitycard',
@@ -52,8 +53,11 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							field : 'sex',
 							title : '性别',
 							operate : false,
-							formatter: Table.api.formatter.label,
-							searchList: {1: __('女'), 0: __('男')}
+							formatter : Table.api.formatter.label,
+							searchList : {
+								1 : __('女'),
+								0 : __('男')
+							}
 						},
 						{
 							field : 'age',
@@ -69,6 +73,16 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							field : 'employee',
 							title : '从业类别',
 							operate : false
+						},
+						{
+
+							// field : 'order.create_date',
+							field : 'registertime',
+							title : '体检时间',
+							operate : 'RANGE',
+							addclass : 'datetimerange',
+							formatter : Table.api.formatter.datetime
+
 						},
 						{
 							field : 'order_serial_number',
@@ -97,7 +111,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 
 			// 为表格绑定事件
 			Table.api.bindevent(table);
-			
+
 			// 获取选中项
 			$(document).on("click", ".btn-selected", function() {
 				var rows = table.bootstrapTable('getSelections');
@@ -107,14 +121,16 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				}
 				basic = str.substr(0, str.length - 1);
 				Fast.api.ajax({
-						type: 'GET',
-						url: "service/Search/printMulit",
-						data: {'id':basic},
-					}, function (data, ret) {
-						//成功的回调
-						return false;
-					}, function (data, ret) {
-						return false;
+					type : 'GET',
+					url : "result/conveniresult/mulit",
+					data : {
+						'id' : basic
+					},
+				}, function(data, ret) {
+					// 成功的回调
+					return ret.msg;
+				}, function(data, ret) {
+					return false;
 				});
 			});
 		},
@@ -125,7 +141,6 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			Controller.api.bindevent();
 		},
 		withdraw : function() {
-			alert("aaaaaa");
 			Controller.api.bindevent();
 		},
 		api : {

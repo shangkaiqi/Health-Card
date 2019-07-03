@@ -251,19 +251,31 @@ class Common extends Backend
         exit();
     }
 
-    public function muilts($type)
+    public function muilts($users, $type)
     {
         // 根据用户查询属于哪个医院
-        $medicine = db("admin")->alias("a")
-            ->join("business b", "b.bs_id=a.businessid")
-            ->field("bs_uuid")
-            ->where("id", "=", $this->auth->id)
-            ->find();
-        $where['type'] = $type;
-        $where['status'] = 1;
-        $where['bus_number'] = $medicine['bs_uuid'];
-        $data['physical_result'] = 0;
-        $result = db("order_detail")->where($where)->update($data);
+        // $medicine = db("admin")->alias("a")
+        // ->join("business b", "b.bs_id=a.businessid")
+        // ->field("bs_uuid")
+        // ->where("id", "=", $this->auth->id)
+        // ->find();
+        // 获取用户对应的订单编号
+        $order_num = db("physical_users")->field("order_serial_number")
+            ->where("id", "in", $users)
+            ->select();
+        $i = 0;
+        foreach ($order_num as $order) {
+            $where['order_serial_number'] = $order['order_serial_number'];
+            $data['physical_result'] = 0;
+            $result = db("order_detail")->where($where)->update($data);
+            if (! $result) {
+                $i ++;
+            }
+        }
+        if ($result == 0) {
+            return true;
+        }else 
+            return false;
     }
 
     public function getEmpName($str)

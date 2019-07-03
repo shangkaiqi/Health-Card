@@ -19,7 +19,7 @@ class Bodyresult extends Backend
 
     protected $blood = 0;
 
-    protected $type = "0";
+    protected $type = "2";
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -110,16 +110,18 @@ class Bodyresult extends Backend
         return $this->view->fetch();
     }
     
-    /**
+     /**
      * 批量操作通过
      */
-    public function mulit()
+    public function mulit($ids = null)
     {
-        
-        $type = $this->request->get();
-        $result = $this->comm->muilts($type);
+        $user = $this->request->get("id");
+        $users = explode(",", $user);
+        $result = $this->comm->muilts($users, $this->type);
         if ($result) {
-            $this->success("通过");
+            $this->success('', null);
+        } else {
+            $this->error("批量保存成功");
         }
     }
 }

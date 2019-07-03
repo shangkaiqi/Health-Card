@@ -47,12 +47,12 @@ class Admin extends Validate
             'businessid',
             'email',
             'nickname'
+        ],
+        'edit' => [
+            'username',
+            'email',
+            'nickname'
         ]
-        // 'edit' => [
-        // 'username',
-        // 'email',
-        // 'nickname'
-        // ]
     ];
 
     public function __construct(array $rules = [], $message = [], $field = [])

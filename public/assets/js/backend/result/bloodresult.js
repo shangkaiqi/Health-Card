@@ -71,6 +71,16 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							operate : false
 						},
 						{
+
+							// field : 'order.create_date',
+							field : 'registertime',
+							title : '体检时间',
+							operate : 'RANGE',
+							addclass : 'datetimerange',
+							formatter : Table.api.formatter.datetime
+
+						},
+						{
 							field : 'order_serial_number',
 							title : '登记编号'
 						},
@@ -112,7 +122,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						data: {'id':basic},
 					}, function (data, ret) {
 						//成功的回调
-						return false;
+						return ret.msg;
 					}, function (data, ret) {
 						return false;
 				});

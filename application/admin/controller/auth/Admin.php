@@ -142,20 +142,25 @@ class Admin extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $data = [
-                    // 'area' => $params['area'],
-                    'physical_num' => $params['number'],
-                    'phone' => $params['phone'],
-                    'busisess_name' => $params['hospital'],
-                    'connect' => $params['connect'],
-                    'address' => $params['address'],
-                    'bs_uuid' => create_uuid()
-                ];
-
-                // $busResult = $this->buss->validate('Business.add')->save($data);
-                $busResult = $this->buss->save($data);
-                $last_id = $this->buss->bs_id;
-
+                if($this->pid == 0){
+                    $data = [
+                        // 'area' => $params['area'],
+                        'physical_num' => $params['number'],
+                        'phone' => $params['phone'],
+                        'busisess_name' => $params['hospital'],
+                        'connect' => $params['connect'],
+                        'address' => $params['address'],
+                        'bs_uuid' => create_uuid()
+                    ];
+    
+                    // $busResult = $this->buss->validate('Business.add')->save($data);
+                    $busResult = $this->buss->save($data);
+                    $last_id = $this->buss->bs_id;
+                }
+                if($this->pid != 0){
+                    $au = $this->model->get(['id'=>$this->auth->id]);
+                    $last_id = $au['businessid'];
+                }
                 $user['salt'] = Random::alnum();
                 $user['password'] = md5(md5($params['password']) . $user['salt']);
                 $user['avatar'] = '/assets/img/avatar.png'; // 设置新管理员默认头像。
