@@ -1,46 +1,63 @@
-# js
-LODOP.PRINT_INITA(9,0,794,1122,"打印控件功能演示_Lodop功能_在线编辑获得程序代码");
-LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE",1);
-LODOP.ADD_PRINT_TEXT(43,150,465,45,"河北省食品药品从业人员健康检查表");
-LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");
-LODOP.SET_PRINT_STYLEA(0,"FontSize",20);
-LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
-LODOP.ADD_PRINT_SHAPE(4,150,46,702,2,0,1,"#000000");
-LODOP.ADD_PRINT_TEXT(122,50,79,26,"体检日期: ");
-LODOP.SET_PRINT_STYLEA(0,"FontSize",11);
-LODOP.ADD_PRINT_TEXT(122,537,57,26,"编号：");
-LODOP.SET_PRINT_STYLEA(0,"FontSize",12);
-LODOP.ADD_PRINT_TEXT(122,140,170,26,"2019 年 12 月 23 日");
-LODOP.SET_PRINT_STYLEA(0,"FontSize",12);
-LODOP.ADD_PRINT_HTM(160,50,465,126,"(超文本6的HTML代码内容)");
-LODOP.ADD_PRINT_IMAGE(160,600,102,126,"(图像7的超文本路径)");
-LODOP.SET_PRINT_STYLEA(0,"TransColor","#0F0100");
-LODOP.ADD_PRINT_TABLE(290,56,680,730,"(超文本8表格的HTML代码内容)");
+<!DOCTYPE html>
+<html>
 
+<head>
+    <script src="LodopFuncs.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#print").click(function () {
+                // alert("aaaaaa");
+                setTimeout("print()",500);//延时3秒 
+            })
 
+            $("#print").trigger("click");
+        })
+        function print() {
+            LODOP = getLodop();
+            LODOP.PRINT_INITA(9, 0, 794, 1122, "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
+            LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
+            LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
+            LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
+            LODOP.SET_PRINT_STYLEA(0, "Alignment", 2);
+            LODOP.ADD_PRINT_SHAPE(4, 150, 46, 702, 2, 0, 1, "#000000");
+            LODOP.ADD_PRINT_TEXT(122, 50, 79, 26, "体检日期: ");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 11);
+            LODOP.ADD_PRINT_TEXT(122, 537, 57, 26, "编号：");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+            LODOP.ADD_PRINT_TEXT(122, 140, 170, 26, "2019 年 12 月 23 日");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+            LODOP.ADD_PRINT_HTM(160, 50, 465, 126, document.getElementById("print_6").innerHTML);
+            LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"https://s.cn.bing.net/th?id=ODL.9e05e5966ac2c0e81bd7a7d5b2bd29ec&w=146&h=146&c=7&rs=1&qlt=80&pid=RichNav\"/>");
+            LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
+            LODOP.ADD_PRINT_TABLE(290, 56, 680, 760, document.getElementById("print_8").innerHTML);
+            LODOP.PREVIEW();
+        }
+    </script>
+</head>
 
-# 超文本6
-
-<table width="500" style="float: left;">
-      <tr height="40">
-          <td>姓名：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-          <td>性别:<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-           <td>年龄:<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-       </tr>
-       <tr height="40">
-       <td>从业类别：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-       <td>体检单位：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
-       </tr>
-       <tr height="40">
-             <td>身份证号:<span style="text-decoration: underline; font-size: 16px;">aaaaaaaa</span></td>
-       </tr>
-</table>
-# 图像7的超文本路径
-<img src="https://s.cn.bing.net/th?id=ODL.9e05e5966ac2c0e81bd7a7d5b2bd29ec&w=146&h=146&c=7&rs=1&qlt=80&pid=RichNav"/>
-
-
-# 超文本8 表格的html代码
-       <table class="MsoNormalTable" width="670" style="border-collapse:collapse;border:none;" cellspacing="0"
+<body>
+    <button onclick="print()">手动打印</button>
+    <button id="print">打印文件</button>
+    <div id="print_6" style="display:none">
+        <table width="500" style="float: left;">
+            <tr height="40">
+                <td>姓名：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+                <td>性别:<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+                <td>年龄:<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+            </tr>
+            <tr height="40">
+                <td>从业类别：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+                <td>体检单位：<span style="text-decoration: underline; font-size: 12px;">aaaaaaaa</span></td>
+            </tr>
+            <tr height="40">
+                <td>身份证号:<span style="text-decoration: underline; font-size: 16px;">aaaaaaaa</span></td>
+            </tr>
+        </table>
+    </div>
+    <div id="print_8" style="display:none">
+        <table class="MsoNormalTable" width="670" style="border-collapse:collapse;border:none;" cellspacing="0"
             cellpadding="0" border="1">
             <tbody>
                 <tr>
@@ -472,22 +489,33 @@ LODOP.ADD_PRINT_TABLE(290,56,680,730,"(超文本8表格的HTML代码内容)");
                         </p>
                         <p class="MsoNormal" style="margin-left:.85pt;text-indent:194.25pt;">
                             <span style="font-family:宋体;">主检医师签名</span>
-                                                        <span style="font-family:宋体;">:
-                                                                  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                                  <span>(公章)</span>
-                                                        </span>
+                            <span style="font-family:宋体;">:
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <span>(公章)</span>
+                            </span>
                         </p>
                         <p class="MsoNormal" style="margin-left:111.7pt;">
                             <span style="font-family:宋体;">
-                                                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                                    <span>年</span><span>&nbsp;&nbsp; </span><span>月</span><span>&nbsp;&nbsp;</span><span>日</span>
-                                                         </span>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <span>年</span><span>&nbsp;&nbsp;
+                                </span><span>月</span><span>&nbsp;&nbsp;</span><span>日</span>
+                            </span>
                         </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="14" style="border-bottom:none; border-left: none;border-right: none;" width="565"
+                        valign="middle">
+                        <span
+                            style="padding-left:10px;font-size:14.0pt;font-family:仿宋_GB2312; color: red; height: 60px; display: inline-block; line-height:60px">
+                            *说明：发现谷丙转氨酶异常的，加做
+                            <span style="font-size:14.0pt;font-family:宋体;">HAV-IgM、HEV-IgM两个指标。</span>
+                        </span>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <p class="MsoNormal">
-            <span style="font-size:14.0pt;font-family:仿宋_GB2312;">*<span>说明：发现谷丙转氨酶异常的，加做</span></span><span
-                style="font-size:14.0pt;font-family:宋体;">HAV-IgM<span>、</span>HEV-IgM<span>两个指标。</span></span>
-        </p>
+    </div>
+</body>
+
+</html>
