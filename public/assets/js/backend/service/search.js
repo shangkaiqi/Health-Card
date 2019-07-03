@@ -155,16 +155,7 @@ define(
 							str += rows[i]['ids'] + ",";
 						}
 						basic = str.substr(0, str.length - 1);
-						Fast.api.ajax({
-								type: 'GET',
-								url: "service/Search/printMulit",
-								data: {'id':basic},
-							}, function (data, ret) {
-								// 成功的回调
-								return false;
-							}, function (data, ret) {
-								return false;
-						});
+					    window.location.href = "/admin/service/search/printMulit?id="+basic;
 					});
 					// 获取选中项
 					$(document).on("click", ".expUser", function() {
