@@ -55,7 +55,7 @@ class Prints extends Backend
                 $printInfo['name'] = $uid['name'];
                 $printInfo['sex'] = $uid['sex']==0?"男":"女";
                 $printInfo['employee'] = $uid['employee'];
-                $printInfo['employee'] = $uid['employee'];
+                $printInfo['images'] = $uid['images'];
                 $printInfo['company'] = $hosp['busisess_name'];
                 $printInfo['physictype'] = $uid['physictype'];
                 $this->view->assign("print",$printInfo);

@@ -114,6 +114,7 @@ class Search extends Backend
             $printInfo['sex'] = $row['sex']==0?"男":"女";
             $printInfo['employee'] = $row['employee'];
             $printInfo['company'] = $hosp['busisess_name'];
+            $printInfo['images'] = $row['images'];
             $printInfo['physictype'] = $row['physictype'];
             $arr[] = $printInfo;
             
