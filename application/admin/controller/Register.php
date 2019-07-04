@@ -185,8 +185,27 @@ class Register extends Backend
             'id' => $ids
         ]);
         if ($this->request->isPost()) {
-            $params = $this->request->isPost("row/a");
-            if ($params) {}
+            $params = $this->request->post("row/a");
+            if ($params) {
+                $param['name'] = $params['name'];
+                $param['identitycard'] = $params['identitycard'];
+                $param['type'] = $params['type'];
+                $param['sex'] = $params['sex'];
+                $param['images'] = $params['avatar'];
+                $param['age'] = $params['age'];
+                $param['phone'] = $params['phone'];
+                $param['physictype'] = $params['physictype'];
+                $param['employee'] = json_encode(array(
+                    $params['parent']
+                ));
+                $param['company'] = $params['company'];
+                $where['id'] = $ids;
+                $result = $this->model->where($where)->update($param);
+                if($result)
+                    $this->success("","index");
+                else
+                    $this->error("","index");
+            }
         }
         $this->view->assign("row", $list);
         return $this->view->fetch();

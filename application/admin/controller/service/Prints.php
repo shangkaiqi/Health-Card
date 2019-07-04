@@ -37,34 +37,66 @@ class Prints extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $uid = db("physical_users")->where('order_serial_number', "=", $params['search'])->find();
+                $uid = array();
+                $order_id = $params['search'];
+                $where['order_serial_number'] = $order_id;
+                $where['bs_id'] = $this->busId;
+                $uid = db("physical_users")->where($where)->find();
                 if (! $uid) {
                     $this->error("用户不存在");
-                }       
-                
+                }
+
                 $uid['employee'] = $this->comm->getEmpName($uid['employee']);
                 $this->view->assign("body", $uid);
-                
-                //获取打印信息
-                $where['order_serial_number'] = $params['search'];
-                $printInfo = db("order")->where($where)->find();
-                
-                //获取体检单位
-                $hosp = db("business")->field("busisess_name")->where("bs_uuid","=",$printInfo['bus_number'])->find();
-                
+                // 获取打印信息
+                $where_1['order_serial_number'] = $params['search'];
+                $printInfo = db("order")->where($where_1)->find();
+
+                // 获取体检单位
+                $hosp = db("business")->field("busisess_name")
+                    ->where("bs_uuid", "=", $printInfo['bus_number'])
+                    ->find();
+
                 $printInfo['name'] = $uid['name'];
-                $printInfo['sex'] = $uid['sex']==0?"男":"女";
+                $printInfo['sex'] = $uid['sex'] == 0 ? "男" : "女";
                 $printInfo['employee'] = $uid['employee'];
                 $printInfo['images'] = $uid['images'];
                 $printInfo['company'] = $hosp['busisess_name'];
                 $printInfo['physictype'] = $uid['physictype'];
-                $this->view->assign("print",$printInfo);
-                
+                $this->view->assign("print", $printInfo);
+                $checkresult = $this->checkresult($order_id);
+                $this->view->assign("result", $checkresult);
                 return $this->view->fetch("search");
             } else {
                 $this->error();
             }
         }
         return $this->view->fetch();
+    }
+
+    // 检查结果
+    public function checkresult($id)
+    {
+        $int = 0;
+        $str = '';
+        $where['order_serial_number'] = $id;
+        $result = db("order_detail")->where($where)->select();
+        foreach ($result as $row) {
+            if ($row['physical_result'] != 0) {
+                $int ++;
+                // 体检项
+                $where1['id'] = $row['item'];
+                $ins = db('inspect')->field("name")
+                    ->where($where1)
+                    ->find();
+                $where2['id'] = $row['physical_result_ext'];
+                $ins_result = db('inspect')->field("name")
+                    ->where($where2)
+                    ->find();
+                $str .= $ins['name'] . ":" . $ins_result['name'];
+                $str .= "  ";
+            }
+        }
+        return $str;
     }
 }

@@ -53,7 +53,9 @@ class Body extends Backend
             $params = $this->request->post("row/a");
             if ($params) {
                 $order_id = date("Ymd", time()) . $params['search'];
-                $user = db("physical_users")->where('order_serial_number', "=", $order_id)->find();
+                $where['order_serial_number'] = $order_id;
+                $where['bs_id'] = $this->busId;
+                $user = db("physical_users")->where($where)->find();
                 if (! $user) {
                     $this->error("用户不存在");
                 }
@@ -144,9 +146,9 @@ class Body extends Backend
                 }
             }
             if ($status) {
-                $this->success('保存成功', null,'',1);
+                $this->success('保存成功', "index",'',1);
             } else {
-                $this->error();
+                $this->error("","index");
             }
         }
     }

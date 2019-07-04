@@ -25,7 +25,6 @@ class Resultcheck extends Backend
     /**
      * Register模型对象
      *
-     * @var \app\admin\model\business\Register
      */
     public function _initialize()
     {

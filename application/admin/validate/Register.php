@@ -46,12 +46,6 @@ class Register extends Validate
             'order_serial_number'
         ],
         'edit' => [
-            'name',
-            'identitycard',
-            'age',
-            'phone',
-            'employee',
-            'order_serial_number'
         ]
     ];
 
