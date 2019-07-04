@@ -67,6 +67,7 @@
 			action="/admin/windows/body/save">
 			{foreach $inspect as $index=>$vo}
 			<div class="form-group">
+				<input type="hidden" name="itemId" value="{$vo['id']}">
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 				<div class="form-inline">
 					<input type="hidden" name="order_serial_number" value="{$body['order_serial_number']}">

@@ -117,17 +117,23 @@ class Conveniresult extends Backend
                     $inspectStatus = $this->inspect->get([
                         "id" => $inspectInfo['parent']
                     ]);
+                    
+                    $sql = "select id,name from fa_inspect where
+                        id=(select parent from fa_inspect where id = (select parent from fa_inspect where id = $index))  limit 1";
+                    $ins = db()->query($sql);
                     $where = [
                         'physical' => $this->type,
                         'order_serial_number' => $params["order_serial_number"],
-                        'item' => $index
+                        'item' => $ins[0]['id']
                     ];
-
+                    
+                    $phyresult = $inspectStatus['name'] == "正常"?"0":1;
+                    $phyresult_ext = $phyresult == 0 ? 0:$index;
                     $list = [
                         "physical_result" => 1,
                         "status" => 1,
-                        "physical_result" => $inspectStatus['name'],
-                        "physical_result_ext" => $inspectInfo['name'],
+                        "physical_result" => $phyresult,
+                        "physical_result_ext" => $phyresult_ext,
                         "doctor" => $username['nickname']
                     ];
                     $update = $this->orderde->where($where)->update($list);
