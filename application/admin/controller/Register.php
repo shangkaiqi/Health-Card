@@ -105,6 +105,7 @@ class Register extends Backend
                 $param['identitycard'] = $params['identitycard'];
                 $param['type'] = $params['type'];
                 $param['sex'] = $params['sex'];
+                $param['images'] = $params['avatar'];
                 $param['age'] = $params['age'];
                 $param['phone'] = $params['phone'];
                 $param['physictype'] = $params['physictype'];
@@ -139,19 +140,19 @@ class Register extends Backend
                 $par['charge'] = $bs_id['charge'];
                 $par['order_status'] = '0';
                 $par['obtain_employ_type'] = $param['employee'];
-                $rand = rand(100,999);
+                $rand = mt_rand(100,999);
                 $par['obtain_employ_number'] = "冀" . $bs_id['bs_id'] . date("YmdHis", time()) . $rand;
                 if ($params['express']) {
                     $par['address'] = $params['address'];
                 }
                 $order = $this->order->save($par);
                 if (! $order) {
-                    $this->error($this->model->getError());
+//                     $this->error($this->model->getError());
                 }
                 $this->order_detial($resultNum);
-                $this->success('', null, '', 1);
+//                 $this->success('', null, '', 1);
             }
-            $this->error();
+//             $this->error();
         }
 
         return $this->view->fetch();

@@ -1,14 +1,16 @@
 <?php
 
-return [
+return [    
     'Custom'                  => '自定义',
     'Pid'                     => '父ID',
     'Type'                    => '栏目类型',
     'Image'                   => '图片',
-    'Total user'              => '总会员数',
-    'Total view'              => '总访问数',
-    'Total order'             => '总订单数',
-    'Total order amount'      => '总金额',
+    'Total user'              => '医院总数',
+    'Total view'              => '打印卡总量',
+    'Total order'             => '体检人员总数',
+    'Total order amount'      => '体检单位',
+    
+    
     'Today user signup'       => '今日注册',
     'Today user login'        => '今日登录',
     'Today order'             => '今日订单',
@@ -16,8 +18,8 @@ return [
     'Seven dnu'               => '七日新增',
     'Seven dau'               => '七日活跃',
     'Custom zone'             => '这里是你的自定义数据',
-    'Sales'                   => '成交数',
-    'Orders'                  => '订单数',
+    'Sales'                   => '体检登记人',
+    'Orders'                  => '打印健康卡',
     'Real time'               => '实时',
     'Category count'          => '分类统计',
     'Category count tips'     => '当前分类总记录数',

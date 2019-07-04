@@ -81,7 +81,7 @@
 	</div>
 	
 	<div id="avatar_ad">
-		<img width="102" id="img" height="126" src="" border="0">
+		<img width="102" id="imgs" height="126" src="" border="0">
 	</div>
 	<input name="row[avatar]" id="avatar" type="hidden" value="">
 	</div>
@@ -96,13 +96,14 @@
 
 <script for=idcard event="Readed()">
 	alert("Readed--------");
-/* 	document.getElementById("avatar").value = rdcard.JPGBuffer;
-	document.getElementById("img").setAttribute("src", data:image/jpeg;base64,"+rdcard.JPGBuffer);
+	alert(rdcard.JPGBuffer);
+ 	document.getElementById("avatar").value = rdcard.JPGBuffer;
+ 	document.getElementById("imgs").setAttribute("src", "data:image/jpeg;base64,"+rdcard.JPGBuffer);
 	document.getElementById("identitycard").value = rdcard.CardNo;
-	//document.getElementById("c-username").value = rdcard.NameL;
-	//document.getElementById("c-sex").value = rdcard. Sex;
-	var age = jsGetAge(rdcard.Born);
-	document.getElementById("c-age").value = age; */
+	document.getElementById("c-username").value = rdcard.NameL;
+	//document.getElementById("c-sex").value = rdcard.sex;
+	var age = jsGetAge(rdcard.born);
+	document.getElementById("c-age").value = age;
 </script>
 
 <script for=idcard event="Closed()">
@@ -114,10 +115,23 @@
 </script>
 <script language="javascript" src="http://www.card.com/LodopFuncs.js"></script>
 <script type="text/javascript">
+	window.onbeforeunload = onbeforeunload_handler;
+	function onbeforeunload_handler()
+	{   
+		var pp;
+		pp = rdcard.closeport();
+		rdcard.deleteoutputfile();
+	}   
 	$(document).ready(function() {
         var pp1;
-        /* pp1 = rdcard.openport();
-        setTimeout(st, 3000, true); */
+        var conn;
+        conn = rdcard.getstate();
+        if(conn == 0){
+            pp1 = rdcard.openport();
+            if(pp1 == 0){
+                setTimeout("st()", 3000, true);
+            }
+        }
 		$("#express").hide();
 		
 		$("#identitycard").blur(function(){
@@ -165,8 +179,13 @@
 	});
 	//js读取身份证信息		
     function st() {
+		var pp;
         pp = rdcard.ReadCard2();
-        alert(pp);
+        if(pp == 0){
+        	alert(pp+"aaaa");
+        }else{
+        	alert(pp + "bbbb");
+        }
     }
 	
     function jsGetAge(strBirthday){       
@@ -224,9 +243,9 @@
 </script>
 <style>
 #avatar_ad {
-	border: 1px solid #000;
-	width: 150px;
-	height: 200px;
+	border: 1px solid #ccc;
+	width: 102px;
+	height: 126px;
 	position: absolute;
 	top: 27%;
 	right: 20%;
