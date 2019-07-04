@@ -52,9 +52,10 @@
 		</div>
 		<hr>
 		<form id="edit-form" role="form" method="POST"
-			action="{:url('inspectresult.resultcheck/save')}">
+			action="{:url('result.resultcheck/save')}">
 			<!-- data-toggle="validator"  -->
 
+			<input type="hidden" name="order_serial_number" value="{$row['order_serial_number']}">
 			<div class="result">
 				<div class="result-a">
 					<div class="result-blood">
@@ -68,7 +69,7 @@
 									style="width: 100px;">
 									<option value="">请选择</option>
 
-								</select> <select class="second form-control" name="name"
+								</select> <select class="second form-control" name="body[]"
 									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
@@ -86,7 +87,7 @@
 									style="width: 100px;">
 									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
 									<option value="{$v.id}">{$v.name}</option> {/foreach}
-								</select> <select class="second form-control" name="name"
+								</select> <select class="second form-control" name="perspect[]"
 									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
@@ -107,7 +108,7 @@
 									style="width: 100px;">
 									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
 									<option value="{$v.id}">{$v.name}</option> {/foreach}
-								</select> <select class="second form-control" name="name"
+								</select> <select class="second form-control" name="conver[]"
 									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>
@@ -125,7 +126,7 @@
 									style="width: 100px;">
 									<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
 									<option value="{$v.id}">{$v.name}</option> {/foreach}
-								</select> <select class="second form-control" name="name"
+								</select> <select class="second form-control" name="blood[]"
 									id="inspace-1-{$vo.id}" style="width: 100px;">
 								</select>
 							</div>

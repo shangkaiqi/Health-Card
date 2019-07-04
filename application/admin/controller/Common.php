@@ -87,6 +87,7 @@ class Common extends Backend
         foreach ($result as $row) {
             $arr[] = $row['physical'];
         }
+        $uArr = array();
         // 体检项：0.血检1.便检2体检3.透视
         if (! in_array(0, $arr)) {
             $uArr[] = "血检";

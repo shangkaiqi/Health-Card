@@ -111,7 +111,8 @@ class Perspective extends Backend
                 $username = $this->admin->get([
                     'id' => $this->auth->id
                 ]);
-
+                
+                $status = 1;
                 foreach ($params['phitem'] as $index) {
                     $inspectInfo = $this->inspect->get([
                         "id" => $index
@@ -140,13 +141,13 @@ class Perspective extends Backend
                     ];
                     $update = $this->orderde->where($where)->update($list);
                     if (! $update) {
-                        $status = 1;
+                        $status = 0;
                     }
                 }
                 if ($status) {
                     $this->success('', "index", '', 1);
                 } else {
-                    $this->error();
+                    $this->error('','index');
                 }
             }
         }

@@ -732,7 +732,7 @@ EOF;
                         LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
                         LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
                                 
-        EOF;
+EOF;
         $html1 = <<<EOF
         		        LODOP.NewPage();
                         LODOP.ADD_PRINT_TEXT("36mm", "48mm", 97, 30, "{$print['employee']}");  //从业类别
@@ -759,8 +759,8 @@ EOF;
      */
     public function expUser()
     {
-        $params = $this->request->get('id');
-        $ids = explode(",", $params);
+        $params = $this->request->get('id');        
+        file_put_contents("search-excel.txt", db()->getLastSql());
         // 导出Excel
         $xlsCell = array(
             array(
@@ -802,15 +802,43 @@ EOF;
             array(
                 'registertime',
                 '体检时间'
+            ),
+            array(
+                'order_serial_number',
+                '体检编号'
+            ),
+            array(
+                'busisess_name',
+                '体检医院'
+            ),
+            array(
+                'obtain_employ_number',
+                '健康证号'
+            ),
+            array(
+                'order_status',
+                '体检状态'
             )
         );
-        $xlsData = db('physical_users')->where("id", "in", $ids)
-            ->field("id,name,identitycard,sex,age,phone,employee,company,physictype,registertime")
+        $xlsData = db('physical_users')->alias("pu")
+            ->join("order o","o.order_serial_number = pu.order_serial_number")
+            ->join("business b","o.bus_number=b.bs_uuid")
+            ->where("pu.id", "in", $params)
+            ->field("pu.id,pu.name,pu.identitycard,pu.sex,pu.age,pu.phone,pu.employee,pu.company,pu.physictype,pu.registertime,pu.order_serial_number, b.busisess_name, o.obtain_employ_number,o.order_status")
             ->select();
+        file_put_contents("search-excel.txt", db()->getLastSql());
         foreach ($xlsData as $k => $v) {
             $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
             $xlsData[$k]['employee'] = $this->comm->getEmpName($v['employee']);
             $xlsData[$k]['registertime'] = date("Y-m-d H:m:s", $v['registertime']);
+            $status = '';
+            if($v['order_status'] == 0)
+                $status = "未开始体检";
+            if($v['order_status'] == 1)
+                $status = "已体检";
+            if($v['order_status'] == 2)
+                $status = "已出证";
+            $xlsData[$k]['order_status'] = $status;
         }
         $this->comm->exportExcel("userPhysial", $xlsCell, $xlsData);
     }

@@ -99,22 +99,51 @@ class Resultcheck extends Backend
 
     public function save()
     {
-        $params = $this->request->post('row/a');
+        $params = $this->request->post('');
         file_put_contents("resultcheck-save.txt", print_r($params, true));
         $where = [
             'user_id' => $user_id
         ];
         // 体征信息
-        $body = $this->request->post("body/a");
-        db("order_detail")->data($body)->save();
+        $body = $this->saveResult($params['body'], 2);
         // 胸透
-        $tous = $this->request->post("tous/a");
-        db("order_detail")->data($body)->save();
+        $tous = $this->saveResult($params['perspect'], 3);
         // 粪便
-        $conven = $this->request->post("conven/a");
-        db("order_detail")->data($body)->save();
-        // 血检
-        $blood = $this->request->post("blood/a");
-        db("order_detail")->data($body)->save();
+        $conven = $this->saveResult($params['conver'], 1);
+        // 血检blood[]
+        $blood = $this->saveResult($params['blood'], 0);
+    }
+
+    public function saveResult($params, $type)
+    {
+        $username = $this->admin->get([
+            'id' => $this->auth->id
+        ]);
+        
+        foreach ($params as $index) {
+            $inspectInfo = $this->inspect->get([
+                "id" => $index
+            ]);
+            $inspectStatus = $this->inspect->get([
+                "id" => $inspectInfo['parent']
+            ]);
+            $where = [
+                'physical' => $type,
+                'order_serial_number' => $params['ordernum'],
+                'item' => $index
+            ];
+
+            $list = [
+                "physical_result" => 1,
+                "status" => 1,
+                "physical_result" => $inspectStatus['name'],
+                "physical_result_ext" => $inspectInfo['name'],
+                "doctor" => $username['nickname']
+            ];
+            $update = $this->orderde->where($where)->update($list);
+            if (! $update) {
+                $status = 1;
+            }
+        }
     }
 }

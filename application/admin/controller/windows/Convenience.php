@@ -18,6 +18,10 @@ class Convenience extends Backend
     protected $orderde = null;
 
     protected $user = null;
+    
+    protected $admin = null;
+    
+    protected $inspect = null;
 
     protected $type = 1;
 
@@ -31,7 +35,9 @@ class Convenience extends Backend
         $comm = new Common();
         $this->comm = $comm;
         parent::_initialize();
+        $this->inspect = model("Inspect");
         $this->orderde = model("OrderDetail");
+        $this->admin = model("admin");
         $this->model = model("Order");
         $this->user = model("PhysicalUsers");
 
@@ -100,7 +106,7 @@ class Convenience extends Backend
     public function save()
     {
         $params = $this->request->post("rows/a");
-        $username = $this->user->get([
+        $username = $this->admin->get([
             'id' => $this->auth->id
         ]);
         $status = 0;
@@ -112,7 +118,6 @@ class Convenience extends Backend
                 $inspectStatus = $this->inspect->get([
                     "id" => $inspectInfo['parent']
                 ]);
-                // echo $inspectInfo['id'] . "-" . $inspectInfo['name'] . "-" . $inspectInfo['type'] . "-" . $inspectInfo['parent'];
                 $where = [
                     'physical' => $this->type,
                     'order_serial_number' => $params['ordernum'],

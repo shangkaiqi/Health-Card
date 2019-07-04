@@ -139,7 +139,7 @@ class Bloodresult extends Backend
                     ];
                     $update = $this->orderde->where($where)->update($list);
                     if (! $update) {
-                        $status = 1;
+                        $status = 0;
                     }
                 }
                 if ($status) {
@@ -166,7 +166,7 @@ class Bloodresult extends Backend
         $username = $this->admin->get([
             'id' => $this->auth->id
         ]);
-        $status = 0;
+        $status = 1;
         if ($params) {
             foreach ($params['phitem'] as $index) {
                 $inspectInfo = $this->inspect->get([
@@ -197,7 +197,7 @@ class Bloodresult extends Backend
             if ($status) {
                 $this->success('保存成功', null);
             } else {
-                $this->error();
+                $this->error('','index');
             }
         }
     }

@@ -107,7 +107,7 @@ class Blood extends Backend
     public function save()
     {
         $params = $this->request->post("rows/a");
-        $username = $this->puser->get([
+        $username = $this->user->get([
             'id' => $this->auth->id
         ]);
         $status = 0;

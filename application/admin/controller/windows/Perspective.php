@@ -20,6 +20,8 @@ class Perspective extends Backend
     protected $user = null;
 
     protected $admin = null;
+    
+    protected $inspect =null;
 
     protected $type = 3;
 
@@ -33,6 +35,7 @@ class Perspective extends Backend
         $comm = new Common();
         $this->comm = $comm;
         parent::_initialize();
+        $this->inspect = model("Inspect");
         $this->orderde = model("OrderDetail");
         $this->model = model("Order");
         $this->user = model("PhysicalUsers");
@@ -139,10 +142,10 @@ class Perspective extends Backend
                     $status = 1;
                 }
             }
-            if ($status) {
+            if ($status == 0) {
                 $this->success('保存成功', 'index');
             } else {
-                $this->error();
+                $this->error('','index');
             }
         }
     }

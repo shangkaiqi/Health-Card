@@ -113,7 +113,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				var rows = table.bootstrapTable('getSelections');
 				var str = '';
 				for (var i = 0; i < rows.length; i++) {
-					str += rows[i]['ids'] + ",";
+					str += rows[i]['id'] + ",";
 				}
 				basic = str.substr(0, str.length - 1);
 				Fast.api.ajax({
