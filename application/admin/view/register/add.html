@@ -95,8 +95,6 @@
 </form>
 
 <script for=idcard event="Readed()">
-	alert("Readed--------");
-	alert(rdcard.JPGBuffer);
  	document.getElementById("avatar").value = rdcard.JPGBuffer;
  	document.getElementById("imgs").setAttribute("src", "data:image/jpeg;base64,"+rdcard.JPGBuffer);
 	document.getElementById("identitycard").value = rdcard.CardNo;
@@ -123,15 +121,6 @@
 		rdcard.deleteoutputfile();
 	}   
 	$(document).ready(function() {
-        var pp1;
-        var conn;
-        conn = rdcard.getstate();
-        if(conn == 0){
-            pp1 = rdcard.openport();
-            if(pp1 == 0){
-                setTimeout("st()", 3000, true);
-            }
-        }
 		$("#express").hide();
 		
 		$("#identitycard").blur(function(){
@@ -176,16 +165,21 @@
 			$("#express").show();
 		});
 
+        var pp1;
+        var conn;
+        conn = rdcard.getstate();
+        if(conn == 0){
+            pp1 = rdcard.openport();
+            if(pp1 == 0){
+                setTimeout("st()", 3000, true);
+            }
+        }
+
 	});
 	//js读取身份证信息		
     function st() {
 		var pp;
         pp = rdcard.ReadCard2();
-        if(pp == 0){
-        	alert(pp+"aaaa");
-        }else{
-        	alert(pp + "bbbb");
-        }
     }
 	
     function jsGetAge(strBirthday){       

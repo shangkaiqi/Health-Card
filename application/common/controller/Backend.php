@@ -104,6 +104,8 @@ class Backend extends Controller
      */
     protected $excludeFields = "";
 
+    protected $busId = array();
+
     /**
      * 导入文件首行类型
      * 支持comment/name
@@ -225,6 +227,10 @@ class Backend extends Controller
 
         Config::set('upload', array_merge(Config::get('upload'), $upload));
 
+        // 获取医院信息
+        
+        $bussiness = db("admin")->field("businessid")->where("id", "=", $this->auth->id)->find();
+        $this->busId = $bussiness['businessid'];
         // 配置信息后
         Hook::listen("config_init", $config);
         // 加载当前控制器语言包

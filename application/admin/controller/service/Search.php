@@ -57,6 +57,7 @@ class Search extends Backend
                 'order'
             ])
                 ->where($where)
+                ->where("bs_id", "=", $this->busId)
                 ->order($sort, $order)
                 ->count();
 
@@ -64,6 +65,7 @@ class Search extends Backend
                 'order'
             ])
                 ->where($where)
+                ->where("bs_id", "=", $this->busId)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
@@ -123,10 +125,10 @@ class Search extends Backend
             $printInfo['physictype'] = $row['physictype'];
             $printArr[] = $this->html($row['physictype'], $printInfo);
         }
-//         file_put_contents("print_html.txt", print_r($printArr, true));
-//         var_dump($printArr);
+        // file_put_contents("print_html.txt", print_r($printArr, true));
+        // var_dump($printArr);
         $str = '';
-        foreach ($printArr as $row){
+        foreach ($printArr as $row) {
             $str .= $row;
         }
         echo "<script language=\"javascript\" src=\"http://www.card.com/LodopFuncs.js\"></script>
@@ -148,50 +150,50 @@ class Search extends Backend
             </script>
 
 		<button id=\"print\" style=\"display:none\">打印文件</button>";
-        $this->success('','index',"",1);
+        $this->success('', 'index', "", 1);
     }
 
     private function html($type, $print)
     {
         $html = <<<EOF
-		        LODOP.NewPage();
-                LODOP.ADD_PRINT_TEXT("32mm", "25mm", "100", "30", "{$print['name']}");//姓名
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-                LODOP.ADD_PRINT_TEXT("32mm", "48mm", "100", "30", "{$print['sex']}");//性别
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-                LODOP.ADD_PRINT_TEXT("36mm", "25mm", "100", "30", "{$print['employee']}");//从业类别
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-                LODOP.ADD_PRINT_TEXT("40.5mm", "25mm", "100", "30", "{$print['obtain_employ_number']}"); //健康证号
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-                LODOP.ADD_PRINT_TEXT("45mm", "25mm", "100", "30", "2019年6月30日");//到期时间
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-                LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
-                LODOP.ADD_PRINT_TEXT("50mm", "25mm", "100", "30", "{$print['company']}");//体检单位
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-                        
-EOF;
+        		        LODOP.NewPage();
+                        LODOP.ADD_PRINT_TEXT("32mm", "25mm", "100", "30", "{$print['name']}");//姓名
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+                        LODOP.ADD_PRINT_TEXT("32mm", "48mm", "100", "30", "{$print['sex']}");//性别
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+                        LODOP.ADD_PRINT_TEXT("36mm", "25mm", "100", "30", "{$print['employee']}");//从业类别
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+                        LODOP.ADD_PRINT_TEXT("40.5mm", "25mm", "100", "30", "{$print['obtain_employ_number']}"); //健康证号
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+                        LODOP.ADD_PRINT_TEXT("45mm", "25mm", "100", "30", "2019年6月30日");//到期时间
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+                        LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
+                        LODOP.ADD_PRINT_TEXT("50mm", "25mm", "100", "30", "{$print['company']}");//体检单位
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
+                                
+        EOF;
         $html1 = <<<EOF
-		        LODOP.NewPage();
-                LODOP.ADD_PRINT_TEXT("36mm", "48mm", 97, 30, "{$print['employee']}");  //从业类别
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
-                LODOP.ADD_PRINT_TEXT("40mm", "48mm", 100, 30, "{$print['name']}");  //姓名
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
-                LODOP.ADD_PRINT_TEXT("40mm", "76mm", 50, 30, "{$print['sex']}");  //性别
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
-                LODOP.SET_PRINT_STYLEA(0, "Angle", 4);
-                LODOP.ADD_PRINT_IMAGE("25mm","10mm","16.6mm","20mm","<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");//图片
-                LODOP.ADD_PRINT_TEXT("44.5mm", "48mm", 157, 30, "2019年12月31日");//到期时间
-                LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
-                LODOP.ADD_PRINT_TEXT("50mm", "23mm", 230, 29, "{$print['obtain_employ_number']}"); //健康正号
-                LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+        		        LODOP.NewPage();
+                        LODOP.ADD_PRINT_TEXT("36mm", "48mm", 97, 30, "{$print['employee']}");  //从业类别
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+                        LODOP.ADD_PRINT_TEXT("40mm", "48mm", 100, 30, "{$print['name']}");  //姓名
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+                        LODOP.ADD_PRINT_TEXT("40mm", "76mm", 50, 30, "{$print['sex']}");  //性别
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+                        LODOP.SET_PRINT_STYLEA(0, "Angle", 4);
+                        LODOP.ADD_PRINT_IMAGE("25mm","10mm","16.6mm","20mm","<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");//图片
+                        LODOP.ADD_PRINT_TEXT("44.5mm", "48mm", 157, 30, "2019年12月31日");//到期时间
+                        LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
+                        LODOP.ADD_PRINT_TEXT("50mm", "23mm", 230, 29, "{$print['obtain_employ_number']}"); //健康正号
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
 EOF;
         return $type ? $html : $html1;
     }

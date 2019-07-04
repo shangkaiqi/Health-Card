@@ -69,6 +69,7 @@ class Bodyresult extends Backend
                 'order'
             ])
                 ->where($where)
+                ->where("bs_id", "=", $this->busId)
                 ->order($sort, $order)
                 ->count();
 
@@ -76,6 +77,7 @@ class Bodyresult extends Backend
                 'order'
             ])
                 ->where($where)
+                ->where("bs_id", "=", $this->busId)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
@@ -116,7 +118,7 @@ class Bodyresult extends Backend
                     $inspectStatus = $this->inspect->get([
                         "id" => $inspectInfo['parent']
                     ]);
-                    
+
                     $sql = "select id,name from fa_inspect where
                         id=(select parent from fa_inspect where id = (select parent from fa_inspect where id = $index))  limit 1";
                     $ins = db()->query($sql);
@@ -125,9 +127,9 @@ class Bodyresult extends Backend
                         'order_serial_number' => $params["order_serial_number"],
                         'item' => $ins[0]['id']
                     ];
-                    
-                    $phyresult = $inspectStatus['name'] == "正常"?"0":1;
-                    $phyresult_ext = $phyresult == 0 ? 0:$index;
+
+                    $phyresult = $inspectStatus['name'] == "正常" ? "0" : 1;
+                    $phyresult_ext = $phyresult == 0 ? 0 : $index;
                     $list = [
                         "physical_result" => 1,
                         "status" => 1,

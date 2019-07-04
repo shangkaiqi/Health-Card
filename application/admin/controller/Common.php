@@ -27,13 +27,6 @@ class Common extends Backend
         return $in_a;
     }
 
-    // 打印健康证
-    public function physical_table()
-    {
-        $params = $this->request->get();
-        var_dump($params);
-        // 姓名 性别 从业列表 证号 有效期 体检单位
-    }
 
     // 打印复验单
     public function nav_table()
