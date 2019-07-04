@@ -148,7 +148,7 @@ class Body extends Backend
             if ($status) {
                 $this->success('保存成功', "index",'',1);
             } else {
-                $this->error("","index");
+                $this->error();
             }
         }
     }

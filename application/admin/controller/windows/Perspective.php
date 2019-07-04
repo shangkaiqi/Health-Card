@@ -140,7 +140,7 @@ class Perspective extends Backend
                 }
             }
             if ($status) {
-                $this->success('保存成功', null);
+                $this->success('保存成功', 'index');
             } else {
                 $this->error();
             }
