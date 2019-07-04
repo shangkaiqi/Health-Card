@@ -109,7 +109,7 @@ define(
 											title : '体检结果',
 											operate : false
 										},
-										{
+										/*{
 											field : 'operate',
 											title : __('Operate'),
 											table : table,
@@ -121,6 +121,8 @@ define(
 														.clone(true);
 												$(table).data("operate-del",
 														null);
+												$(table).data("operate-edit",
+														null);
 												that.table = table;
 												return Table.api.formatter.operate
 														.call(that, value, row,
@@ -128,20 +130,13 @@ define(
 											},
 											buttons : [
 													{
-														name : 'physical_table',
-														text : __('打印健康证'),
-														// icon: 'fa fa-list',
-														classname : 'btn btn-xs btn-primary  btn-addtabs',
-														url : 'common/physical_table/{ids}',
-													},
-													{
 														name : 'nav_table',
 														text : __('打印复印单'),
 														// icon: 'fa fa-list',
-														classname : 'btn btn-xs btn-primary  btn-addtabs',
-														url : 'common/nav_table/{ids}',
+														classname : 'btn btn-xs btn-primary fuyandan btn-addtabs',
+														url : '/admin/service/search/printword?id={ids}'
 													} ],
-										} ] ]
+										}*/ ] ]
 							});
 
 					// 为表格绑定事件
@@ -166,6 +161,18 @@ define(
 						}
 						basic = str.substr(0, str.length - 1);
 					    window.location.href = "/admin/service/search/expUser?id="+basic;
+
+					});
+					// 获取选中项
+					$(document).on("click", ".fuyandan", function() {
+//						Layer.alert("aaaaaaaaaaaa");
+//						var rows = table.bootstrapTable('getSelections');
+//						var str = '';
+//						for (var i = 0; i < rows.length; i++) {
+//							str += rows[i]['ids'] + ",";
+//						}
+//						basic = str.substr(0, str.length - 1);
+//					    window.location.href = "/admin/service/search/expUser?id="+basic;
 
 					});
 				},

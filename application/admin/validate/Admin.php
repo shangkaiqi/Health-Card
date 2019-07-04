@@ -49,9 +49,7 @@ class Admin extends Validate
             'nickname'
         ],
         'edit' => [
-            'username',
-            'email',
-            'nickname'
+            'username'
         ]
     ];
 

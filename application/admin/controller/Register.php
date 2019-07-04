@@ -712,7 +712,7 @@ class Register extends Backend
                 	</body>
                 	
                 	</html>
-        EOF;
+EOF;
         $this->success("", "index");
     }
 
