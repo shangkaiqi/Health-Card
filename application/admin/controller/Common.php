@@ -11,9 +11,11 @@ class Common extends Backend
     protected $noNeedRight = [
         '*'
     ];
-    
-    protected $noNeedLogin = ['*'];
-    
+
+    protected $noNeedLogin = [
+        '*'
+    ];
+
     public function _initialize()
     {
         parent::_initialize();
@@ -21,12 +23,11 @@ class Common extends Backend
 
     public function getInspece($parent)
     {
-        $in_a = db("inspect")->field("id,name")
+        $in_a = db("inspect")->field("id,name,value,status")
             ->where("parent", "=", $parent)
             ->select();
         return $in_a;
     }
-
 
     // 打印复验单
     public function nav_table()
@@ -58,7 +59,7 @@ class Common extends Backend
             $in_a = $this->getInspece($val['id']);
             $ins[] = array(
                 "name" => $val['name'],
-                "value" => $in_a,
+                "values" => $in_a,
                 "id" => $val['id']
             );
         }
@@ -106,6 +107,46 @@ class Common extends Backend
         return $result;
     }
 
+    /**
+     * 获取id对应的地区
+     *
+     * @param int $id
+     * @return string
+     */
+    public function getAreaName($id)
+    {
+        $name = '';
+        $where['id'] = $id;
+        $name = db('area')->where($where)->find();
+        if ($name) {
+            return $name['mergename'];
+        }
+    }
+
+    /**
+     * 判断该医院打印卡数量是否超过限制
+     *
+     * @param int $total
+     * @param int $bussid
+     * @return boolean
+     */
+    public function checkcardnumber($bussid, $total = 1)
+    {
+        $where['bs_id'] = $bussid;
+        $number = db("business")->field('physical_num')
+            ->where($where)
+            ->find();
+        if ($number['physical_num'] >= $total)
+            return false;
+        else
+            return true;
+    }
+
+    /**
+     * 如果是ajax请求返回从业从业类型子项，否则返回全部从业类型
+     *
+     * @return \think\response\Json|mixed
+     */
     public function getemployee()
     {
         if ($this->request->isAjax()) {
@@ -163,6 +204,13 @@ class Common extends Backend
         return json($inspect);
     }
 
+    /**
+     * 导出excel
+     *
+     * @param string $expTitle
+     * @param string $expCellName
+     * @param array $expTableData
+     */
     public function exportExcel($expTitle, $expCellName, $expTableData)
     {
         $xlsTitle = iconv('utf-8', 'gb2312', $expTitle); // 文件名称
@@ -235,7 +283,7 @@ class Common extends Backend
         // Miscellaneous glyphs, UTF-8
         for ($i = 0; $i < $dataNum; $i ++) {
             for ($j = 0; $j < $cellNum; $j ++) {
-                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 3), ''.$expTableData[$i][$expCellName[$j][0]]);
+                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j] . ($i + 3), '' . $expTableData[$i][$expCellName[$j][0]]);
             }
         }
 
@@ -247,6 +295,13 @@ class Common extends Backend
         exit();
     }
 
+    /**
+     * 批量打印通过检查结果
+     *
+     * @param array $users
+     * @param int $type
+     * @return boolean
+     */
     public function muilts($users, $type)
     {
         // 根据用户查询属于哪个医院
@@ -270,10 +325,15 @@ class Common extends Backend
         }
         if ($result == 0) {
             return true;
-        }else 
+        } else
             return false;
     }
 
+    /**
+     * 返回从业类型
+     *
+     * @param string $str
+     */
     public function getEmpName($str)
     {
         $em = json_decode($str, true);

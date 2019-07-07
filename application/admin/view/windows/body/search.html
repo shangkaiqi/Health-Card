@@ -29,7 +29,8 @@
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">性别:</label>
 			<div class="col-xs-12 col-sm-4">
-				<span id="c-username" class="form-control">{if condition="$body['sex'] eq 0"}男{else/}女{/if}</span>
+				<span id="c-username" class="form-control">{if
+					condition="$body['sex'] eq 0"}男{else/}女{/if}</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -47,38 +48,39 @@
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业单位:</label>
 			<div class="col-xs-12 col-sm-4">
-				<span id="c-username" class="form-control">{$body['company']} </span>
+				<span id="c-username" class="form-control">{$body['company']}
+				</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
 			<div class="col-xs-12 col-sm-4">
-				<span id="c-username" class="form-control">{$body['employee']} </span>
+				<span id="c-username" class="form-control">{$body['employee']}
+				</span>
 			</div>
 		</div>
-		
+
 		<div id="avatar_ad">
-			<img width="102" height="126" src="data:image/jpeg;base64,{$body['images']}" border="0">
+			<img width="102" height="126"
+				src="data:image/jpeg;base64,{$body['images']}" border="0">
 		</div>
-		<div class="wait_physical"style="padding-left: 45px;">
-			待体检项：<span style="color:red;">{$wait_physical}</span>
+		<div class="wait_physical" style="padding-left: 45px;">
+			待体检项：<span style="color: red;">{$wait_physical}</span>
 		</div>
-				<form id="edit-form" role="form" data-toggle="validator" method="POST"
+		<form id="edit-form" role="form" data-toggle="validator" method="POST"
 			action="/admin/windows/body/save">
 			{foreach $inspect as $index=>$vo}
 			<div class="form-group">
-				<input type="hidden" name="itemId" value="{$vo['id']}">
-				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+				<input type="hidden" value="{$vo['id']}"> <label
+					for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 				<div class="form-inline">
-					<input type="hidden" name="order_serial_number" value="{$body['order_serial_number']}">
-					<select class="first form-control"
+					<input type="hidden" name="order_serial_number"
+						value="{$body['order_serial_number']}"> <select
+						class="first form-control" name=''
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="">请选择</option>
-						{foreach $vo['value'] as $i=>$v}
-						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="phitem[]"
-						id="inspace-1-{$vo.id}" style="width: 100px;">
-					</select>
+						<option value="{$vo.id}" selected="selected">正常</option>
+						<option value="{$vo.id}">异常</option>
+					</select> <span id='inspace-1-{$vo.id}'></span>
 				</div>
 			</div>
 			{/foreach}
@@ -107,15 +109,17 @@ function getInspect(id,value){
 		dataType : "json",
 		async : true,
 		success : function(obj) {
-			var html = "";
+			var html = '<select class="second form-control" name="result[]" style="width: 100px;">';
 			for (var i = 0; i < obj.length; i++) {
 				html += "<option value="+obj[i]['id']+">"
 						+ obj[i].name
 						+ "</option>";
 			}
+			html += '</select>';
 			$("#inspace-1-"+id).html(html);
 		},
 		error : function(msg) {
+			
 		}
 
 	})

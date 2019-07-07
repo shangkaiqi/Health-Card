@@ -15,7 +15,6 @@ class Register extends Validate
         'sex' => 'sex',
         'age' => 'require|between:1,120',
         'phone' => 'require',
-        'physictype' => 'require',
         'order_serial_number' => 'require'
     ];
 

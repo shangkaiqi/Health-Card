@@ -68,7 +68,8 @@ class Body extends Backend
                     'physical' => $this->type
                 ]);
 
-                $user['employee'] = $this->comm->getEmpName($user['employee']);
+                
+                $user['employee'] = $user['employee'];
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type
@@ -112,44 +113,59 @@ class Body extends Backend
         $username = $this->admin->get([
             'id' => $this->auth->id
         ]);
-        $status = 1;
+        $status = 0;
+
         if ($params) {
-            foreach ($params['phitem'] as $index) {
-                $inspectInfo = $this->inspect->get([
-                    "id" => $index
-                ]);
-                $inspectStatus = $this->inspect->get([
-                    "id" => $inspectInfo['parent']
-                ]);
+            $where['type'] = $this->type;
+            $where['parent'] = 0;
+            $inspectInfo = $this->inspect->where($where)->select();
+            foreach ($inspectInfo as $row) {
 
-                $sql = "select id,name from fa_inspect where 
-                        id=(select parent from fa_inspect where id = (select parent from fa_inspect where id = $index))  limit 1";
-                $ins = db()->query($sql);
-                $where = [
-                    'physical' => $this->type,
-                    'order_serial_number' => $params["order_serial_number"],
-                    'item' => $ins[0]['id']
-                ];
+                foreach ($params['result'] as $rs) {
+                    $sql = "select id,name from fa_inspect where
+                        id=(select parent from fa_inspect where id = $rs)  limit 1";
+                    $ins = db()->query($sql);
+                    if ($ins[0]['id'] == $row['id']) {
 
-                $phyresult = $inspectStatus['name'] == "正常"?"0":1;
-                $phyresult_ext = $phyresult == 0 ? 0:$index; 
-                $list = [
-                    "physical_result" => 1,
-                    "status" => 1,
-                    "physical_result" => $phyresult,
-                    "physical_result_ext" => $phyresult_ext,
-                    "doctor" => $username['nickname']
-                ];
-                $update = $this->orderde->where($where)->update($list);
-                if (! $update) {
-                    $status = 0;
+                        $where = [
+                            'physical' => $this->type,
+                            'order_serial_number' => $params["order_serial_number"],
+                            'item' => $ins[0]['id']
+                        ];
+                        $list = [
+                            "physical_result" => 1,
+                            "physical_result_ext" => $rs,
+                            "status" => 1,
+                            "doctor" => $username['nickname']
+                        ];
+                        $update = $this->orderde->where($where)->update($list);
+                        if (! $update) {
+                            $status ++;
+                        }
+                    } else {
+                        $where = [
+                            'physical' => $this->type,
+                            'order_serial_number' => $params["order_serial_number"],
+                            'item' => $row['id']
+                        ];
+                        $list = [
+                            "physical_result" => 0,
+                            "physical_result_ext" => 0,
+                            "status" => 1,
+                            "doctor" => $username['nickname']
+                        ];
+                        $update = $this->orderde->where($where)->update($list);
+                        if (! $update) {
+                            $status ++;
+                        }
+                    }
                 }
             }
-            if ($status) {
-                $this->success('保存成功', "index",'',1);
-            } else {
-                $this->error('','index');
-            }
+        }
+        if ($status == 0) {
+            $this->success('保存成功', "index", '', 1);
+        } else {
+            $this->error('', 'index');
         }
     }
 }

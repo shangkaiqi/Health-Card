@@ -13,14 +13,23 @@
 				name="row[username]" value="" data-rule="required;username" />
 		</div>
 	</div>
-<!-- 	<div class="form-group">
-		<label class="control-label col-xs-12 col-sm-2">{:__('area')}:</label>
-		<div class="col-xs-12 col-sm-8">
-			<input type="text" class="form-control" id="area" name="row[area]"
-				value="" data-rule="required" />
-		</div>
-	</div> -->
+
 	
+	<div class="form-group">
+	    <label for="c-avatar" class="control-label col-xs-12 col-sm-2">医院章:</label>
+	    <div class="col-xs-12 col-sm-8">
+	        <div class="input-group">
+	            <input id="c-avatar" data-rule="" class="form-control" size="50" name="row[avatar]" type="text" value="">
+	            <div class="input-group-addon no-border no-padding">
+	                <span><button type="button" id="plupload-avatar" class="btn btn-danger plupload" data-input-id="c-avatar" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp" data-multiple="false" data-preview-id="p-avatar"><i class="fa fa-upload"></i> 上传</button></span>
+	                <span><button type="button" id="fachoose-avatar" class="btn btn-primary fachoose" data-input-id="c-avatar" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> 选择</button></span>
+	            </div>
+	            <span class="msg-box n-right" for="c-avatar"></span>
+	        </div>
+	        <ul class="row list-inline plupload-preview" id="p-avatar"></ul>
+	    </div>
+	</div>
+
 	{if condition="$pid"}
 	<div class="form-group">
 		<label class="control-label col-xs-12 col-sm-2">{:__('number')}:</label>
@@ -43,6 +52,20 @@
 				value="" data-rule="required" />
 		</div>
 	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-12 col-sm-2">{:__('area')}:</label>
+		<div class="col-xs-12 col-sm-8">
+			<div class="form-inline" data-toggle="cxselect"
+				data-selects="province,city,area">
+				<select class="province form-control" name="row[province]"
+					data-url="ajax/area" style=""></select> <select
+					class="city form-control" name="row[city]" data-url="ajax/area"></select>
+				<select class="area form-control" name="row[area]"
+					data-url="ajax/area"></select>
+			</div>
+		</div>
+	</div>
+
 	<div class="form-group">
 		<label class="control-label col-xs-12 col-sm-2">{:__('address')}:</label>
 		<div class="col-xs-12 col-sm-8">
@@ -74,7 +97,7 @@
 				data-rule="required" />
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<label for="password" class="control-label col-xs-12 col-sm-2">{:__('Password')}:</label>
 		<div class="col-xs-12 col-sm-8">
@@ -87,6 +110,11 @@
 		<label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
 		<div class="col-xs-12 col-sm-8">{:build_radios('row[status]',
 			['normal'=>__('Normal'), 'hidden'=>__('Hidden')])}</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-xs-12 col-sm-2">{:__('打印体检表')}:</label>
+		<div class="col-xs-12 col-sm-8">{:build_radios('row[isprint]',
+			['1'=>__('yes'), '0'=>__('no')],'0')}</div>
 	</div>
 	<div class="form-group hidden layer-footer">
 		<label class="control-label col-xs-12 col-sm-2"></label>

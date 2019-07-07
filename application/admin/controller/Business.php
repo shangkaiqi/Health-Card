@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Backend;
+use app\admin\controller\Common;
 
 /**
  *
@@ -18,10 +19,13 @@ class Business extends Backend
      */
     protected $model = null;
 
+    protected $comm = null;
+
     public function _initialize()
     {
         parent::_initialize();
         $this->model = new \app\admin\model\Business();
+        $this->comm = new Common();
     }
 
     /**
@@ -61,6 +65,7 @@ class Business extends Backend
                 $row['bus_num'] = $bus_num;
                 $row['health'] = $health;
                 $row['medicine'] = $medicine;
+                $row['area'] = $this->comm->getAreaName($row['county']);
                 $row->visible([
                     'bs_id',
                     'busisess_name',
@@ -73,7 +78,8 @@ class Business extends Backend
                     'charge',
                     'medicine',
                     'health',
-                    'medicine'
+                    'medicine',
+                    'seal'
                 ]);
             }
             $list = collection($list)->toArray();
@@ -83,6 +89,27 @@ class Business extends Backend
             );
 
             return json($result);
+        }
+        return $this->view->fetch();
+    }
+    
+    public function edit($ids = '')
+    {
+        $row = $this->model->get(['bs_id'=>$ids]);
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            var_dump($params);
+            if ($params) {}
+        }
+        $this->view->assign("row",$row);
+        return $this->view->fetch();
+    }
+    public function add()
+    {
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            var_dump($params);
+            if ($params) {}
         }
         return $this->view->fetch();
     }

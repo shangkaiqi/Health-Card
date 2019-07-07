@@ -46,14 +46,12 @@ class Prints extends Backend
                     $this->error("用户不存在");
                 }
 
-                $uid['employee'] = $this->comm->getEmpName($uid['employee']);
                 $this->view->assign("body", $uid);
                 // 获取打印信息
                 $where_1['order_serial_number'] = $params['search'];
                 $printInfo = db("order")->where($where_1)->find();
-
                 // 获取体检单位
-                $hosp = db("business")->field("busisess_name")
+                $hosp = db("business")->field("bs_id,busisess_name")
                     ->where("bs_uuid", "=", $printInfo['bus_number'])
                     ->find();
 
@@ -62,7 +60,11 @@ class Prints extends Backend
                 $printInfo['employee'] = $uid['employee'];
                 $printInfo['images'] = $uid['images'];
                 $printInfo['company'] = $hosp['busisess_name'];
-                $printInfo['physictype'] = $uid['physictype'];
+                $printInfo['physictype'] = $uid['employee_id']; // 1公共卫生2食药安全
+
+                // 判断打印卡数量是否超过限制量
+                // $printInfo['is_out'] = $this->comm->checkcardnumber($hosp['bs_id'], $total);
+
                 $this->view->assign("print", $printInfo);
                 $checkresult = $this->checkresult($order_id);
                 $this->view->assign("result", $checkresult);
@@ -96,6 +98,10 @@ class Prints extends Backend
                 $str .= $ins['name'] . ":" . $ins_result['name'];
                 $str .= "  ";
             }
+        }
+        if ($int == 0) {
+            $data['physical_result'] = 1;
+            db('order')->where($where)->update($data);
         }
         return $str;
     }

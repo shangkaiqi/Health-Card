@@ -30,7 +30,8 @@ class Admin extends Backend
     protected $childrenGroupIds = [];
 
     protected $childrenAdminIds = [];
-    protected $pid ='';
+
+    protected $pid = '';
 
     public function _initialize()
     {
@@ -142,7 +143,7 @@ class Admin extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                if($this->pid == 0){
+                if ($this->pid == 0) {
                     $data = [
                         // 'area' => $params['area'],
                         'physical_num' => $params['number'],
@@ -150,20 +151,27 @@ class Admin extends Backend
                         'busisess_name' => $params['hospital'],
                         'connect' => $params['connect'],
                         'address' => $params['address'],
-                        'bs_uuid' => create_uuid()
+                        'bs_uuid' => create_uuid(),
+                        'isprint' => $params['isprint'],
+                        'province' => $params['province'],
+                        'city' => $params['city'],
+                        'county' => $params['area'],
+                        'avatar' =>$params['avatar']
                     ];
-    
-//                     $busResult = $this->buss->validate('Business.add')->save($data);
-                    //验证医院是否存在
-                    $result = $this->buss->where("busisess_name","=",$params['hospital'])->find();
-                    if($result['busisess_name'] != null || $result['busisess_name'] != ''){
+
+                    // $busResult = $this->buss->validate('Business.add')->save($data);
+                    // 验证医院是否存在
+                    $result = $this->buss->where("busisess_name", "=", $params['hospital'])->find();
+                    if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
                         $this->error("该体检单位已存在");
                     }
                     $busResult = $this->buss->save($data);
                     $last_id = $this->buss->bs_id;
                 }
-                if($this->pid != 0){
-                    $au = $this->model->get(['id'=>$this->auth->id]);
+                if ($this->pid != 0) {
+                    $au = $this->model->get([
+                        'id' => $this->auth->id
+                    ]);
                     $last_id = $au['businessid'];
                 }
                 $user['salt'] = Random::alnum();

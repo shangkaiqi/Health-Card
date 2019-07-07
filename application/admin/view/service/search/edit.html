@@ -6,10 +6,6 @@
 			{:build_radios('row[type]',	['0'=>'个人', '1'=>'团体','2'=>'临时登记'],$row.type)}
 		</div>
 	</div>
- 	<div class="form-group">
-		<label for="c-gender" class="control-label col-xs-12 col-sm-2">体检类型:</label>
-		<div class="col-xs-12 col-sm-8">{:build_radios('row[physictype]',['0'=>'食药', '1'=>'卫生监督'],$row.physictype,'physictype')}</div>
-	</div>
 	<div class="form-group">
 		<label for="c-username" class="control-label col-xs-12 col-sm-2">姓名:</label>
 		<div class="col-xs-12 col-sm-4">
@@ -112,18 +108,6 @@
 		$("#express-1").click(function(){
 			$("#express").show();
 		});
-	/* 	$("#physictype-1").click(function(){
-			var ids = $("#pid-s option:selected").val();
-			if(ids == 2){
-				$("#pid-s").attr("selected","selected");
-			}
-		});
-		$("#physictype-0").click(function(){
-			$("#pid-s").hide();
-		}); */
-		
-
-		
 	});
 	
 	

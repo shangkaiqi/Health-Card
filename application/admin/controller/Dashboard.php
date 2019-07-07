@@ -40,11 +40,13 @@ class Dashboard extends Backend
             $paylist[$day] = mt_rand(1, mt_rand(1, $createlist[$day]));
         }
         $totaluser = 0;
+        $printcard_num = 0;
         // 医院总数
         if ($this->pid) {
             $totaluser = db("business")->count("bs_id");
             $totalviews = db("order")->where("employ_num_time", "neq", "null")->count("order_id");
             $totalorder = db("physical_users")->count("id");
+            $have_physical = db("physical_users")->count("id");
             $totalorderamount = db("physical_users")->where("company", "neq", "null")->count("id");
         } else {
             $totaluser = db("admin")->where('id', "=", $this->auth->id)->find();
@@ -71,7 +73,6 @@ class Dashboard extends Backend
                 ->where($where_2)
                 ->count("order_id");
 
-            
             $where['company'] = [
                 'neq',
                 null
@@ -86,13 +87,17 @@ class Dashboard extends Backend
                 ->distinct(true)
                 ->field('company')
                 ->count("id");
+            $print['bs_id'] = $totaluser['businessid'];
+            $printcard_num = db('business')->where($print)->find();
         }
         $this->view->assign("pid", $this->pid);
         $this->view->assign([
             'totaluser' => $totaluser, // 医院总数
             'totalviews' => $totalviews, // 打印卡总量
-            'totalorder' => $totalorder, // 体检人员总数
-            'totalorderamount' => $totalorderamount, // 体检单位
+            'totalorder' => $totalorder, // 登记体检人员总数
+            'totalorderamount' => $have_physical, // 体检单位
+            'printcard_num' => $printcard_num,
+
             'todayuserlogin' => 321,
             'todayusersignup' => 430,
             'todayorder' => 2324,

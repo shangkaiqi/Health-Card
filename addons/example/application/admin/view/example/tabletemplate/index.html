@@ -38,13 +38,13 @@
 
     <div class="col-sm-4 col-md-3">
         <!--下面四行是为了展示随机图片和标签，可移除-->
-        <% var imagearr = ['https://ws2.sinaimg.cn/large/006tNc79gy1fgphwokqt9j30dw0990tb.jpg', 'https://ws2.sinaimg.cn/large/006tNc79gy1fgphwt8nq8j30e609f3z4.jpg', 'https://ws1.sinaimg.cn/large/006tNc79gy1fgphwn44hvj30go0b5myb.jpg', 'https://ws1.sinaimg.cn/large/006tNc79gy1fgphwnl37mj30dw09agmg.jpg', 'https://ws3.sinaimg.cn/large/006tNc79gy1fgphwqsvh6j30go0b576c.jpg']; %>
+        <% var imagearr = ['https://cdn.fastadmin.net/uploads/addons/blog.png', 'https://cdn.fastadmin.net/uploads/addons/cms.png', 'https://cdn.fastadmin.net/uploads/addons/vote.png', 'https://cdn.fastadmin.net/uploads/addons/blog.png', 'https://cdn.fastadmin.net/uploads/addons/alisms.png']; %>
         <% var image = imagearr[item.id % 5]; %>
         <% var labelarr = ['primary', 'success', 'info', 'danger', 'warning']; %>
         <% var label = labelarr[item.id % 5]; %>
         <div class="thumbnail example">
             <span class="btn btn-<%=label%>">ID:<%=item.id%></span>
-            <img src="<%=image%>" class="img-responsive" alt="<%=item.title%>">
+            <img src="<%=image%>" style="width:100%;" alt="<%=item.title%>">
             <div class="caption">
                 <h4><%=item.title?item.title:'无'%></h4>
                 <p class="text-muted">操作者IP:<%=item.ip%></p>

@@ -12,7 +12,6 @@ use app\common\controller\Backend;
  */
 class Colorbadge extends Backend
 {
-
     protected $model = null;
 
     public function _initialize()
@@ -20,5 +19,4 @@ class Colorbadge extends Backend
         parent::_initialize();
         $this->model = model('AdminLog');
     }
-
 }

@@ -81,10 +81,8 @@ class Bloodresult extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            file_put_contents("bloodresult.txt", db()->getLastSql(),FILE_APPEND);
 
             foreach ($list as $row) {
-                $row['employee'] = $this->comm->getEmpName($row['employee']);
             }
             $list = collection($list)->toArray();
             $result = array(
@@ -106,51 +104,60 @@ class Bloodresult extends Backend
             $this->error(__('No Results were found'));
         if ($this->request->isPost()) {
             $params = $this->request->post();
+            $status = 0;
             if ($params) {
-                $username = $this->admin->get([
-                    'id' => $this->auth->id
-                ]);
+                $where['type'] = $this->type;
+                $where['parent'] = 0;
+                $inspectInfo = $this->inspect->where($where)->select();
+                foreach ($inspectInfo as $row) {
 
-                foreach ($params['phitem'] as $index) {
-                    $inspectInfo = $this->inspect->get([
-                        "id" => $index
-                    ]);
-                    $inspectStatus = $this->inspect->get([
-                        "id" => $inspectInfo['parent']
-                    ]);
+                    foreach ($params['result'] as $rs) {
+                        $sql = "select id,name from fa_inspect where
+                        id=(select parent from fa_inspect where id = $rs)  limit 1";
+                        $ins = db()->query($sql);
+                        if ($ins[0]['id'] == $row['id']) {
 
-                    $sql = "select id,name from fa_inspect where
-                        id=(select parent from fa_inspect where id = (select parent from fa_inspect where id = $index))  limit 1";
-                    $ins = db()->query($sql);
-                    $where = [
-                        'physical' => $this->type,
-                        'order_serial_number' => $params["order_serial_number"],
-                        'item' => $ins[0]['id']
-                    ];
-
-                    $phyresult = $inspectStatus['name'] == "正常" ? "0" : 1;
-                    $phyresult_ext = $phyresult == 0 ? 0 : $index;
-                    $list = [
-                        "physical_result" => 1,
-                        "status" => 1,
-                        "physical_result" => $phyresult,
-                        "physical_result_ext" => $phyresult_ext,
-                        "doctor" => $username['nickname']
-                    ];
-                    $update = $this->orderde->where($where)->update($list);
-                    if (! $update) {
-                        $status = 0;
+                            $where = [
+                                'physical' => $this->type,
+                                'order_serial_number' => $params["order_serial_number"],
+                                'item' => $ins[0]['id']
+                            ];
+                            $list = [
+                                "physical_result" => 1,
+                                "physical_result_ext" => $rs,
+                                "status" => 1,
+                                "doctor" => $username['nickname']
+                            ];
+                            $update = $this->orderde->where($where)->update($list);
+                            if (! $update) {
+                                $status ++;
+                            }
+                        } else {
+                            $where = [
+                                'physical' => $this->type,
+                                'order_serial_number' => $params["order_serial_number"],
+                                'item' => $row['id']
+                            ];
+                            $list = [
+                                "physical_result" => 0,
+                                "physical_result_ext" => 0,
+                                "status" => 1,
+                                "doctor" => $username['nickname']
+                            ];
+                            $update = $this->orderde->where($where)->update($list);
+                            if (! $update) {
+                                $status ++;
+                            }
+                        }
                     }
                 }
-                if ($status) {
-                    $this->success('', "index", '', 1);
-                } else {
-                    $this->error();
-                }
+            }
+            if ($status == 0) {
+                $this->success('保存成功', "index", '', 1);
+            } else {
+                $this->error('', 'index');
             }
         }
-
-        $row['employee'] = $this->comm->getEmpName($row['employee']);
 
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
@@ -197,7 +204,7 @@ class Bloodresult extends Backend
             if ($status) {
                 $this->success('保存成功', null);
             } else {
-                $this->error('','index');
+                $this->error('', 'index');
             }
         }
     }

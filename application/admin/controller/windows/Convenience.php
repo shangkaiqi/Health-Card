@@ -67,8 +67,8 @@ class Convenience extends Backend
                     'order_serial_number' => $order_id,
                     'physical' => $this->type
                 ]);
-
-                $user['employee'] = $this->comm->getEmpName($user['employee']);
+                
+                $user['employee'] = $user['employee'];
                 $where = [
                     "user_id" => $user["id"],
                     'physical' => $this->type

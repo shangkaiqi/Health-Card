@@ -56,33 +56,6 @@
 			</div>
 		</div>
 		<div id="avatar_ad"></div>
-		<!-- <div class="wait_physical">
-			待体检项：<span>{$wait_physical}</span>
-		</div>
-		<form method="POST" action="/admin/saveresult/bodySave">
-			{foreach $inspect as $index=>$vo}
-			<div class="form-group">
-				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
-				<div class="form-inline">
-					<select class="first form-control" name="rows[parent-{$vo.id}]"
-						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="">请选择</option> {foreach $vo['value'] as $i=>$v}
-						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="rows[son-{$vo.id}]"
-						id="inspace-1-{$vo.id}" style="width: 100px;">
-					</select>
-				</div>
-			</div>
-			{/foreach}
-			<div class="form-group layer-footer">
-				<label class="control-label col-xs-12 col-sm-2"></label>
-				<div class="col-xs-12 col-sm-8">
-					<button type="submit" class="btn btn-success btn-embossed">保存登记信息</button>
-					<button type="reset" class="btn btn-default btn-embossed">重置</button>
-				</div>
-			</div>
-
-		</form> -->
 		<div class="opertor">操作员： {$operate['nickname']}</div>
 	</div>
 

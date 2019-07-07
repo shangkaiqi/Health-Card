@@ -68,7 +68,7 @@ class Blood extends Backend
                     'physical' => $this->type
                 ]);
 
-                $user['employee'] = $this->comm->getEmpName($user['employee']);
+                $user['employee'] = $user['employee'];
                 
                 $where = [
                     "user_id" => $user["id"],
@@ -86,7 +86,7 @@ class Blood extends Backend
     }
 
     /**
-     * 获取从业类别
+     * 获取从业类别 //houqishiyong 
      */
     public function getEmployee()
     {
@@ -119,7 +119,6 @@ class Blood extends Backend
                 $inspectStatus = $this->inspect->get([
                     "id" => $inspectInfo['parent']
                 ]);
-                // echo $inspectInfo['id'] . "-" . $inspectInfo['name'] . "-" . $inspectInfo['type'] . "-" . $inspectInfo['parent'];
                 $where = [
                     'physical' => $this->type,
                     'order_serial_number' => $params['ordernum'],

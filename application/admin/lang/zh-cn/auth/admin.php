@@ -8,6 +8,7 @@ return [
     'number'       => '体检量',
     'connect'         => '联系人',
     'phone'         => '联系手机',
-    'address'         => '医院地址',
 //     'phone'         => '联系手机',
+    'address'      =>"详细地址",
+    'isprint'      =>'是否打印体检表'
 ];

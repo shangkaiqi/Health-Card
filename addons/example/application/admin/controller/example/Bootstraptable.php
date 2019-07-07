@@ -12,9 +12,17 @@ use app\common\controller\Backend;
  */
 class Bootstraptable extends Backend
 {
-
     protected $model = null;
+    /**
+     * 无需鉴权的方法(需登录)
+     * @var array
+     */
     protected $noNeedRight = ['start', 'pause', 'change', 'detail', 'cxselect', 'searchlist'];
+    /**
+     * 快捷搜索的字段
+     * @var string
+     */
+    protected $searchFields = 'id,title,url';
 
     public function _initialize()
     {
@@ -28,7 +36,7 @@ class Bootstraptable extends Backend
     public function index()
     {
         if ($this->request->isAjax()) {
-            list($where, $sort, $order, $offset, $limit) = $this->buildparams(NULL);
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams(null);
             $total = $this->model
                 ->where($where)
                 ->order($sort, $order)
@@ -38,7 +46,7 @@ class Bootstraptable extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-            $result = array("total" => $total, "rows" => $list, "extend" => ['money' => mt_rand(100000,999999), 'price' => 200]);
+            $result = array("total" => $total, "rows" => $list, "extend" => ['money' => mt_rand(100000, 999999), 'price' => 200]);
 
             return json($result);
         }
@@ -51,8 +59,9 @@ class Bootstraptable extends Backend
     public function detail($ids)
     {
         $row = $this->model->get(['id' => $ids]);
-        if (!$row)
+        if (!$row) {
             $this->error(__('No Results were found'));
+        }
         if ($this->request->isAjax()) {
             $this->success("Ajax请求成功", null, ['id' => $ids]);
         }
@@ -81,6 +90,8 @@ class Bootstraptable extends Backend
      */
     public function change($ids = '')
     {
+        //你需要在此做具体的操作逻辑
+
         $this->success("模拟切换成功");
     }
 
@@ -117,5 +128,4 @@ class Bootstraptable extends Backend
         $data = ['searchlist' => $searchlist];
         $this->success('', null, $data);
     }
-
 }

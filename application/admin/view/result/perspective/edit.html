@@ -55,20 +55,19 @@
 		action="">
 		{foreach $inspect as $index=>$vo}
 			<div class="form-group">
-				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+				<input type="hidden" value="{$vo['id']}"> <label
+					for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 				<div class="form-inline">
-					<input type="hidden" name="order_serial_number" value="{$row['order_serial_number']}">
-					<select class="first form-control"
+					<input type="hidden" name="order_serial_number"
+						value="{$row['order_serial_number']}"> <select
+						class="first form-control" name=''
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="">请选择</option>
-						{foreach $vo['value'] as $i=>$v}
-						<option value="{$v.id}">{$v.name}</option> {/foreach}
-					</select> <select class="second form-control" name="phitem[]"
-						id="inspace-1-{$vo.id}" style="width: 100px;">
-					</select>
+						<option value="{$vo.id}" selected="selected">正常</option>
+						<option value="{$vo.id}">异常</option>
+					</select> <span id='inspace-1-{$vo.id}'></span>
 				</div>
 			</div>
-		{/foreach}
+			{/foreach}
 		<div class="form-group layer-footer">
 			<label class="control-label col-xs-12 col-sm-2"></label>
 			<div class="col-xs-12 col-sm-8">
@@ -89,12 +88,13 @@
 			dataType : "json",
 			async : true,
 			success : function(obj) {
-				var html = "";
+				var html = '<select class="second form-control" name="result[]" style="width: 100px;">';
 				for (var i = 0; i < obj.length; i++) {
 					html += "<option value="+obj[i]['id']+">"
 							+ obj[i].name
 							+ "</option>";
 				}
+				html += '</select>';
 				$("#inspace-1-"+id).html(html);
 			},
 			error : function(msg) {

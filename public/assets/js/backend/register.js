@@ -57,11 +57,6 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				}, {
 					field : 'registertime',
 					title : '体检时间'
-				}, {
-					field : 'physictype',
-					title : '从业类别',
-					formatter: Table.api.formatter.label,
-					searchList: {1: __('卫生监督'), 0: __('食药安全')}
 				},{
 					field : 'employee',
 					title : '从业类别'

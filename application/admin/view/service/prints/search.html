@@ -64,15 +64,20 @@
 			体检结果：<span>{$result}</span>
 		</div>
 		
-		<a href="javascript:;" onclick="myPreview()" class="btn btn-default btn-selected btn-disabled"
-			style="font-size: 14px; color: white; background: #18bc9c;">
-			预览并打印结果 </a>
+		<div id="avatar_ad"></div>
+		<div class="form-group layer-footer">
+			<div class="col-xs-12 col-sm-8">
+				<button type="button" onclick="myPreview()" class='btn btn-success btn-embossed {if condition="$print.physical_result == 0"}disabled{/if}'>打印健康证</button>
+				<button type="button" onclick="myOrderPreview()" class='btn btn-success btn-embossed {if condition="$print.physical_result == 0"}disabled{/if}'>打印复验单</button>
+			</div>
+		</div>
 	</div>
 
 </div>
 <script src="/LodopFuncs.js"></script>
 <script>
-	function myPreview() {		    
+	function myPreview() {
+		//1公共卫生2食药安全
 		if({$print['physictype']} == 1){
 			CreatePrintPage();
 		}else{

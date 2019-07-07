@@ -5,12 +5,11 @@ namespace app\admin\controller\example;
 use app\common\controller\Backend;
 
 /**
- * 多表格示例
+ * 表格联动
  *
  * @icon fa fa-table
- * @remark 当一个页面上存在多个Bootstrap-table时该如何控制按钮和表格
  */
-class Multitable extends Backend
+class Tablelink extends Backend
 {
     protected $model = null;
     protected $noNeedRight = ['table1', 'table2'];
@@ -18,21 +17,13 @@ class Multitable extends Backend
     public function _initialize()
     {
         parent::_initialize();
+        $this->model = model('AdminLog');
     }
 
-    /**
-     * 查看
-     */
-    public function index()
-    {
-        $this->loadlang('general/attachment');
-        $this->loadlang('general/crontab');
-        return $this->view->fetch();
-    }
 
     public function table1()
     {
-        $this->model = model('Attachment');
+        $this->model = model('Admin');
         //设置过滤方法
         $this->request->filter(['strip_tags']);
         if ($this->request->isAjax()) {
@@ -42,15 +33,15 @@ class Multitable extends Backend
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->count();
+                ->where($where)
+                ->order($sort, $order)
+                ->count();
 
             $list = $this->model
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->limit($offset, $limit)
-                    ->select();
+                ->where($where)
+                ->order($sort, $order)
+                ->limit($offset, $limit)
+                ->select();
 
             $result = array("total" => $total, "rows" => $list);
 
@@ -71,15 +62,15 @@ class Multitable extends Backend
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->count();
+                ->where($where)
+                ->order($sort, $order)
+                ->count();
 
             $list = $this->model
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->limit($offset, $limit)
-                    ->select();
+                ->where($where)
+                ->order($sort, $order)
+                ->limit($offset, $limit)
+                ->select();
 
             $result = array("total" => $total, "rows" => $list);
 
