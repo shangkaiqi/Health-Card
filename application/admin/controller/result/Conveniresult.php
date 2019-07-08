@@ -82,8 +82,7 @@ class Conveniresult extends Backend
                 ->limit($offset, $limit)
                 ->select();
 
-            foreach ($list as $row) {
-            }
+            foreach ($list as $row) {}
             $list = collection($list)->toArray();
             $result = array(
                 "total" => $total,
@@ -106,50 +105,67 @@ class Conveniresult extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post();
             $status = 0;
-            
+
             if ($params) {
                 $where['type'] = $this->type;
                 $where['parent'] = 0;
                 $inspectInfo = $this->inspect->where($where)->select();
                 foreach ($inspectInfo as $row) {
-                    
-                    foreach ($params['result'] as $rs) {
-                        $sql = "select id,name from fa_inspect where
+                    if (! empty($params['result'])) {
+                        foreach ($params['result'] as $rs) {
+                            $sql = "select id,name from fa_inspect where
                         id=(select parent from fa_inspect where id = $rs)  limit 1";
-                        $ins = db()->query($sql);
-                        if ($ins[0]['id'] == $row['id']) {
-                            
-                            $where = [
-                                'physical' => $this->type,
-                                'order_serial_number' => $params["order_serial_number"],
-                                'item' => $ins[0]['id']
-                            ];
-                            $list = [
-                                "physical_result" => 1,
-                                "physical_result_ext" => $rs,
-                                "status" => 1,
-                                "doctor" => $username['nickname']
-                            ];
-                            $update = $this->orderde->where($where)->update($list);
-                            if (! $update) {
-                                $status ++;
+                            $ins = db()->query($sql);
+                            if ($ins[0]['id'] == $row['id']) {
+
+                                $where = [
+                                    'physical' => $this->type,
+                                    'order_serial_number' => $params["order_serial_number"],
+                                    'item' => $ins[0]['id']
+                                ];
+                                $list = [
+                                    "physical_result" => 1,
+                                    "physical_result_ext" => $rs,
+                                    "status" => 1,
+                                    "doctor" => $username['nickname']
+                                ];
+                                $update = $this->orderde->where($where)->update($list);
+                                if (! $update) {
+                                    $status ++;
+                                }
+                            } else {
+                                $where = [
+                                    'physical' => $this->type,
+                                    'order_serial_number' => $params["order_serial_number"],
+                                    'item' => $row['id']
+                                ];
+                                $list = [
+                                    "physical_result" => 0,
+                                    "physical_result_ext" => 0,
+                                    "status" => 1,
+                                    "doctor" => $username['nickname']
+                                ];
+                                $update = $this->orderde->where($where)->update($list);
+                                if (! $update) {
+                                    $status ++;
+                                }
                             }
-                        } else {
-                            $where = [
-                                'physical' => $this->type,
-                                'order_serial_number' => $params["order_serial_number"],
-                                'item' => $row['id']
-                            ];
-                            $list = [
-                                "physical_result" => 0,
-                                "physical_result_ext" => 0,
-                                "status" => 1,
-                                "doctor" => $username['nickname']
-                            ];
-                            $update = $this->orderde->where($where)->update($list);
-                            if (! $update) {
-                                $status ++;
-                            }
+                        }
+                    } else {
+                        $where = [
+                            'physical' => $this->type,
+                            'order_serial_number' => $params["order_serial_number"],
+                            'item' => $row['id']
+                        ];
+                        $list = [
+                            "physical_result" => 0,
+                            "physical_result_ext" => 0,
+                            "status" => 1,
+                            "doctor" => $username['nickname']
+                        ];
+                        $update = $this->orderde->where($where)->update($list);
+                        if (! $update) {
+                            $status ++;
                         }
                     }
                 }
