@@ -83,13 +83,12 @@
 		<label class="control-label col-xs-12 col-sm-2"></label>
 		<div class="col-xs-12 col-sm-8">
 			<button type="submit" class="btn btn-success btn-embossed">保存登记信息</button>
-			{if condition="$isprint eq 1"}
-				<button type="button" id="print" class="btn btn-default" style="background-color: #2c3e50; color: white;">打印体检单</button>
+			{if condition="$isprint eq 4"}
+				<button type="button" onclick='print()' class="btn btn-default" style="background-color: #2c3e50; color: white;">打印体检单</button>
 			{/if}
 		</div>
 	</div>
 </form>
-
 <script for=idcard event="Readed()">
  	document.getElementById("avatar").value = rdcard.JPGBuffer;
  	document.getElementById("imgs").setAttribute("src", "data:image/jpeg;base64,"+rdcard.JPGBuffer);
@@ -107,7 +106,8 @@
 <script for=idcard event="Opened()">
         //window.close();
 </script>
-<script language="javascript" src="http://www.card.com/LodopFuncs.js"></script>
+
+<script language="javascript" src="/LodopFuncs.js"></script>
 <script type="text/javascript">
 	window.onbeforeunload = onbeforeunload_handler;
 	function onbeforeunload_handler()
@@ -127,32 +127,6 @@
 	            var age = jsGetAge(birthday);
 	            $("#c-age").val(age);
 	        })
-		});		
-		
-		$("#pid-s").change(function() {
-			var ids = $("#pid-s option:selected").val();
-			if (ids) {
-				$.ajax({
-					url : "common/getEmployee",
-					data : {
-						'id' : ids
-					},
-					type : "get",
-					dataType : "json",
-					async : true,
-					success : function(obj) {
-						var html = "";
-						for (var i = 0; i < obj.length; i++) {
-							html += "<option value="+obj[i]['id']+" >"
-									+ obj[i].name
-									+ "</option>";
-						}
-						$("#names").html(html);
-					},
-					error : function(msg) {
-					}
-				})
-			}
 		});
 		$("#express-1").click(function(){
 			$("#express").show();
@@ -160,7 +134,6 @@
 		$("#express-1").click(function(){
 			$("#express").show();
 		});
-
         var pp1;
         var conn;
         conn = rdcard.getstate();
@@ -172,6 +145,7 @@
         }
 
 	});
+	
 	//js读取身份证信息		
     function st() {
 		var pp;

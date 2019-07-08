@@ -74,31 +74,24 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						return Table.api.formatter.operate.call(that,
 								value, row, index);
 					},					
-				    buttons: [
-				        {
-				            name: 'physical_table',
-				            text: __('打印体检表'),
-//				            icon: 'fa fa-list',
-				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'register/physical_table?id={ids}',
-				        }
-				        /*,
-				        {
-				            name: 'nav_table',
-				            text: __('打印引导表'),
-//				            icon: 'fa fa-list',
-				            classname: 'btn btn-xs btn-primary  btn-addtabs',
-				            url: 'register/nav_table/{ids}',
-				        }*/
-				    ],
-		
-					
 				}					 
 				] ]
 			});
 
 			// 为表格绑定事件
 			Table.api.bindevent(table);
+			// 获取选中项
+			$(document).on("click", ".btn-selected", function() {
+				var rows = table.bootstrapTable('getSelections');
+				var str = '';
+				for (var i = 0; i < rows.length; i++) {
+					str += rows[i]['id'] + ",";
+				}
+				basic = str.substr(0, str.length - 1);
+			    window.location.href = "/admin/register/physical_table?id="+basic;
+
+			});
+			
 		},
 		add : function() {
 			Controller.api.bindevent();

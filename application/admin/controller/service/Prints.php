@@ -57,10 +57,12 @@ class Prints extends Backend
 
                 $printInfo['name'] = $uid['name'];
                 $printInfo['sex'] = $uid['sex'] == 0 ? "男" : "女";
+                $printInfo['age'] = $uid['age'];
                 $printInfo['employee'] = $uid['employee'];
                 $printInfo['images'] = $uid['images'];
                 $printInfo['company'] = $hosp['busisess_name'];
                 $printInfo['physictype'] = $uid['employee_id']; // 1公共卫生2食药安全
+                $printInfo['identitycard'] = $uid['identitycard']; // 1公共卫生2食药安全
 
                 // 判断打印卡数量是否超过限制量
                 // $printInfo['is_out'] = $this->comm->checkcardnumber($hosp['bs_id'], $total);

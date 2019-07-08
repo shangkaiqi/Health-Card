@@ -655,7 +655,7 @@ EOF;
             $printInfo['company'] = $hosp['busisess_name'];
             $printInfo['images'] = $row['images'];
             $printInfo['physictype'] = $row['employee_id'];
-            $printArr[] = $this->html($row['physictype'], $printInfo);
+            $printArr[] = $this->html($printInfo);
         }
         $str = '';
         foreach ($printArr as $row) {
@@ -683,7 +683,7 @@ EOF;
         $this->success('', 'index', "", 1);
     }
 
-    private function html($type, $print)
+    private function html($print)
     {
         $html = <<<EOF
 	        LODOP.NewPage();
@@ -725,7 +725,7 @@ EOF;
             LODOP.ADD_PRINT_TEXT("50mm", "23mm", 230, 29, "{$print['obtain_employ_number']}"); //健康正号
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
 EOF;
-        return $type ? $html : $html1;
+        return $print['physictype']==1 ? $html : $html1;
     }
 
     /**

@@ -29,9 +29,20 @@ class Common extends Backend
         return $in_a;
     }
 
-    // 打印复验单
-    public function nav_table()
-    {}
+    // 批量打印复验单
+    public function pcheckfrom()
+    {
+        $result = $this->request->get('id');
+        
+    }
+
+    public function getCheckResult($order, $type)
+    {
+        $where['order_serial_number'] = $order;
+        $where['physical'] = $type;
+        $result = db('order_detail')->where($where)->find();
+        return $result;
+    }
 
     public function inspect($type = '')
     {
