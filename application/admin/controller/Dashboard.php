@@ -15,6 +15,7 @@ class Dashboard extends Backend
 
     protected $pid = 0;
 
+
     public function _initialize()
     {
         parent::_initialize();
@@ -32,6 +33,7 @@ class Dashboard extends Backend
      */
     public function index()
     {
+
         $seventtime = \fast\Date::unixtime('day', - 7);
         $paylist = $createlist = [];
         for ($i = 0; $i < 7; $i ++) {
@@ -41,8 +43,10 @@ class Dashboard extends Backend
         }
         $totaluser = 0;
         $printcard_num = 0;
+        $have_physical = 0;
         // 医院总数
         if ($this->pid) {
+            
             $totaluser = db("business")->count("bs_id");
             $totalviews = db("order")->where("employ_num_time", "neq", "null")->count("order_id");
             $totalorder = db("physical_users")->count("id");
@@ -96,7 +100,7 @@ class Dashboard extends Backend
             'totalviews' => $totalviews, // 打印卡总量
             'totalorder' => $totalorder, // 登记体检人员总数
             'totalorderamount' => $have_physical, // 体检单位
-            'printcard_num' => $printcard_num,
+            'printcard_num' => $printcard_num['physical_num'],
 
             'todayuserlogin' => 321,
             'todayusersignup' => 430,

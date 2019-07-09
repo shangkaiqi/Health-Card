@@ -97,9 +97,11 @@ class Register extends Backend
             if ($params) {
                 // 获取订单最后一条id
                 // $orderId = $this->model->order('registertime', 'desc')->find();
-                $ordernum = array();
+				$ordernum = array();
+				$phwhere['order_serial_number'] = date("Ymd", time()) . "%";
+				$phwhere['bs_id'] = $this->busId;
                 $ordernum = $result = db('physical_users')->field("order_serial_number")
-                    ->where("order_serial_number", "like", date("Ymd", time()) . "%")
+                    ->where($phwhere)
                     ->order("registertime desc")
                     ->find();
                 if ($ordernum) {
@@ -142,7 +144,7 @@ class Register extends Backend
                 $par['order_status'] = '0';
                 $par['obtain_employ_type'] = $param['employee'];
                 $rand = mt_rand(100, 999);
-                $par['obtain_employ_number'] = "03".mt_rand(0,9).$bs_id['bs_id'] . date("YmdHis", time()) . mt_rand(10,99);
+                $par['obtain_employ_number'] = $bs_id['bs_id'] . date("ymdHis", time()) . $rand;
                 if ($params['express']) {
                     $par['address'] = $params['address'];
                 }

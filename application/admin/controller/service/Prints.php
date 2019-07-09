@@ -45,7 +45,6 @@ class Prints extends Backend
                 if (! $uid) {
                     $this->error("用户不存在");
                 }
-
                 $this->view->assign("body", $uid);
                 // 获取打印信息
                 $where_1['order_serial_number'] = $params['search'];
@@ -106,6 +105,7 @@ class Prints extends Backend
             $data['physical_result'] = 1;
             db('order')->where($where)->update($data);
         }
-        return $str;
+        
+        return $str==''?'正常':$str;
     }
 }

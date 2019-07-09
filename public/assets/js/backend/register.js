@@ -88,6 +88,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					str += rows[i]['id'] + ",";
 				}
 				basic = str.substr(0, str.length - 1);
+				Layer.alert(basic);
 			    window.location.href = "/admin/register/physical_table?id="+basic;
 
 			});
