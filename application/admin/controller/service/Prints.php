@@ -51,7 +51,7 @@ class Prints extends Backend
                 $where_1['order_serial_number'] = $params['search'];
                 $printInfo = db("order")->where($where_1)->find();
                 // 获取体检单位
-                $hosp = db("business")->field("bs_id,busisess_name")
+                $hosp = db("business")->field("bs_id,busisess_name,avatar")
                     ->where("bs_uuid", "=", $printInfo['bus_number'])
                     ->find();
 
@@ -63,6 +63,7 @@ class Prints extends Backend
                 $printInfo['company'] = $hosp['busisess_name'];
                 $printInfo['physictype'] = $uid['employee_id']; // 1公共卫生2食药安全
                 $printInfo['identitycard'] = $uid['identitycard']; // 1公共卫生2食药安全
+                $printInfo['avatar'] = $hosp['avatar'];
 
                 // 判断打印卡数量是否超过限制量
                 // $printInfo['is_out'] = $this->comm->checkcardnumber($hosp['bs_id'], $total);

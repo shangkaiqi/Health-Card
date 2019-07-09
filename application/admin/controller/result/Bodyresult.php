@@ -99,6 +99,9 @@ class Bodyresult extends Backend
         $row = $this->model->get([
             'id' => $ids
         ]);
+        $username = $this->admin->get([
+            'id' => $this->auth->id
+        ]);
         if (! $row)
             $this->error(__('No Results were found'));
         if ($this->request->isPost()) {
