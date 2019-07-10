@@ -80,13 +80,15 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					field : 'medicine',
 					title : __('食药健康体检量'),
 					operate : false
-				}, {
+				}
+				/*, {
 					field : 'operate',
 					title : __('Operate'),
 					table : table,
 					events : Table.api.events.operate,
 					formatter : Table.api.formatter.operate
-				} ] ]
+				}*/
+				] ]
 			});
 
 			// 为表格绑定事件

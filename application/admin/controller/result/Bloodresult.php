@@ -223,6 +223,9 @@ class Bloodresult extends Backend
                     $status = 1;
                 }
             }
+            
+            $this->comm->check_resultstatus($params["order_serial_number"]);
+            
             if ($status) {
                 $this->success('保存成功', null);
             } else {

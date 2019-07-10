@@ -33,7 +33,6 @@ class Common extends Backend
     public function pcheckfrom()
     {
         $result = $this->request->get('id');
-        
     }
 
     public function getCheckResult($order, $type)
@@ -199,6 +198,28 @@ class Common extends Backend
     {
         $result = $this->orderde->where($where)->update($data);
         return $result;
+    }
+
+    public function check_resultstatus($orderId)
+    {
+        $where['order_serial_number'] = $orderId;
+        $where['odbs_id'] = $this->busId;
+        $result = db('order_detail')->where($where)->select();
+        $i = 0;
+        foreach ($result as $row) {
+            if ($row['physical_result'] != 0) {
+                $i ++;
+            }
+        }
+        if ($i == 0) {
+            $owhere['order_serial_number'] = $orderId;
+            $owhere['obs_id'] = $this->busId;
+            $data['physical_result'] = 1;
+            $result = db('order')->where($owhere)->update($data);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**

@@ -177,6 +177,9 @@ class Conveniresult extends Backend
                     }
                 }
             }
+            
+            
+            $this->comm->check_resultstatus($params["order_serial_number"]);
             if ($status == 0) {
                 $this->success('保存成功', "index", '', 1);
             } else {

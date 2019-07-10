@@ -72,7 +72,6 @@ class Register extends Backend
             $total = $this->model->where("bs_id", "=", $this->busId)->count("id");
             $userList = $this->model->where("bs_id", "=", $this->busId)->select();
             foreach ($userList as $row) {
-                $row['employee'] = $this->comm->getEmpName($row['employee']);
                 $row['registertime'] = date("Y-m-d H:i", $row['registertime']);
             }
             $result = array(

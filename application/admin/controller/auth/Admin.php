@@ -165,6 +165,10 @@ class Admin extends Backend
                     if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
                         $this->error("该体检单位已存在");
                     }
+                    if(strlen($result['phone'])>11){
+                        
+                        $this->error("请输入正确的手机号");
+                    }
                     $busResult = $this->buss->save($data);
                     $last_id = $this->buss->bs_id;
                 }
