@@ -65,7 +65,8 @@ class Perspective extends Backend
                     'status' => '1'
                 ], [
                     'order_serial_number' => $order_id,
-                    'physical' => $this->type
+                    'physical' => $this->type,
+                    'odbs_id' =>$this->busId
                 ]);
 
                 $user['employee'] = $user['employee'];
@@ -125,7 +126,8 @@ class Perspective extends Backend
                             $where = [
                                 'physical' => $this->type,
                                 'order_serial_number' => $params["order_serial_number"],
-                                'item' => $ins[0]['id']
+                                'item' => $ins[0]['id'],
+                                'odbs_id' =>$this->busId
                             ];
                             $list = [
                                 "physical_result" => 1,
@@ -141,7 +143,8 @@ class Perspective extends Backend
                             $where = [
                                 'physical' => $this->type,
                                 'order_serial_number' => $params["order_serial_number"],
-                                'item' => $row['id']
+                                'item' => $row['id'],
+                                'odbs_id' =>$this->busId
                             ];
                             $list = [
                                 "physical_result" => 0,
@@ -159,7 +162,8 @@ class Perspective extends Backend
                     $where = [
                         'physical' => $this->type,
                         'order_serial_number' => $params["order_serial_number"],
-                        'item' => $row['id']
+                        'item' => $row['id'],
+                        'odbs_id' =>$this->busId
                     ];
                     $list = [
                         "physical_result" => 0,

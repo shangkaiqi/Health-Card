@@ -3,6 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\Backend;
 use app\admin\controller\Common;
+use Monolog\Logger;
+use think\Log;
 
 /**
  *
@@ -98,7 +100,7 @@ class Register extends Backend
                 // 获取订单最后一条id
                 // $orderId = $this->model->order('registertime', 'desc')->find();
 				$ordernum = array();
-				$phwhere['order_serial_number'] = date("Ymd", time()) . "%";
+				$phwhere['order_serial_number'] = ['like',date("Ymd", time()) . "%"];
 				$phwhere['bs_id'] = $this->busId;
                 $ordernum = $result = db('physical_users')->field("order_serial_number")
                     ->where($phwhere)
@@ -142,7 +144,8 @@ class Register extends Backend
                 $par['bus_number'] = $bs_id['bs_uuid'];
                 $par['charge'] = $bs_id['charge'];
                 $par['order_status'] = '0';
-                $par['obtain_employ_type'] = $param['employee'];
+                $par['obtain_employ_type'] = $param['employee'];                
+                $par['obs_id'] = $this->busId;
                 $rand = mt_rand(100, 999);
                 $par['obtain_employ_number'] = $bs_id['bs_id'] . date("ymdHis", time()) . $rand;
                 if ($params['express']) {
@@ -158,7 +161,7 @@ class Register extends Backend
                     $html = $this->get_html($param);
                     echo $html;
                 }
-                $this->success('', 'add', '', 1);
+                $this->success();
             }
             $this->error();
         }
@@ -180,6 +183,7 @@ class Register extends Backend
             $param['physical_result_ext'] = '';
             $param['doctor'] = '';
             $param['item'] = $res['id'];
+            $param['odbs_id'] = $this->busId;
             $list[] = $param;
         }
 

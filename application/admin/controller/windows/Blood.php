@@ -65,7 +65,8 @@ class Blood extends Backend
                     'status' => '1'
                 ], [
                     'order_serial_number' => $order_id,
-                    'physical' => $this->type
+                    'physical' => $this->type,
+                    'odbs_id'=>$this->busId
                 ]);
 
                 $user['employee'] = $user['employee'];
@@ -122,7 +123,8 @@ class Blood extends Backend
                 $where = [
                     'physical' => $this->type,
                     'order_serial_number' => $params['ordernum'],
-                    'item' => $index
+                    'item' => $index,
+                    'bs_id' =>$this->busId
                 ];
 
                 $list = [
