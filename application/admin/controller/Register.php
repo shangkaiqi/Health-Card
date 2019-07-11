@@ -204,9 +204,8 @@ class Register extends Backend
                 $param['images'] = $params['avatar'];
                 $param['age'] = $params['age'];
                 $param['phone'] = $params['phone'];
-                $param['employee'] = json_encode(array(
-                    $params['parent']
-                ));
+                $param['employee'] = $emp['name'];
+                $param['employee_id'] = $params['parent'];
                 $param['company'] = $params['company'];
                 $where['id'] = $ids;
                 $result = $this->model->where($where)->update($param);

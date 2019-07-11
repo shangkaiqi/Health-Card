@@ -58,6 +58,9 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					field : 'registertime',
 					title : '体检时间'
 				},{
+					field : 'order_serial_number',
+					title : '体检编号'
+				},{
 					field : 'employee',
 					title : '从业类别'
 				}, {

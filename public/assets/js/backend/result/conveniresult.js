@@ -68,6 +68,9 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							field : 'phone',
 							title : '手机号',
 							operate : false
+						},{
+							field : 'order_serial_number',
+							title : '体检编号'
 						},
 						{
 							field : 'employee',

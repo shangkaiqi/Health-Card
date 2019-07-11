@@ -703,9 +703,8 @@ EOF;
             LODOP.ADD_PRINT_TEXT("45mm", "25mm", "100", "30", "2019年6月30日");//到期时间
             LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-            LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");//相册头
-            LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"data:image/jpeg;base64,{$print['avatar']}\"/>"); //医院章
-            LODOP.ADD_PRINT_IMAGE("30mm","70mm","20mm","30mm","http://39.100.89.92:8080/qrcode/build?text=http://39.100.89.92:8080"); //二维码
+            LODOP.ADD_PRINT_IMAGE("30mm","62mm","16mm","20mm","<img style=\"position:absolute;left:1px;top:1px;\" height='75' width='62' src=\"data:image/jpeg;base64,{$print['images']}\"/><img style=\"position:absolute;left:10px;top:30px;\" height='50' width='50' border='0' src='http://39.100.89.92:8080/{$print['avatar']}' style='z-index: 999'/>");
+            LODOP.ADD_PRINT_IMAGE("29mm","51mm","11.91mm","11.91mm","<img src=\"http://39.100.89.92:8080/qrcode/build?text=http://39.100.89.92:8080&label=FastAdmin&size=35&padding=2\">"); //二维码
             LODOP.ADD_PRINT_TEXT("50mm", "25mm", "100", "30", "{$print['company']}");//体检单位
             LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
@@ -720,8 +719,8 @@ EOF;
             LODOP.ADD_PRINT_TEXT("40mm", "76mm", 50, 30, "{$print['sex']}");  //性别
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
             LODOP.SET_PRINT_STYLEA(0, "Angle", 4);
-            LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");//相册头
-            LODOP.ADD_PRINT_IMAGE("30mm","60mm","20mm","30mm","<img src=\"data:image/jpeg;base64,{$print['avatar']}\"/>"); //医院章
+            LODOP.ADD_PRINT_IMAGE("25mm","10mm","16mm","20mm","<img style=\"position:absolute;left:1px;top:1px;\" height='75' width='62' src=\"data:image/jpeg;base64,{$print['images']}\"/><img style=\"position:absolute;left:10px;top:30px;\" height='50' width='50' border='0' src='http://39.100.89.92:8080/{$print['avatar']}' style='z-index: 999'/>");//图片
+            LODOP.ADD_PRINT_IMAGE("25mm","27mm","11.91mm","11.91mm","<img src=\"http://39.100.89.92:8080/qrcode/build?text=http://39.100.89.92:8080&label=FastAdmin&size=35&padding=2\">"); //二维码
             LODOP.ADD_PRINT_TEXT("44.5mm", "48mm", 157, 30, "2019年12月31日");//到期时间
             LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
