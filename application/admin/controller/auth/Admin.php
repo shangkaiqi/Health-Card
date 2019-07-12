@@ -144,6 +144,10 @@ class Admin extends Backend
             $params = $this->request->post("row/a");
             if ($params) {
                 if ($this->pid == 0) {
+                    $card = array();
+                    $form = array();
+                    $card = explode('-', $params['printcard']);
+                    $form = explode('-', $params['printform']);
                     $data = [
                         // 'area' => $params['area'],
                         'physical_num' => $params['number'],
@@ -156,7 +160,12 @@ class Admin extends Backend
                         'province' => $params['province'],
                         'city' => $params['city'],
                         'county' => $params['area'],
-                        'avatar' =>$params['avatar']
+                        'avatar' =>$params['avatar'],
+                        'print_card_id' =>$card[0],
+                        'print_form_id' =>$card[0],
+                        'print_card' =>$form[1],
+                        'print_form' =>$form[1],
+                        
                     ];
 
                     // $busResult = $this->buss->validate('Business.add')->save($data);

@@ -14,10 +14,18 @@ class Register extends Validate
         'identitycard' => 'require',
         'sex' => 'sex',
         'age' => 'require|between:1,120',
-        'phone' => 'require',
+        'phone' => 'require|phone',
         'order_serial_number' => 'require'
     ];
 
+    protected function phone($value,$rule='',$data='',$field=''){
+        if(strlen($value) == 11){
+            return true;
+        }else{
+            return "手机号长度应该为11位";
+        }
+    }
+    
     /**
      * 提示消息
      */
@@ -25,6 +33,7 @@ class Register extends Validate
         'name.require' => '名字不能为空',
         'name.max' => '字符不能超过50个字符',
         'identitycard.require' => '身份证不能为空',
+        'phone.require'=>'请输入手机号',
         'age.require' => '年龄不能为空',
         'age.between' => '请输入合法年龄',
         'phone.require' => '手机不能为空',

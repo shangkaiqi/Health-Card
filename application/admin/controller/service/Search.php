@@ -639,16 +639,17 @@ EOF;
         $params = $this->request->get("id");
         $ids = explode(",", $params);
         $uid = db("physical_users")->where('id', "in", $ids)->select();
+        
+        // 获取体检单位
+        $hosp = db("business")->field("busisess_name,avatar,print_card_id")
+            ->where("bs_id", "=", $this->busId)
+            ->find();
         // 循环遍历每一个用户
         $printArr = array();
         foreach ($uid as $row) {
             // 获取订单信息
             $where['order_serial_number'] = $row['order_serial_number'];
             $printInfo = db("order")->where($where)->find();
-            // 获取体检单位
-            $hosp = db("business")->field("busisess_name,avatar")
-                ->where("bs_uuid", "=", $printInfo['bus_number'])
-                ->find();
             $printInfo['name'] = $row['name'];
             $printInfo['sex'] = $row['sex'] == 0 ? "男" : "女";
             $printInfo['employee'] = $row['employee'];
@@ -662,7 +663,7 @@ EOF;
         foreach ($printArr as $row) {
             $str .= $row;
         }
-        echo "<script language=\"javascript\" src=\"http://www.card.com/LodopFuncs.js\"></script>
+        echo "<script language=\"javascript\" src=\"http://39.100.89.92:8080/LodopFuncs.js\"></script>
             <script src=\"https://cdn.bootcss.com/jquery/3.4.1/jquery.js\"></script>
             <script>
             $(document).ready(function () {
@@ -676,6 +677,7 @@ EOF;
                 LODOP = getLodop();
                 LODOP.PRINT_INITA(\"0\", \"0\", \"86.6mm\", \"56.4mm\", \"打印控件功能演示_Lodop功能_在线编辑获得程序代码\");
                 {$str}
+		        if (LODOP.SET_PRINTER_INDEX({$hosp['print_card_id']}))
                 LODOP.PREVIEW();
             }
             </script>

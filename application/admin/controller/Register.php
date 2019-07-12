@@ -89,7 +89,7 @@ class Register extends Backend
 
         // 获取医院唯一标识
         $bs_id = db("admin")->alias("a")
-            ->field("b.bs_uuid,isprint,b.charge,b.bs_id")
+            ->field("b.bs_uuid,isprint,b.charge,b.bs_id,b.print_form_id")
             ->join("business b", "a.businessid = b.bs_id")
             ->where("id", "=", $this->auth->id)
             ->find();
@@ -157,6 +157,7 @@ class Register extends Backend
                 $this->order_detial($resultNum);
                 if($bs_id['isprint']){
                     $param['time'] = date("Y年m月d日",time());
+                    $param['print_form_id'] = $bs_id['print_form_id'];
                     $html = $this->get_html($param);
                     echo $html;
                 }
@@ -197,6 +198,10 @@ class Register extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
+                
+                $emp = db('employee')->field('name,id')
+                ->where('id', '=', $params['parent'])
+                ->find();
                 $param['name'] = $params['name'];
                 $param['identitycard'] = $params['identitycard'];
                 $param['type'] = $params['type'];
@@ -210,15 +215,18 @@ class Register extends Backend
                 $where['id'] = $ids;
                 $result = $this->model->where($where)->update($param);
                 if ($result)
-                    $this->success("", "index");
+                    $this->success();
                 else
-                    $this->error("", "index");
+                    $this->error();
             }
         }
         $this->view->assign("row", $list);
         return $this->view->fetch();
     }
 
+    /**
+     * 批量打印体检表
+     */
     public function physical_table()
     {
         $params = $this->request->get('id');
@@ -234,6 +242,9 @@ class Register extends Backend
             
         }
         
+        $bus = db("business")->field('print_form_id')->where('bs_id',"=",$this->busId)->find();
+        
+        
         $html = $this->getMulit_html();
         echo "<script language=\"javascript\" src=\"http://39.100.89.92:8080/LodopFuncs.js\"></script>
         <script src=\"https://cdn.bootcss.com/jquery/3.4.1/jquery.js\"></script>
@@ -248,7 +259,8 @@ class Register extends Backend
 			function print() {
                 LODOP = getLodop();
                 LODOP.PRINT_INITA(9, 0, 794, 1122, \"打印控件功能演示_Lodop功能_在线编辑获得程序代码\");
-                {$str}
+                {$str}                
+		        if (LODOP.SET_PRINTER_INDEX({$bus['print_form_id']}))
                 LODOP.PREVIEW();
             }
             </script>            
@@ -831,6 +843,8 @@ EOF;
         				LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
         				LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
         				LODOP.ADD_PRINT_TABLE(290, 56, 680, 760, document.getElementById("print_8").innerHTML);
+
+		                if (LODOP.SET_PRINTER_INDEX({$print['print_form_id']}))
         				LODOP.PREVIEW();
         			}
         		</script>

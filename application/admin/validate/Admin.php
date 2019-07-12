@@ -19,7 +19,7 @@ class Admin extends Validate
     //
     protected $rule = [
         'username' => 'require|max:50|unique',
-        'businessid' => 'require',
+//         'businessid' => 'require',
         'email' => 'require|email',
         'nickname' => 'require'
         // 'age' => 'require|number|between:1,120',
@@ -44,7 +44,7 @@ class Admin extends Validate
     protected $scene = [
         'add' => [
             'name',
-            'businessid',
+//             'businessid',
             'email',
             'nickname'
         ],
