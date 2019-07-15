@@ -9,6 +9,7 @@ use think\addons\Service;
 use think\Cache;
 use think\Config;
 use think\Exception;
+use app\common\controller\Frontend;
 
 /**
  * 插件管理
@@ -16,7 +17,7 @@ use think\Exception;
  * @icon   fa fa-cube
  * @remark 可在线安装、卸载、禁用、启用插件，同时支持添加本地插件。FastAdmin已上线插件商店 ，你可以发布你的免费或付费插件：<a href="https://www.fastadmin.net/store.html" target="_blank">https://www.fastadmin.net/store.html</a>
  */
-class Addon extends Backend
+class Addon extends Frontend
 {
     protected $model = null;
 

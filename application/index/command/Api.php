@@ -18,7 +18,7 @@ class Api extends Command
         $this
             ->setName('api')
             ->addOption('url', 'u', Option::VALUE_OPTIONAL, 'default api url', '')
-            ->addOption('module', 'm', Option::VALUE_OPTIONAL, 'module name(admin/index/api)', 'api')
+            ->addOption('module', 'm', Option::VALUE_OPTIONAL, 'module name(index/index/api)', 'api')
             ->addOption('output', 'o', Option::VALUE_OPTIONAL, 'output index file name', 'api.html')
             ->addOption('template', 'e', Option::VALUE_OPTIONAL, '', 'index.html')
             ->addOption('force', 'f', Option::VALUE_OPTIONAL, 'force override general file', false)

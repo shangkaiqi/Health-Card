@@ -45,7 +45,9 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					title : '身份证'
 				},{
 					field : 'name',
-					title : "姓名"
+					title : "姓名",
+					operate: 'LIKE %...%', 
+					placeholder: '模糊搜索，*表示任意字符'
 				},{
 					field : 'sex',
 					title : "性别",
@@ -53,7 +55,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					searchList: {1: __('女'), 0: __('男')}
 				}, {
 					field : 'phone',
-					title : '联系方式'
+					title : '联系方式',
+					operate : false
 				}, {
 					field : 'registertime',
 					title : '体检时间'
@@ -62,7 +65,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					title : '体检编号'
 				},{
 					field : 'employee',
-					title : '从业类别'
+					title : '从业类别',
+					operate : false
 				}, {
 					field : 'operate',
 					title : __('Operate'),

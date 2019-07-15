@@ -3,13 +3,14 @@ namespace app\index\controller\result;
 
 use app\common\controller\Backend;
 use app\index\controller\Common;
+use app\common\controller\Frontend;
 
 /**
  *
  * @desc结果录入
  * @icon fa fa-circle-o
  */
-class Resultcheck extends Backend
+class Resultcheck extends Frontend
 {
 
     protected $blood = 0;

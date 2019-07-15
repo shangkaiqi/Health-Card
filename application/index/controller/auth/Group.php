@@ -2,9 +2,10 @@
 
 namespace app\index\controller\auth;
 
-use app\admin\model\AuthGroup;
+use app\index\model\AuthGroup;
 use app\common\controller\Backend;
 use fast\Tree;
+use app\common\controller\Frontend;
 
 /**
  * 角色组
@@ -12,11 +13,11 @@ use fast\Tree;
  * @icon fa fa-group
  * @remark 角色组可以有多个,角色有上下级层级关系,如果子角色有角色组和管理员的权限则可以派生属于自己组别下级的角色组或管理员
  */
-class Group extends Backend
+class Group extends Frontend
 {
 
     /**
-     * @var \app\admin\model\AuthGroup
+     * @var \app\index\model\AuthGroup
      */
     protected $model = null;
     //当前登录管理员所有子组别

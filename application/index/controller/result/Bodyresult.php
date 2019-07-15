@@ -3,13 +3,14 @@ namespace app\index\controller\result;
 
 use app\common\controller\Backend;
 use app\index\controller\Common;
+use app\common\controller\Frontend;
 
 /**
  *
  * @desc体检结果录入
  * @icon fa fa-circle-o
  */
-class Bodyresult extends Backend
+class Bodyresult extends Frontend
 {
 
     protected $model = null;
@@ -39,8 +40,6 @@ class Bodyresult extends Backend
         $this->orderde = model("OrderDetail");
         $comm = new Common();
         $this->comm = $comm;
-        $ins = $comm->inspect($this->type);
-        $this->view->assign("inspect", $ins);
 
         $this->view->assign("pid", $comm->getEmployee());
         $this->model = model("PhysicalUsers");
@@ -82,7 +81,24 @@ class Bodyresult extends Backend
                 ->limit($offset, $limit)
                 ->select();
 
-            foreach ($list as $row) {}
+            foreach ($list as $row => $v) {
+                $resWhere['order_serial_number'] = $v['order_serial_number'];
+                $resWhere['odbs_id'] = $this->busId;
+                $resWhere['physical'] = $this->type;
+                $res = $this->orderde->field("physical_result")
+                    ->where($resWhere)
+                    ->select();
+                $status = 0;
+                foreach ($res as $r) {
+                    if ($r['physical_result'] != 0) {
+                        $status ++;
+                    }
+                }
+                if ($status == 0)
+                    $list[$row]['physical_result'] = 0;
+                else
+                    $list[$row]['physical_result'] = 1;
+            }
             $list = collection($list)->toArray();
             $result = array(
                 "total" => $total,
@@ -109,82 +125,25 @@ class Bodyresult extends Backend
             $status = 0;
 
             if ($params) {
-                $where['type'] = $this->type;
-                $where['parent'] = 0;
-                $inspectInfo = $this->inspect->where($where)->select();
-                foreach ($inspectInfo as $row) {
-                    if (! empty($params['result'])) {
-                        foreach ($params['result'] as $rs) {
-                            $sql = "select id,name from fa_inspect where
-                        id=(select parent from fa_inspect where id = $rs)  limit 1";
-                            $ins = db()->query($sql);
-                            if ($ins[0]['id'] == $row['id']) {
-
-                                $where = [
-                                    'physical' => $this->type,
-                                    'order_serial_number' => $params["order_serial_number"],
-                                    'item' => $ins[0]['id'],
-                                    'odbs_id' =>$this->busId
-                                ];
-                                $list = [
-                                    "physical_result" => 1,
-                                    "physical_result_ext" => $rs,
-                                    "status" => 1,
-                                    "doctor" => $username['nickname']
-                                ];
-                                $update = $this->orderde->where($where)->update($list);
-                                if (! $update) {
-                                    $status ++;
-                                }
-                            } else {
-                                $where = [
-                                    'physical' => $this->type,
-                                    'order_serial_number' => $params["order_serial_number"],
-                                    'item' => $row['id'],
-                                    'odbs_id' =>$this->busId
-                                ];
-                                $list = [
-                                    "physical_result" => 0,
-                                    "physical_result_ext" => 0,
-                                    "status" => 1,
-                                    "doctor" => $username['nickname']
-                                ];
-                                $update = $this->orderde->where($where)->update($list);
-                                if (! $update) {
-                                    $status ++;
-                                }
-                            }
-                        }
-                    } else {
-                        $where = [
-                            'physical' => $this->type,
-                            'order_serial_number' => $params["order_serial_number"],
-                            'item' => $row['id'],
-                            'odbs_id' =>$this->busId
-                        ];
-                        $list = [
-                            "physical_result" => 0,
-                            "physical_result_ext" => 0,
-                            "status" => 1,
-                            "doctor" => $username['nickname']
-                        ];
-                        $update = $this->orderde->where($where)->update($list);
-                        if (! $update) {
-                            $status ++;
-                        }
-                    }
+                $result = $this->comm->saveOrderDetail($params,$this->type,$username['nickname']);
+                if ($result) {
+                    $this->success('保存成功', "index", '', 1);
+                } else {
+                    $this->error('没有变更数据', 'index');
                 }
             }
-            
+
             $this->comm->check_resultstatus($params["order_serial_number"]);
-            
+
             if ($status == 0) {
                 $this->success('保存成功', "index", '', 1);
             } else {
-                $this->error('', 'index');
+                $this->error('没有变更数据', 'index');
             }
         }
 
+        $ins = $this->comm->inspect($this->type);
+        $this->view->assign("inspect", $ins);
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
         return $this->view->fetch();

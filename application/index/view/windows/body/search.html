@@ -7,8 +7,9 @@
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">快速检索:</label>
 				<div class="form-inline" data-toggle="cxselect"
 					data-selects="pid,name">
-					<input id="search-a" class="form-control" name="row[search]" placeholder="请输入编号后四位"
-						type="text" value="" style="margin-left: 15px;">
+					<input id="search-a" class="form-control" name="row[search]"
+						placeholder="请输入编号后四位" type="text" value=""
+						style="margin-left: 15px;">
 					<button type="submit" class="btn btn-success btn-embossed">查询</button>
 				</div>
 			</div>
@@ -68,7 +69,7 @@
 			待体检项：<span style="color: red;">{$wait_physical}</span>
 		</div>
 		<form id="edit-form" role="form" data-toggle="validator" method="POST"
-			action="/admin/windows/body/save">
+			action="/index/windows/body/save">
 			{foreach $inspect as $index=>$vo}
 			<div class="form-group">
 				<input type="hidden" value="{$vo['id']}"> <label
@@ -78,9 +79,18 @@
 						value="{$body['order_serial_number']}"> <select
 						class="first form-control" name=''
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="{$vo.id}" selected="selected">正常</option>
-						<option value="{$vo.id}">异常</option>
-					</select> <span id='inspace-1-{$vo.id}'></span>
+						<option value="0" {if condition="$vo.physical_result eq 0"
+							}selected="selected"{/if}>阴性</option>
+						<option value="1" {if condition="$vo.physical_result eq 1"
+							}selected="selected"{/if}>阳性</option>
+					</select> <select id='inspace-1-{$vo.id}' class="second form-control"
+						name="result[]"
+						style="width: 100px;{if condition='$vo.physical_result eq 0'}visibility:hidden{/if}">
+						{foreach $vo.values as $k=>$v}
+						<option value="{$v['id']}" {if
+							condition="$v.id == $vo.physical_result_ext" }selected="selected"{/if}>{$v['name']}</option>
+						{/foreach}
+					</select>
 				</div>
 			</div>
 			{/foreach}
@@ -96,34 +106,53 @@
 		</form>
 		<div class="opertor">操作员： {$operate['nickname']}</div>
 	</div>
-
 </div>
+<div id="aaa"></div>
 <script type="text/javascript">
 function getInspect(id,value){
-	$.ajax({
-		url : "common/getInspect",
-		data : {
-			'id' : value
-		},
-		type : "get",
-		dataType : "json",
-		async : true,
-		success : function(obj) {
-			var html = '<select class="second form-control" name="result[]" style="width: 100px;">';
-			for (var i = 0; i < obj.length; i++) {
-				html += "<option value="+obj[i]['id']+">"
-						+ obj[i].name
-						+ "</option>";
-			}
-			html += '</select>';
-			$("#inspace-1-"+id).html(html);
-		},
-		error : function(msg) {
-			
-		}
-
-	})
+    if(value==0){
+        $("#inspace-1-"+id).css("visibility","hidden");
+    }else{
+        $("#inspace-1-"+id).css("visibility","visible");
+    };
 }
+//$(document).ready(function(){	
+/* 	function getInspect(id,value){
+		var strs= new Array(); //定义一数组
+		strs=value.split("-"); //字符分割
+		$.ajax({
+			url : "common/getInspect",
+			data : {
+				'id' : strs[0],
+				'type':strs[1]
+			},
+			type : "get",
+			dataType : "json",
+			async : true,
+			success : function(obj) {			
+					var inspect = obj['inspect'];
+					var type = obj['type'];			
+					if(type != 0){
+					var html = '<select class="second form-control" name="result[]" style="width: 100px;">';
+					for (var i = 0; i < inspect.length; i++) {
+						html += "<option value="+inspect[i]['id']+">"
+								+ inspect[i].name
+								+ "</option>";
+					}
+					html += '</select>';
+					$("#inspace-1-"+id).html(html);
+				}else{
+					$("#inspace-1-"+id).html('');
+				}
+			},
+			error : function(msg) {
+				$("#aaa").html(msg.responseText);
+			}
+
+		})
+	} */
+//});
+
 </script>
 <style>
 h3 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\behavior;
+namespace app\index\behavior;
 
 class AdminLog
 {

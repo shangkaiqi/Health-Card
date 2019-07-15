@@ -9,6 +9,7 @@ use think\Debug;
 use think\Exception;
 use think\exception\PDOException;
 use ZipArchive;
+use app\common\controller\Frontend;
 
 /**
  * 数据库管理
@@ -16,7 +17,7 @@ use ZipArchive;
  * @icon   fa fa-database
  * @remark 可在线进行一些简单的数据库表优化或修复,查看表结构和数据。也可以进行SQL语句的操作
  */
-class Database extends Backend
+class Database extends Frontend
 {
     protected $noNeedRight = ['backuplist'];
 

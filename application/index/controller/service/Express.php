@@ -2,12 +2,13 @@
 namespace app\index\controller\service;
 
 use app\common\controller\Backend;
+use app\common\controller\Frontend;
 
 /**
  * @desc快递
  * @icon fa fa-circle-o
  */
-class Express extends Backend
+class Express extends Frontend
 {
 
     protected $model = null;

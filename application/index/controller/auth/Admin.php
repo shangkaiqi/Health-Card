@@ -1,12 +1,13 @@
 <?php
 namespace app\index\controller\auth;
 
-use app\admin\model\AuthGroup;
-use app\admin\model\AuthGroupAccess;
+use app\index\model\AuthGroup;
+use app\index\model\AuthGroupAccess;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
-use app\admin\controller\Business;
+use app\index\controller\Business;
+use app\common\controller\Frontend;
 
 /**
  * 管理员管理
@@ -14,12 +15,12 @@ use app\admin\controller\Business;
  * @icon fa fa-users
  * @remark 一个管理员可以有多个角色组,左侧的菜单根据管理员所拥有的权限进行生成
  */
-class Admin extends Backend
+class Admin extends Frontend
 {
 
     /**
      *
-     * @var \app\admin\model\Admin
+     * @var \app\index\model\Admin
      */
     protected $model = null;
 

@@ -3,13 +3,14 @@ namespace app\index\controller\service;
 
 use app\common\controller\Backend;
 use app\index\controller\Common;
+use app\common\controller\Frontend;
 
 /**
  * 打印健康证
  *
  * @icon fa fa-circle-o
  */
-class Prints extends Backend
+class Prints extends Frontend
 {
 
     /**
@@ -50,7 +51,7 @@ class Prints extends Backend
                 $where_1['order_serial_number'] = $params['search'];
                 $printInfo = db("order")->where($where_1)->find();
                 // 获取体检单位
-                $hosp = db("business")->field("bs_id,busisess_name,avatar,print_card_id")
+                $hosp = db("business")->field("bs_id,busisess_name,avatar")
                     ->where("bs_uuid", "=", $printInfo['bus_number'])
                     ->find();
 
@@ -63,8 +64,6 @@ class Prints extends Backend
                 $printInfo['physictype'] = $uid['employee_id']; // 1公共卫生2食药安全
                 $printInfo['identitycard'] = $uid['identitycard']; // 1公共卫生2食药安全
                 $printInfo['avatar'] = $hosp['avatar'];
-                $printInfo['print_card_id'] = $hosp['print_card_id'];
-                
 
                 // 判断打印卡数量是否超过限制量
                 // $printInfo['is_out'] = $this->comm->checkcardnumber($hosp['bs_id'], $total);

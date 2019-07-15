@@ -2,10 +2,11 @@
 
 namespace app\index\controller\auth;
 
-use app\admin\model\AuthRule;
+use app\index\model\AuthRule;
 use app\common\controller\Backend;
 use fast\Tree;
 use think\Cache;
+use app\common\controller\Frontend;
 
 /**
  * 规则管理
@@ -13,11 +14,11 @@ use think\Cache;
  * @icon fa fa-list
  * @remark 规则通常对应一个控制器的方法,同时左侧的菜单栏数据也从规则中体现,通常建议通过控制台进行生成规则节点
  */
-class Rule extends Backend
+class Rule extends Frontend
 {
 
     /**
-     * @var \app\admin\model\AuthRule
+     * @var \app\index\model\AuthRule
      */
     protected $model = null;
     protected $rulelist = [];

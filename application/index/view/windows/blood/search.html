@@ -71,31 +71,6 @@
 	</div>
 
 </div>
-<script type="text/javascript">
-function getInspect(id,value){
-	$.ajax({
-		url : "common/getInspect",
-		data : {
-			'id' : value
-		},
-		type : "get",
-		dataType : "json",
-		async : true,
-		success : function(obj) {
-			var html = "";
-			for (var i = 0; i < obj.length; i++) {
-				html += "<option value="+obj[i]['id']+">"
-						+ obj[i].name
-						+ "</option>";
-			}
-			$("#inspace-1-"+id).html(html);
-		},
-		error : function(msg) {
-		}
-
-	})
-}
-</script>
 <style>
 h3 {
 	padding: 15px 10px;

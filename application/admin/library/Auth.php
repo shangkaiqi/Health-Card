@@ -375,7 +375,9 @@ class Auth extends \fast\Auth
         $refererUrl = Session::get('referer');
         $pinyin = new \Overtrue\Pinyin\Pinyin('Overtrue\Pinyin\MemoryFileDictLoader');
         // 必须将结果集转换为数组
-        $ruleList = collection(\app\admin\model\AuthRule::where('status', 'normal')->where('ismenu', 1)->order('weigh', 'desc')->cache("__menu__")->select())->toArray();
+        $authRuleWhere['ismenu'] = 1;
+        $authRuleWhere['is_admin'] = 1;
+        $ruleList = collection(\app\admin\model\AuthRule::where('status', 'normal')->where($authRuleWhere)->order('weigh', 'desc')->cache("__menu__")->select())->toArray();
         foreach ($ruleList as $k => &$v) {
             if (!in_array($v['name'], $userRule)) {
                 unset($ruleList[$k]);

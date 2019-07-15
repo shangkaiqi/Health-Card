@@ -2,8 +2,9 @@
 namespace app\index\controller;
 
 use app\common\controller\Backend;
+use app\common\controller\Frontend;
 
-class Saveresult extends Backend
+class Saveresult extends Frontend
 {
 
     protected $noNeedRight = [

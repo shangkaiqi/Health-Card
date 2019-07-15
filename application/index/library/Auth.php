@@ -10,7 +10,7 @@ use think\Cookie;
 use think\Request;
 use think\Session;
 
-class Auth extends \fast\Auth
+class Auth extends \fast\Frontauth
 {
     protected $_error = '';
     protected $requestUri = '';
@@ -260,7 +260,7 @@ class Auth extends \fast\Auth
             $groupIds[] = $v['id'];
         }
         // 取出所有分组
-        $groupList = \app\admin\model\AuthGroup::where(['status' => 'normal'])->select();
+        $groupList = \app\index\model\AuthGroup::where(['status' => 'normal'])->select();
         $objList = [];
         foreach ($groups as $K => $v) {
             if ($v['rules'] === '*') {
@@ -292,7 +292,7 @@ class Auth extends \fast\Auth
         $childrenAdminIds = [];
         if (!$this->isSuperAdmin()) {
             $groupIds = $this->getChildrenGroupIds(false);
-            $authGroupList = \app\admin\model\AuthGroupAccess::
+            $authGroupList = \app\index\model\AuthGroupAccess::
             field('uid,group_id')
                 ->where('group_id', 'in', $groupIds)
                 ->select();
@@ -375,7 +375,7 @@ class Auth extends \fast\Auth
         $refererUrl = Session::get('referer');
         $pinyin = new \Overtrue\Pinyin\Pinyin('Overtrue\Pinyin\MemoryFileDictLoader');
         // 必须将结果集转换为数组
-        $ruleList = collection(\app\admin\model\AuthRule::where('status', 'normal')->where('ismenu', 1)->order('weigh', 'desc')->cache("__menu__")->select())->toArray();
+        $ruleList = collection(\app\index\model\AuthRule::where('status', 'normal')->where('ismenu', 1)->order('weigh', 'desc')->cache("__menu__")->select())->toArray();
         foreach ($ruleList as $k => &$v) {
             if (!in_array($v['name'], $userRule)) {
                 unset($ruleList[$k]);

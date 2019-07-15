@@ -162,7 +162,7 @@ return [
         // 日志保存目录
         'path'  => LOG_PATH,
         // 日志记录级别
-        'level' => ['sql'],
+        'level' => [],
     ],
     // +----------------------------------------------------------------------
     // | Trace设置 开启 app_trace 后 有效
@@ -260,7 +260,7 @@ return [
         //是否开启前台会员中心
         'usercenter'          => true,
         //登录验证码
-        'login_captcha'       => true,
+        'login_captcha'       => false,
         //登录失败超过10次则1天后重试
         'login_failure_retry' => true,
         //是否同一账号同一时间只能在一个地方登录

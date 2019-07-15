@@ -3,16 +3,16 @@
 namespace app\index\controller;
 
 use app\index\model\AdminLog;
-use app\common\controller\Backend;
 use think\Config;
 use think\Hook;
 use think\Validate;
+use app\common\controller\Frontend;
 
 /**
  * 后台首页
  * @internal
  */
-class Index extends Backend
+class Index extends Frontend
 {
 
     protected $noNeedLogin = ['login'];
@@ -30,7 +30,7 @@ class Index extends Backend
     public function index()
     {
         //左侧菜单
-        list($menulist, $navlist, $fixedmenu, $referermenu) = $this->auth->getSidebar([
+        list($menulists, $navlist, $fixedmenu, $referermenu) = $this->auth->getSidebar([
             'dashboard' => 'hot',
             'addon'     => ['new', 'red', 'badge'],
             'auth/rule' => __('Menu'),
@@ -39,10 +39,10 @@ class Index extends Backend
         $action = $this->request->request('action');
         if ($this->request->isPost()) {
             if ($action == 'refreshmenu') {
-                $this->success('', null, ['menulist' => $menulist, 'navlist' => $navlist]);
+                $this->success('', null, ['menulist' => $menulists, 'navlist' => $navlist]);
             }
         }
-        $this->view->assign('menulist', $menulist);
+        $this->view->assign('menulist', $menulists);
         $this->view->assign('navlist', $navlist);
         $this->view->assign('fixedmenu', $fixedmenu);
         $this->view->assign('referermenu', $referermenu);

@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\common\controller\Backend;
 use think\Config;
+use app\common\controller\Frontend;
 
 /**
  * 控制台
@@ -10,7 +11,7 @@ use think\Config;
  * @icon fa fa-dashboard
  * @remark 用于展示当前系统中的统计数据、统计报表及重要实时数据
  */
-class Dashboard extends Backend
+class Dashboard extends Frontend
 {
 
     protected $pid = 0;

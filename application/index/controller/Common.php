@@ -3,11 +3,13 @@ namespace app\index\controller;
 
 use app\common\controller\Backend;
 use PHPExcel_IOFactory;
+use app\common\controller\Frontend;
 require './phpexcel/PHPExcel.php';
 
-class Common extends Backend
+class Common extends Frontend
 {
 
+    protected $orderde = null;
     protected $noNeedRight = [
         '*'
     ];
@@ -15,18 +17,19 @@ class Common extends Backend
     protected $noNeedLogin = [
         '*'
     ];
-
+    
     public function _initialize()
     {
         parent::_initialize();
+        $this->orderde = model("OrderDetail");
     }
 
     public function getInspece($parent)
     {
-        $in_a = db("inspect")->field("id,name,value,status")
+        $inspect = db("inspect")->field("id,name,value,status")
             ->where("parent", "=", $parent)
             ->select();
-        return $in_a;
+        return $inspect;
     }
 
     // 批量打印复验单
@@ -43,6 +46,12 @@ class Common extends Backend
         return $result;
     }
 
+    /**
+     * 获取体检结果
+     *
+     * @param string $type
+     * @return array
+     */
     public function inspect($type = '')
     {
         $where = array();
@@ -56,11 +65,15 @@ class Common extends Backend
             0
         ];
         if ($type == '') {
-            $inspect = db("inspect")->field("id,name")
+            $inspect = db("order_detail")->alias('od')
+                ->join("inspect i", 'od.item=i.id')
+                ->field("i.id,name,item,physical_result,physical_result_ext")
                 ->where($where)
                 ->select();
         } else {
-            $inspect = db("inspect")->field("id,name")
+            $inspect = db("order_detail")->alias('od')
+                ->join("inspect i", 'od.item=i.id')
+                ->field("i.id,name,item,physical_result,physical_result_ext")
                 ->where($where)
                 ->select();
         }
@@ -70,7 +83,10 @@ class Common extends Backend
             $ins[] = array(
                 "name" => $val['name'],
                 "values" => $in_a,
-                "id" => $val['id']
+                "id" => $val['id'],
+                "item" => $val['item'],
+                "physical_result" => $val['physical_result'],
+                'physical_result_ext' => $val['physical_result_ext']
             );
         }
         return $ins;
@@ -194,10 +210,57 @@ class Common extends Backend
      * @param array $params
      * @return boolean
      */
-    public function saveOrderDetail($data, $where)
+    public function saveOrderDetail($params, $type,$doctor)
     {
-        $result = $this->orderde->where($where)->update($data);
-        return $result;
+        $status = 0;
+        for ($i = 0; $i < count($params['frist']); $i ++) {
+            $arr = explode("-", $params['frist'][$i]);
+            if ($arr[0] == 0) {
+                $where = [
+                    'physical' => $type,
+                    'order_serial_number' => $params["order_serial_number"],
+                    'item' => $arr[1],
+                    'odbs_id' => $this->busId
+                ];
+                $list = [
+                    "physical_result" => 0,
+                    "physical_result_ext" => 0,
+                    "status" => 1,
+                    "doctor" => $doctor
+                ];
+                $update = $this->orderde->where($where)->update($list);
+                if (! $update) {
+                    $status ++;
+                }
+            } else {
+                $res = $params['result'][$i];
+                $sql = "select id,name from fa_inspect where
+                                    id=(select parent from fa_inspect where id = $res)  limit 1";
+                $ins = db()->query($sql);
+
+                $where = [
+                    'physical' => $type,
+                    'order_serial_number' => $params["order_serial_number"],
+                    'item' => $ins[0]['id'],
+                    'odbs_id' => $this->busId
+                ];
+                $list = [
+                    "physical_result" => 1,
+                    "physical_result_ext" => $res,
+                    "status" => 1,
+                    "doctor" => $doctor
+                ];
+                $update = $this->orderde->where($where)->update($list);
+                if (! $update) {
+                    $status ++;
+                }
+            }
+        }
+        if ($status == 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public function check_resultstatus($orderId)
@@ -217,7 +280,7 @@ class Common extends Backend
             $data['physical_result'] = 1;
             $result = db('order')->where($owhere)->update($data);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -227,13 +290,19 @@ class Common extends Backend
      */
     public function getInspect()
     {
-        $id = $this->request->get('id');
+        $params = $this->request->get();
+        $type = $params['type'];
         $inspect = array();
-        $inspect = array();
-        $inspect = db("inspect")->field("id,name")
-            ->where('parent', '=', $id)
-            ->select();
-        return json($inspect);
+        if ($type) {
+            $inspect = db("inspect")->field("id,name")
+                ->where('parent', '=', $params['id'])
+                ->select();
+        }
+        $return = array(
+            'type' => $type,
+            'inspect' => $inspect
+        );
+        return json($return);
     }
 
     /**

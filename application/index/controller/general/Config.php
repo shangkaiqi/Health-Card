@@ -6,6 +6,7 @@ use app\common\controller\Backend;
 use app\common\library\Email;
 use app\common\model\Config as ConfigModel;
 use think\Exception;
+use app\common\controller\Frontend;
 
 /**
  * 系统配置
@@ -13,7 +14,7 @@ use think\Exception;
  * @icon fa fa-cogs
  * @remark 可以在此增改系统的变量和分组,也可以自定义分组和变量,如果需要删除请从数据库中删除
  */
-class Config extends Backend
+class Config extends Frontend
 {
 
     /**

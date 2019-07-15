@@ -2,17 +2,18 @@
 
 namespace app\index\controller\general;
 
-use app\admin\model\Admin;
+use app\index\model\Admin;
 use app\common\controller\Backend;
 use fast\Random;
 use think\Session;
+use app\common\controller\Frontend;
 
 /**
  * 个人配置
  *
  * @icon fa fa-user
  */
-class Profile extends Backend
+class Profile extends Frontend
 {
 
     /**

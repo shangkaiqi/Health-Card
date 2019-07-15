@@ -3,6 +3,7 @@ namespace app\index\controller\windows;
 
 use app\common\controller\Backend;
 use app\index\controller\Common;
+use app\common\controller\Frontend;
 
 /**
  *
@@ -10,7 +11,7 @@ use app\index\controller\Common;
  *
  * @icon fa fa-circle-o
  */
-class Blood extends Backend
+class Blood extends Frontend
 {
 
     protected $model = null;

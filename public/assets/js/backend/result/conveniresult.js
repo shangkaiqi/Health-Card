@@ -92,9 +92,19 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							title : '登记编号'
 						},
 						{
-							field : 'order.physical_result',
+							field : 'physical_result',
 							title : '结果',
-							operate : false
+							operate : false,
+							formatter : function(value, row) {
+								if (value === 0)
+									return '<span style="font-size:14px;color:#000">合格</span>';
+								if (value === 1)
+									return '<span class="label" style="font-size:14px;color:red">异常</span>';
+							},
+							searchList : {
+								0 : __('合格'),
+								1 : __('异常')
+							}
 						},
 						{
 							field : 'operate',

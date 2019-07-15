@@ -4,6 +4,7 @@ namespace app\index\controller\auth;
 
 use app\index\model\AuthGroup;
 use app\common\controller\Backend;
+use app\common\controller\Frontend;
 
 /**
  * 管理员日志
@@ -11,11 +12,11 @@ use app\common\controller\Backend;
  * @icon fa fa-users
  * @remark 管理员可以查看自己所拥有的权限的管理员日志
  */
-class Adminlog extends Backend
+class Adminlog extends Frontend
 {
 
     /**
-     * @var \app\admin\model\AdminLog
+     * @var \app\index\model\AdminLog
      */
     protected $model = null;
     protected $childrenGroupIds = [];

@@ -8,13 +8,14 @@ use think\Cache;
 use think\Config;
 use think\Db;
 use think\Lang;
+use app\common\controller\Frontend;
 
 /**
  * Ajax异步请求接口
  *
  * @internal
  */
-class Ajax extends Backend
+class Ajax extends Frontend
 {
 
     protected $noNeedLogin = [

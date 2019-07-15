@@ -9,8 +9,8 @@
 					style="margin-left: -65px;">快速检索:</label>
 				<div class="form-inline" data-toggle="cxselect"
 					data-selects="pid,name">
-					<input id="search-a" class="form-control" name="row[search]" placeholder="请输入编号后四位"
-						type="text" value="" style="width: 400px;">
+					<input id="search-a" class="form-control" name="row[search]"
+						placeholder="请输入编号后四位" type="text" value="" style="width: 400px;">
 					<button type="submit" class="btn btn-success btn-embossed">查询</button>
 				</div>
 			</div>
@@ -64,16 +64,25 @@
 						{foreach $body as $index=>$vo}
 						<div class="form-group">
 							<input type="hidden" value="{$vo['id']}"> <label
-								for="c-nickname" class="control-label col-xs-12 col-sm-2" style="width: 110px;">{$vo.name}:</label>
+								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$userinfo['order_serial_number']}"> <select
-									class="first form-control" name=''
+									value="{$row['order_serial_number']}"> <select
+									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
-									<option value="{$vo.id}" selected="selected">正常</option>
-									<option value="{$vo.id}">异常</option>
-								</select> <span id='inspace-1-{$vo.id}'></span>
+									<option value="0-{$vo.id}" {if condition="$vo.physical_result eq 0"
+										}selected="selected"{/if}>阴性</option>
+									<option value="1-{$vo.id}" {if condition="$vo.physical_result eq 1"
+										}selected="selected"{/if}>阳性</option>
+								</select> <select id='inspace-1-{$vo.id}' class="second form-control"
+									name="result[]"
+									style="width: 100px;{if condition='$vo.physical_result eq 0'}visibility:hidden{/if}">
+									{foreach $vo.values as $k=>$v}
+									<option value="{$v['id']}" {if
+										condition="$v.id == $vo.physical_result_ext"
+										}selected="selected"{/if}>{$v['name']}</option> {/foreach}
+								</select>
 							</div>
 						</div>
 						{/foreach}
@@ -84,16 +93,25 @@
 						{foreach $tous as $index=>$vo}
 						<div class="form-group">
 							<input type="hidden" value="{$vo['id']}"> <label
-								for="c-nickname" class="control-label col-xs-12 col-sm-2" style="width: 110px;">{$vo.name}:</label>
+								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$userinfo['order_serial_number']}"> <select
-									class="first form-control" name=''
+									value="{$row['order_serial_number']}"> <select
+									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
-									<option value="{$vo.id}" selected="selected">正常</option>
-									<option value="{$vo.id}">异常</option>
-								</select> <span id='inspace-1-{$vo.id}'></span>
+									<option value="0-{$vo.id}" {if condition="$vo.physical_result eq 0"
+										}selected="selected"{/if}>阴性</option>
+									<option value="1-{$vo.id}" {if condition="$vo.physical_result eq 1"
+										}selected="selected"{/if}>阳性</option>
+								</select> <select id='inspace-1-{$vo.id}' class="second form-control"
+									name="result[]"
+									style="width: 100px;{if condition='$vo.physical_result eq 0'}visibility:hidden{/if}">
+									{foreach $vo.values as $k=>$v}
+									<option value="{$v['id']}" {if
+										condition="$v.id == $vo.physical_result_ext"
+										}selected="selected"{/if}>{$v['name']}</option> {/foreach}
+								</select>
 							</div>
 						</div>
 						{/foreach}
@@ -106,16 +124,25 @@
 						{foreach $conven as $index=>$vo}
 						<div class="form-group">
 							<input type="hidden" value="{$vo['id']}"> <label
-								for="c-nickname" class="control-label col-xs-12 col-sm-2" style="width: 110px;">{$vo.name}:</label>
+								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$userinfo['order_serial_number']}"> <select
-									class="first form-control" name=''
+									value="{$row['order_serial_number']}"> <select
+									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
-									<option value="{$vo.id}" selected="selected">正常</option>
-									<option value="{$vo.id}">异常</option>
-								</select> <span id='inspace-1-{$vo.id}'></span>
+									<option value="0-{$vo.id}" {if condition="$vo.physical_result eq 0"
+										}selected="selected"{/if}>阴性</option>
+									<option value="1-{$vo.id}" {if condition="$vo.physical_result eq 1"
+										}selected="selected"{/if}>阳性</option>
+								</select> <select id='inspace-1-{$vo.id}' class="second form-control"
+									name="result[]"
+									style="width: 100px;{if condition='$vo.physical_result eq 0'}visibility:hidden{/if}">
+									{foreach $vo.values as $k=>$v}
+									<option value="{$v['id']}" {if
+										condition="$v.id == $vo.physical_result_ext"
+										}selected="selected"{/if}>{$v['name']}</option> {/foreach}
+								</select>
 							</div>
 						</div>
 						{/foreach}
@@ -125,16 +152,25 @@
 						{foreach $blood as $index=>$vo}
 						<div class="form-group">
 							<input type="hidden" value="{$vo['id']}"> <label
-								for="c-nickname" class="control-label col-xs-12 col-sm-2" style="width: 110px;">{$vo.name}:</label>
+								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$userinfo['order_serial_number']}"> <select
-									class="first form-control" name=''
+									value="{$row['order_serial_number']}"> <select
+									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
-									<option value="{$vo.id}" selected="selected">正常</option>
-									<option value="{$vo.id}">异常</option>
-								</select> <span id='inspace-1-{$vo.id}'></span>
+									<option value="0-{$vo.id}" {if condition="$vo.physical_result eq 0"
+										}selected="selected"{/if}>阴性</option>
+									<option value="1-{$vo.id}" {if condition="$vo.physical_result eq 1"
+										}selected="selected"{/if}>阳性</option>
+								</select> <select id='inspace-1-{$vo.id}' class="second form-control"
+									name="result[]"
+									style="width: 100px;{if condition='$vo.physical_result eq 0'}visibility:hidden{/if}">
+									{foreach $vo.values as $k=>$v}
+									<option value="{$v['id']}" {if
+										condition="$v.id == $vo.physical_result_ext"
+										}selected="selected"{/if}>{$v['name']}</option> {/foreach}
+								</select>
 							</div>
 						</div>
 						{/foreach}
@@ -155,31 +191,15 @@
 
 </div>
 <script>
-	function getInspect(id,value){
-		$.ajax({
-			url : "common/getInspect",
-			data : {
-				'id' : value
-			},
-			type : "get",
-			dataType : "json",
-			async : true,
-			success : function(obj) {
-				var html = '<select class="second form-control" name="result[]" style="width: 100px;">';
-				for (var i = 0; i < obj.length; i++) {
-					html += "<option value="+obj[i]['id']+">"
-							+ obj[i].name
-							+ "</option>";
-				}
-				html += '</select>';
-				$("#inspace-1-"+id).html(html);
-			},
-			error : function(msg) {
-				
-			}
-
-		})
-	}
+function getInspect(id,value){
+	var strs= new Array(); //定义一数组
+	strs=value.split("-"); //字符分割
+    if(strs[0]==0){
+        $("#inspace-1-"+id).css("visibility","hidden");
+    }else{
+        $("#inspace-1-"+id).css("visibility","visible");
+    };
+}
 </script>
 <style>
 h3 {

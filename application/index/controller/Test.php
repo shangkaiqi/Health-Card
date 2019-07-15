@@ -3,25 +3,26 @@
 namespace app\index\controller;
 
 use app\common\controller\Backend;
+use app\common\controller\Frontend;
 
 /**
  * 测试管理
  *
  * @icon fa fa-circle-o
  */
-class Test extends Backend
+class Test extends Frontend
 {
     
     /**
      * Test模型对象
-     * @var \app\admin\model\Test
+     * @var \app\index\model\Test
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\Test;
+        $this->model = new \app\index\model\Test;
         $this->view->assign("weekList", $this->model->getWeekList());
         $this->view->assign("flagList", $this->model->getFlagList());
         $this->view->assign("genderdataList", $this->model->getGenderdataList());

@@ -1,8 +1,8 @@
 <?php
 
-namespace app\admin\library\traits;
+namespace app\index\library\traits;
 
-use app\admin\library\Auth;
+use app\index\library\Auth;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;

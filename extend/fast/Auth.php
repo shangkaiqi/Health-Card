@@ -187,7 +187,8 @@ class Auth
 
         // 筛选条件
         $where = [
-            'status' => 'normal'
+            'status' => 'normal',
+            'is_admin'=>1
         ];
         if (!in_array('*', $ids)) {
             $where['id'] = ['in', $ids];

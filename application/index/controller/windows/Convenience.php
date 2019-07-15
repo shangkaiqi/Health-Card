@@ -2,15 +2,16 @@
 namespace app\index\controller\windows;
 
 use app\common\controller\Backend;
-
 use app\index\controller\Common;
+use app\common\controller\Frontend;
+
 /**
  *
  * @desc采血窗口
  *
  * @icon fa fa-circle-o
  */
-class Convenience extends Backend
+class Convenience extends Frontend
 {
 
     protected $model = null;

@@ -24,7 +24,7 @@ class Business extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\Business();
+        $this->model = model("Business");
         $this->comm = new Common();
     }
 
@@ -68,7 +68,7 @@ class Business extends Backend
                 $row['area'] = $this->comm->getAreaName($row['county']);
                 $row->visible([
                     'bs_id',
-                    'busisess_name',
+                    'busisessname',
                     'createtime',
                     'phone',
                     'address',
@@ -92,24 +92,79 @@ class Business extends Backend
         }
         return $this->view->fetch();
     }
-    
+
     public function edit($ids = '')
     {
-        $row = $this->model->get(['bs_id'=>$ids]);
+        $row = $this->model->get([
+            'bs_id' => $ids
+        ]);
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            var_dump($params);
-            if ($params) {}
+            if ($params) {
+                if (strlen($params['phone']) != 11) {
+
+                    $this->error("请输入正确的手机号");
+                }
+
+                $card = array();
+                $form = array();
+                $card = explode('-', $params['printcard']);
+                $form = explode('-', $params['printform']);
+
+                $params['physical_num'] ? $data['physical_num'] = $params['physical_num'] : '';
+                $params['phone'] ? $data['phone'] = $params['phone'] : '';
+                // $params['busisessname'] ? $data['busisessname'] = $params['busisessname'] : '';
+                ! empty($params['connect']) ? $data['connect'] = $params['connect'] : '';
+                ! empty($params['address']) ? $data['address'] = $params['address'] : '';
+                ! empty($params['isprint']) ? $data['isprint'] = $params['isprint'] : '';
+                ! empty($params['province']) && $params['province'] != 0 ? $data['province'] = $params['province'] : '';
+                ! empty($params['city']) ? $data['city'] = $params['city'] : '';
+                ! empty($params['county']) ? $data['county'] = $params['county'] : '';
+                ! empty($params['avatar']) ? $data['avatar'] = $params['avatar'] : '';
+                ! empty($params['print_card_id']) ? $data['print_card_id'] = $card[0] : '';
+                ! empty($params['print_form_id']) ? $data['print_form_id'] = $card[0] : '';
+                ! empty($params['print_card']) ? $data['print_card'] = $card[1] : '';
+                ! empty($params['print_form']) ? $data['print_form'] = $card[1] : '';
+
+                $busResult = $this->model->validate("Business.edit")
+                    ->where('bs_id', "=", $ids)
+                    ->update($data);
+                if (! $busResult) {
+                    $this->error($this->model->getError());
+                }
+                $this->success();
+            }
         }
-        $this->view->assign("row",$row);
+        $this->view->assign("row", $row);
         return $this->view->fetch();
     }
+
     public function add()
     {
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
-            var_dump($params);
-            if ($params) {}
+            if ($params) {
+                if (strlen($params['phone']) != 11) {
+
+                    $this->error("请输入正确的手机号");
+                }
+                $card = array();
+                $form = array();
+                $card = explode('-', $params['printcard']);
+                $form = explode('-', $params['printform']);
+                $params['print_card_id'] = $card[0];
+                $params['print_form_id'] = $card[0];
+                $params['print_card'] = $card[1];
+                $params['print_form'] = $card[1];
+                $params['bs_uuid'] = create_uuid();
+                unset($params['printcard']);
+                unset($params['printform']);
+                $busResult = $this->model->validate("Business.add")->save($params);
+                if (! $busResult) {
+                    $this->error($this->model->getError());
+                }
+                $this->success();
+            }
         }
         return $this->view->fetch();
     }

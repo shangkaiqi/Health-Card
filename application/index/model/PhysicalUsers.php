@@ -27,6 +27,6 @@ class PhysicalUsers extends Model
 
     public function order()
     {
-        return $this->belongsTo('app\admin\model\Order', 'id', 'user_id', [], 'LEFT')->setEagerlyType(0);
+        return $this->belongsTo('app\index\model\Order', 'id', 'user_id', [], 'LEFT')->setEagerlyType(0);
     }
 }
