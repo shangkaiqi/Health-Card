@@ -75,7 +75,7 @@ class Body extends Frontend
                     'physical' => $this->type
                 ];
                 
-                $ins = $this->comm->inspect($this->type);
+                $ins = $this->comm->inspect($this->type,$order_id);
                 $this->view->assign("inspect", $ins);
                 $this->view->assign("wait_physical", $this->comm->wait_physical($user['id']));
                 $this->view->assign("body", $user);

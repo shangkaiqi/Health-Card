@@ -10,6 +10,7 @@ class Common extends Frontend
 {
 
     protected $orderde = null;
+
     protected $noNeedRight = [
         '*'
     ];
@@ -17,7 +18,7 @@ class Common extends Frontend
     protected $noNeedLogin = [
         '*'
     ];
-    
+
     public function _initialize()
     {
         parent::_initialize();
@@ -52,13 +53,17 @@ class Common extends Frontend
      * @param string $type
      * @return array
      */
-    public function inspect($type = '')
+    public function inspect($type = '', $orderId)
     {
         $where = array();
         $inspect = array();
         $where['type'] = [
             "eq",
             $type
+        ];
+        $where['order_serial_number'] = [
+            'eq',
+            $orderId
         ];
         $where['parent'] = [
             "eq",
@@ -210,7 +215,7 @@ class Common extends Frontend
      * @param array $params
      * @return boolean
      */
-    public function saveOrderDetail($params, $type,$doctor)
+    public function saveOrderDetail($params, $type, $doctor)
     {
         $status = 0;
         for ($i = 0; $i < count($params['frist']); $i ++) {

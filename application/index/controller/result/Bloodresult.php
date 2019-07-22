@@ -132,7 +132,7 @@ class Bloodresult extends Frontend
             }
         }
 
-        $ins = $this->comm->inspect($this->type);
+        $ins = $this->comm->inspect($this->type,$row['order_serial_number']);
         $this->view->assign("inspect", $ins);
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);
