@@ -48,8 +48,8 @@ class Register extends Frontend
         $comm = new Common();
         $this->comm = $comm;
 
-        $ins = $comm->inspect();
-        $this->view->assign("inspect", $ins);
+//         $ins = $comm->inspect();
+//         $this->view->assign("inspect", $ins);
 
         $this->view->assign("wait_physical", $comm->wait_physical());
         $this->view->assign("pid", $comm->getemployee());
