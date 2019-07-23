@@ -20,10 +20,12 @@ class Resultcheck extends Frontend
     protected $comm = '';
 
     protected $orderde = null;
+
     protected $inspect = null;
+
     protected $admin = null;
+
     protected $order = null;
-    
 
     // 开关权限开启
     protected $noNeedRight = [
@@ -42,44 +44,6 @@ class Resultcheck extends Frontend
         $this->orderde = model("OrderDetail");
         $comm = new Common();
         $this->comm = $comm;
-        /**
-         * 血检信息
-         *
-         * @var Ambiguous $result
-         */
-        $blood = array();
-
-        $blood = $comm->inspect(0);
-        $this->view->assign("blood", $blood);
-
-        /**
-         * 便检信息
-         *
-         * @var Ambiguous $result
-         */
-
-        $conven = array();
-
-        $conven = $comm->inspect(1);
-        $this->view->assign("conven", $conven);
-
-        /**
-         * 体检信息
-         *
-         * @var Ambiguous $result
-         */
-        $body = array();
-
-        $body = $comm->inspect(2);
-        $this->view->assign("body", $body);
-        /**
-         * 透視信息
-         *
-         * @var Ambiguous $result
-         */
-        $tous = array();
-        $tous = $comm->inspect(3);
-        $this->view->assign("tous", $tous);
     }
 
     public function index()
@@ -87,12 +51,53 @@ class Resultcheck extends Frontend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $where['order_serial_number'] = date("Ymd", time()) . $params['search'];
+                $order_id = date("Ymd", time()) . $params['search'];
+                $where['order_serial_number'] = $order_id;
                 $where['bs_id'] = $this->busId;
                 $uid = db("physical_users")->where($where)->find();
                 if (! $uid) {
                     $this->error("用户不存在");
                 }
+
+                /**
+                 * 血检信息
+                 *
+                 * @var Ambiguous $result
+                 */
+                $blood = array();
+
+                $blood = $this->comm->inspect(0, $order_id);
+                $this->view->assign("blood", $blood);
+
+                /**
+                 * 便检信息
+                 *
+                 * @var Ambiguous $result
+                 */
+
+                $conven = array();
+
+                $conven = $this->comm->inspect(1, $order_id);
+                $this->view->assign("conven", $conven);
+
+                /**
+                 * 体检信息
+                 *
+                 * @var Ambiguous $result
+                 */
+                $body = array();
+
+                $body = $this->comm->inspect(2, $order_id);
+                $this->view->assign("body", $body);
+                /**
+                 * 透視信息
+                 *
+                 * @var Ambiguous $result
+                 */
+                $tous = array();
+                $tous = $this->comm->inspect(3, $order_id);
+                $this->view->assign("tous", $tous);
+
                 $this->view->assign("userinfo", $uid);
                 return $this->view->fetch("search");
             } else {
@@ -112,7 +117,7 @@ class Resultcheck extends Frontend
         $status = 0;
 
         if ($params) {
-//             $where['type'] = $this->type;
+            // $where['type'] = $this->type;
             $where['parent'] = 0;
             $inspectInfo = $this->inspect->where($where)->select();
             foreach ($inspectInfo as $row) {
@@ -124,7 +129,7 @@ class Resultcheck extends Frontend
                         if ($ins[0]['id'] == $row['id']) {
 
                             $where = [
-//                                 'physical' => $this->type,
+                                // 'physical' => $this->type,
                                 'order_serial_number' => $params["order_serial_number"],
                                 'item' => $ins[0]['id'],
                                 'odbs_id' => $this->busId
@@ -141,7 +146,7 @@ class Resultcheck extends Frontend
                             }
                         } else {
                             $where = [
-//                                 'physical' => $this->type,
+                                // 'physical' => $this->type,
                                 'order_serial_number' => $params["order_serial_number"],
                                 'item' => $row['id'],
                                 'odbs_id' => $this->busId
@@ -160,7 +165,7 @@ class Resultcheck extends Frontend
                     }
                 } else {
                     $where = [
-//                         'physical' => $this->type,
+                        // 'physical' => $this->type,
                         'order_serial_number' => $params["order_serial_number"],
                         'item' => $row['id'],
                         'odbs_id' => $this->busId
@@ -178,13 +183,11 @@ class Resultcheck extends Frontend
                 }
             }
         }
-        echo db()->getLastSql();
-        $this->comm->check_resultstatus($params["order_serial_number"]);        
-        echo db()->getLastSql();
+        $this->comm->check_resultstatus($params["order_serial_number"]);
         if ($status == 0) {
-//             $this->success('保存成功', "index", '', 1);
+            $this->success('保存成功', "index", '', 1);
         } else {
-//             $this->error('', 'index');
+            $this->error('', 'index');
         }
     }
 

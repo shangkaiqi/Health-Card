@@ -108,12 +108,12 @@ class Search extends Frontend
         $params = $this->request->get("id");
         $print = $this->getPrint($params);
         $time = date("Y年m月d日", time());
-        exit();
+        $hosp = "";
         return <<<EOF
                 	<!DOCTYPE html>
                 	<html>
                 	<head>
-                		<script language="javascript" src="http://www.card.com/LodopFuncs.js"></script>
+                		<script language="javascript" src="/LodopFuncs.js"></script>
                 		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
                 		<script>
                 			$(document).ready(function () {
@@ -141,6 +141,8 @@ class Search extends Frontend
                 				LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"https://s.cn.bing.net/th?id=ODL.9e05e5966ac2c0e81bd7a7d5b2bd29ec&w=146&h=146&c=7&rs=1&qlt=80&pid=RichNav\"/>");
                 				LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
                 				LODOP.ADD_PRINT_TABLE(290, 56, 680, 760, document.getElementById("print_8").innerHTML);
+
+		                        if (LODOP.SET_PRINTER_INDEX({$hosp['print_form_id']}))
                 				LODOP.PREVIEW();
                 			}
                 		</script>
@@ -634,7 +636,7 @@ EOF;
         $result['employee'] = $this->comm->getEmpName($result['employee']);
         return $result;
     }
-   
+   //批量打印体验单
     public function printMulit()
     {
         $params = $this->request->get("id");
@@ -647,7 +649,7 @@ EOF;
             $where['order_serial_number'] = $row['order_serial_number'];
             $printInfo = db("order")->where($where)->find();
             // 获取体检单位
-            $hosp = db("business")->field("busisess_name,avatar")
+            $hosp = db("business")->field("busisess_name,avatar,print_form_id")
                 ->where("bs_uuid", "=", $printInfo['bus_number'])
                 ->find();
             $printInfo['name'] = $row['name'];
@@ -663,7 +665,15 @@ EOF;
         foreach ($printArr as $row) {
             $str .= $row;
         }
-        echo "<script language=\"javascript\" src=\"http://www.card.com/LodopFuncs.js\"></script>
+        
+        // 获取体检单位
+        $bs_id = db("admin")->alias("a")
+            ->field("b.print_form_id")
+            ->join("business b", "a.businessid = b.bs_id")
+            ->where("id", "=", $this->auth->id)
+            ->find();
+        $print = $bs_id['print_form_id'];
+        echo "<script language=\"javascript\" src=\"/LodopFuncs.js\"></script>
             <script src=\"https://cdn.bootcss.com/jquery/3.4.1/jquery.js\"></script>
             <script>
             $(document).ready(function () {
@@ -677,6 +687,8 @@ EOF;
                 LODOP = getLodop();
                 LODOP.PRINT_INITA(\"0\", \"0\", \"86.6mm\", \"56.4mm\", \"打印控件功能演示_Lodop功能_在线编辑获得程序代码\");
                 {$str}
+
+		        if (LODOP.SET_PRINTER_INDEX({$print}))
                 LODOP.PREVIEW();
             }
             </script>

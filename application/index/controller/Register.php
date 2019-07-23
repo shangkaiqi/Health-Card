@@ -48,8 +48,6 @@ class Register extends Frontend
         $comm = new Common();
         $this->comm = $comm;
 
-//         $ins = $comm->inspect();
-//         $this->view->assign("inspect", $ins);
 
         $this->view->assign("wait_physical", $comm->wait_physical());
         $this->view->assign("pid", $comm->getemployee());
@@ -90,7 +88,7 @@ class Register extends Frontend
 
         // 获取医院唯一标识
         $bs_id = db("admin")->alias("a")
-            ->field("b.bs_uuid,isprint,b.charge,b.bs_id")
+            ->field("b.bs_uuid,isprint,b.charge,b.bs_id,b.print_form_id")
             ->join("business b", "a.businessid = b.bs_id")
             ->where("id", "=", $this->auth->id)
             ->find();
@@ -114,6 +112,7 @@ class Register extends Frontend
                 $emp = db('employee')->field('name,id')
                     ->where('id', '=', $params['parent'])
                     ->find();
+                
                 $param['name'] = $params['name'];
                 $param['identitycard'] = $params['identitycard'];
                 $param['type'] = $params['type'];
@@ -158,6 +157,7 @@ class Register extends Frontend
                 $this->order_detial($resultNum);
                 if($bs_id['isprint']){
                     $param['time'] = date("Y年m月d日",time());
+                    $param['print_form_id'] = $bs_id['print_form_id'];
                     $html = $this->get_html($param);
                     echo $html;
                 }
@@ -206,7 +206,7 @@ class Register extends Frontend
                 $param['identitycard'] = $params['identitycard'];
                 $param['type'] = $params['type'];
                 $param['sex'] = $params['sex'];
-                $param['images'] = $params['avatar'];
+//                 $param['images'] = $params['avatar'];
                 $param['age'] = $params['age'];
                 $param['phone'] = $params['phone'];
                 $param['employee'] = $emp['name'];
@@ -223,7 +223,10 @@ class Register extends Frontend
         $this->view->assign("row", $list);
         return $this->view->fetch();
     }
-
+/**
+ * 批量打印体检单
+ * 
+ */
     public function physical_table()
     {
         $params = $this->request->get('id');
@@ -235,12 +238,17 @@ class Register extends Frontend
         $str = '';
         foreach ($printArr as $row) {
             $str .= $row;
-//             $html.=$row['html'];
             
         }
-        
+        // 获取体检单位        
+        $bs_id = db("admin")->alias("a")
+            ->field("b.print_form_id")
+            ->join("business b", "a.businessid = b.bs_id")
+            ->where("id", "=", $this->auth->id)
+            ->find();
+           $print = $bs_id['print_form_id'];
         $html = $this->getMulit_html();
-        echo "<script language=\"javascript\" src=\"http://39.100.89.92:8080/LodopFuncs.js\"></script>
+        echo "<script language=\"javascript\" src=\"/LodopFuncs.js\"></script>
         <script src=\"https://cdn.bootcss.com/jquery/3.4.1/jquery.js\"></script>
             <script>
             $(document).ready(function () {
@@ -254,6 +262,8 @@ class Register extends Frontend
                 LODOP = getLodop();
                 LODOP.PRINT_INITA(9, 0, 794, 1122, \"打印控件功能演示_Lodop功能_在线编辑获得程序代码\");
                 {$str}
+                
+		        if (LODOP.SET_PRINTER_INDEX({$print}))
                 LODOP.PREVIEW();
             }
             </script>            
@@ -779,7 +789,7 @@ EOF;
         	<!DOCTYPE html>
         	<html>
         	<head>
-        		<script language="javascript" src="http://39.100.89.92:8080/LodopFuncs.js"></script>
+        		<script language="javascript" src="/LodopFuncs.js"></script>
         		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
         		<script>
         			$(document).ready(function () {
@@ -836,6 +846,8 @@ EOF;
         				LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
         				LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
         				LODOP.ADD_PRINT_TABLE(290, 56, 680, 760, document.getElementById("print_8").innerHTML);
+
+		                if (LODOP.SET_PRINTER_INDEX({$print['print_form_id']}))
         				LODOP.PREVIEW();
         			}
         		</script>

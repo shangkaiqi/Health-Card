@@ -85,7 +85,7 @@
 			CreatePrintPage1();
 		}
 
-		if (LODOP.SET_PRINTER_INDEX(2))
+		if (LODOP.SET_PRINTER_INDEX({$print['print_card_id']}))
 		LODOP.PREVIEW();		       
 	};		
 	function CreatePrintPage() {		

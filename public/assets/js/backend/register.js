@@ -96,7 +96,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 				}
 				basic = str.substr(0, str.length - 1);
 				Layer.alert(basic);
-			    window.location.href = "/admin/register/physical_table?id="+basic;
+			    window.location.href = "/index/register/physical_table?id="+basic;
 
 			});
 			

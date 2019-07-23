@@ -149,7 +149,6 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			Controller.api.bindevent();
 		},
 		withdraw : function() {
-			alert("aaaaaa");
 			Controller.api.bindevent();
 		},
 		api : {

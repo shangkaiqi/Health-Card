@@ -100,7 +100,7 @@ define(
 											formatter : Table.api.formatter.label,
 											searchList : {
 												1 : __('已体检'),
-												0 : __('未体检'),
+												0 : __('体检中'),
 												2 : __('已出证')
 											}
 										},
@@ -160,7 +160,7 @@ define(
 							str += rows[i]['id'] + ",";
 						}
 						basic = str.substr(0, str.length - 1);
-					    window.location.href = "/admin/service/search/printMulit?id="+basic;
+					    window.location.href = "/index/service/search/printMulit?id="+basic;
 					});
 					// 获取选中项
 					$(document).on("click", ".expUser", function() {
@@ -170,7 +170,7 @@ define(
 							str += rows[i]['id'] + ",";
 						}
 						basic = str.substr(0, str.length - 1);
-					    window.location.href = "/admin/service/search/expUser?id="+basic;
+					    window.location.href = "/index/service/search/expUser?id="+basic;
 
 					});
 					// 获取选中项

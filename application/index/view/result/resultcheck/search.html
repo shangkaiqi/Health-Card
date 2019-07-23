@@ -67,7 +67,7 @@
 								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$row['order_serial_number']}"> <select
+									value="{$userinfo['order_serial_number']}"> <select
 									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
@@ -96,7 +96,7 @@
 								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$row['order_serial_number']}"> <select
+									value="{$userinfo['order_serial_number']}"> <select
 									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
@@ -127,7 +127,7 @@
 								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$row['order_serial_number']}"> <select
+									value="{$userinfo['order_serial_number']}"> <select
 									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">
@@ -152,10 +152,10 @@
 						{foreach $blood as $index=>$vo}
 						<div class="form-group">
 							<input type="hidden" value="{$vo['id']}"> <label
-								for="c-nickname" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
+								for="c-nickname" style="width:120px" class="control-label col-xs-12 col-sm-2">{$vo.name}:</label>
 							<div class="form-inline">
 								<input type="hidden" name="order_serial_number"
-									value="{$row['order_serial_number']}"> <select
+									value="{$userinfo['order_serial_number']}"> <select
 									class="first form-control" name='frist[]'
 									onchange="getInspect({$vo.id},this.value)"
 									style="width: 100px;">

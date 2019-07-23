@@ -82,6 +82,7 @@ class Common extends Frontend
                 ->where($where)
                 ->select();
         }
+        file_put_contents("testa.txt", db()->getLastSql(),FILE_APPEND);
         $ins = array();
         foreach ($inspect as $key => $val) {
             $in_a = $this->getInspece($val['id']);

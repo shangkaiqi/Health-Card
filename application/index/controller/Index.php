@@ -61,6 +61,9 @@ class Index extends Frontend
         }
         if ($this->request->isPost()) {
             $username = $this->request->post('username');
+            if($username === "admin"){                
+                $this->error("非法用户");
+            }
             $password = $this->request->post('password');
             $keeplogin = $this->request->post('keeplogin');
             $token = $this->request->post('__token__');

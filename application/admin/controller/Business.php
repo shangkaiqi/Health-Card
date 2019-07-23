@@ -108,23 +108,26 @@ class Business extends Backend
 
                 $card = array();
                 $form = array();
-                $card = explode('-', $params['printcard']);
-                $form = explode('-', $params['printform']);
-
+                if(!empty($params['printcard'])){                    
+                    $card = explode('-', $params['printcard']);
+                    $data['print_card_id'] = $card[0];
+                    $data['print_card'] = $card[1];
+                }
+                
+                
+                if(!empty($params['printform'])){
+                    $form = explode('-', $params['printform']);
+                    $data['print_form_id'] = $form[0];
+                    $data['print_form'] = $form[1];
+                    
+                }
+                
                 $params['physical_num'] ? $data['physical_num'] = $params['physical_num'] : '';
                 $params['phone'] ? $data['phone'] = $params['phone'] : '';
-                // $params['busisessname'] ? $data['busisessname'] = $params['busisessname'] : '';
+                $params['charge'] ? $data['charge'] = $params['charge'] : '';
                 ! empty($params['connect']) ? $data['connect'] = $params['connect'] : '';
-                ! empty($params['address']) ? $data['address'] = $params['address'] : '';
                 ! empty($params['isprint']) ? $data['isprint'] = $params['isprint'] : '';
-                ! empty($params['province']) && $params['province'] != 0 ? $data['province'] = $params['province'] : '';
-                ! empty($params['city']) ? $data['city'] = $params['city'] : '';
-                ! empty($params['county']) ? $data['county'] = $params['county'] : '';
                 ! empty($params['avatar']) ? $data['avatar'] = $params['avatar'] : '';
-                ! empty($params['print_card_id']) ? $data['print_card_id'] = $card[0] : '';
-                ! empty($params['print_form_id']) ? $data['print_form_id'] = $card[0] : '';
-                ! empty($params['print_card']) ? $data['print_card'] = $card[1] : '';
-                ! empty($params['print_form']) ? $data['print_form'] = $card[1] : '';
 
                 $busResult = $this->model->validate("Business.edit")
                     ->where('bs_id', "=", $ids)

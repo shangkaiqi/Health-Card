@@ -77,11 +77,11 @@
 				<div class="form-inline">
 					<input type="hidden" name="order_serial_number"
 						value="{$body['order_serial_number']}"> <select
-						class="first form-control" name=''
+						class="first form-control" name='frist[]'
 						onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
-						<option value="0" {if condition="$vo.physical_result eq 0"
+						<option value="0-{$vo.id}" {if condition="$vo.physical_result eq 0"
 							}selected="selected"{/if}>阴性</option>
-						<option value="1" {if condition="$vo.physical_result eq 1"
+						<option value="1-{$vo.id}" {if condition="$vo.physical_result eq 1"
 							}selected="selected"{/if}>阳性</option>
 					</select> <select id='inspace-1-{$vo.id}' class="second form-control"
 						name="result[]"
