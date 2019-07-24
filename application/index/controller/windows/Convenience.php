@@ -42,8 +42,6 @@ class Convenience extends Frontend
         $this->model = model("Order");
         $this->user = model("PhysicalUsers");
 
-        $ins = $comm->inspect($this->type);
-        $this->view->assign("inspect", $ins);
 
         $this->view->assign("pid", $comm->getemployee());
     }

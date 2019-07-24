@@ -42,8 +42,6 @@ class Blood extends Frontend
         $this->inspect = model("Inspect");
         $this->puser = model("PhysicalUsers");
 
-        $ins = $comm->inspect($this->type);
-        $this->view->assign("inspect", $ins);
 
         $this->view->assign("pid", $comm->getemployee());
     }

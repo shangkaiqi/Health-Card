@@ -53,7 +53,7 @@ class Common extends Frontend
      * @param string $type
      * @return array
      */
-    public function inspect($type = '', $orderId)
+    public function inspect($type = '', $orderId='')
     {
         $where = array();
         $inspect = array();
@@ -68,6 +68,10 @@ class Common extends Frontend
         $where['parent'] = [
             "eq",
             0
+        ];
+        $where['odbs_id'] = [
+            "eq",
+            $this->busId
         ];
         if ($type == '') {
             $inspect = db("order_detail")->alias('od')
