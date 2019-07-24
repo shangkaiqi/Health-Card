@@ -89,16 +89,20 @@ class Conveniresult extends Frontend
                 $res = $this->orderde->field("physical_result")
                     ->where($resWhere)
                     ->select();
-                $status = 0;
-                foreach ($res as $r) {
-                    if ($r['physical_result'] != 0) {
-                        $status ++;
+                    $status = 0;
+                    foreach ($res as $r) {
+                        if ($r['physical_result'] == 2) {
+                            $status = 2;
+                        }
+                        if ($r['physical_result'] == 1) {
+                            $status = 1;
+                        }
+                        if ($r['physical_result'] == 0) {
+                            $status = 0;
+                        }
                     }
-                }
-                if ($status == 0)
-                    $list[$row]['physical_result'] = 0;
-                else
-                    $list[$row]['physical_result'] = 1;
+                    
+                    $list[$row]['physical_result'] = $status;
             }
             $list = collection($list)->toArray();
             $result = array(

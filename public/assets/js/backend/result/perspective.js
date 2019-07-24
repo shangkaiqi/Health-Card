@@ -96,6 +96,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 									return '<span style="font-size:14px;color:#000">合格</span>';
 								if (value === 1)
 									return '<span class="label" style="font-size:14px;color:red">异常</span>';
+								if (value === 2)
+									return '<span class="label" style="font-size:14px;color:red">未录入结果</span>';
 							},
 							searchList : {
 								0 : __('合格'),

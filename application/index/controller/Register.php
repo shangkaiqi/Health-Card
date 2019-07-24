@@ -179,7 +179,7 @@ class Register extends Frontend
         foreach ($ins as $res) {
             $param['order_serial_number'] = $orderNum;
             $param['physical'] = $res['type'];
-            $param['physical_result'] = '';
+            $param['physical_result'] = 2;
             $param['physical_result_ext'] = '';
             $param['doctor'] = '';
             $param['item'] = $res['id'];

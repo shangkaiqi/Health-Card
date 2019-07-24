@@ -74,15 +74,17 @@ class Common extends Frontend
                 ->join("inspect i", 'od.item=i.id')
                 ->field("i.id,name,item,physical_result,physical_result_ext")
                 ->where($where)
+                ->group("name")
                 ->select();
         } else {
             $inspect = db("order_detail")->alias('od')
                 ->join("inspect i", 'od.item=i.id')
                 ->field("i.id,name,item,physical_result,physical_result_ext")
                 ->where($where)
+                ->group("name")
                 ->select();
         }
-        file_put_contents("testa.txt", db()->getLastSql(),FILE_APPEND);
+        file_put_contents("testa.txt", db()->getLastSql(), FILE_APPEND);
         $ins = array();
         foreach ($inspect as $key => $val) {
             $in_a = $this->getInspece($val['id']);

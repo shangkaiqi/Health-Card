@@ -91,14 +91,18 @@ class Perspective extends Frontend
                     ->select();
                 $status = 0;
                 foreach ($res as $r) {
-                    if ($r['physical_result'] != 0) {
-                        $status ++;
+                    if ($r['physical_result'] == 2) {
+                        $status = 2;
+                    }
+                    if ($r['physical_result'] == 1) {
+                        $status = 1;
+                    }
+                    if ($r['physical_result'] == 0) {
+                        $status = 0;
                     }
                 }
-                if ($status == 0)
-                    $list[$row]['physical_result'] = 0;
-                else
-                    $list[$row]['physical_result'] = 1;
+
+                $list[$row]['physical_result'] = $status;
             }
             $list = collection($list)->toArray();
             $result = array(
@@ -126,8 +130,8 @@ class Perspective extends Frontend
             $status = 0;
 
             if ($params) {
-                
-                $result = $this->comm->saveOrderDetail($params,$this->type,$username['nickname']);
+
+                $result = $this->comm->saveOrderDetail($params, $this->type, $username['nickname']);
                 if ($result) {
                     $this->success('保存成功', "index", '', 1);
                 } else {
@@ -143,8 +147,7 @@ class Perspective extends Frontend
             }
         }
 
-        
-        $ins = $this->comm->inspect($this->type,$row['order_serial_number']);
+        $ins = $this->comm->inspect($this->type, $row['order_serial_number']);
         $this->view->assign("inspect", $ins);
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);

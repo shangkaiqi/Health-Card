@@ -109,7 +109,10 @@
 </div>
 <script type="text/javascript">
 function getInspect(id,value){
-    if(value==0){
+
+	var strs= new Array(); //定义一数组
+	strs=value.split("-"); //字符分割
+    if(strs[0]==0){
         $("#inspace-1-"+id).css("visibility","hidden");
     }else{
         $("#inspace-1-"+id).css("visibility","visible");
