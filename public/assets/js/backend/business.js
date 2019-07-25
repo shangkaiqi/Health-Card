@@ -40,7 +40,7 @@ define(
 											operate : false
 										},
 										{
-											field : 'busisessname',
+											field : 'busisess_name',
 											title : __('Busisessname'),
 											operate : 'LIKE %...%',
 											placeholder : '模糊搜索，*表示任意字符'

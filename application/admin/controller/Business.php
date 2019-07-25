@@ -68,7 +68,7 @@ class Business extends Backend
                 $row['area'] = $this->comm->getAreaName($row['county']);
                 $row->visible([
                     'bs_id',
-                    'busisessname',
+                    'busisess_name',
                     'createtime',
                     'phone',
                     'address',

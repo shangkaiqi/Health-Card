@@ -116,6 +116,8 @@ define(
 														.clone(true);
 												$(table).data("operate-del",
 														null);
+												$(table).data("operate-edit",
+														null);
 												that.table = table;
 												return Table.api.formatter.operate
 														.call(that, value, row,
