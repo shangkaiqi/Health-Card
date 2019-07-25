@@ -69,7 +69,7 @@
 						}selected="selected"{/if}>阳性</option>
 				</select> <select id='inspace-1-{$vo.id}' class="second form-control"
 					name="result[]"
-					style="width: 100px;{if condition='$vo.physical_result eq 0'}visibility:hidden{/if}">
+					style="width: 100px;{if condition='$vo.physical_result neq 1'}visibility:hidden{/if}">
 					{foreach $vo.values as $k=>$v}
 					<option value="{$v['id']}" {if
 						condition="$v.id == $vo.physical_result_ext" }selected="selected"{/if}>{$v['name']}</option>

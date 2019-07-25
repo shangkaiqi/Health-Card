@@ -78,6 +78,10 @@
 <script src="/LodopFuncs.js"></script>
 <script>
 	function myPreview() {
+		if(!{$print['is_out']}){
+			alert("打印卡数量不足");
+			return false;
+		}
 		//1公共卫生2食药安全
 		if({$print['physictype']} == 1){
 			CreatePrintPage();

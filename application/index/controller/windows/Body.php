@@ -116,18 +116,16 @@ class Body extends Frontend
         $username = $this->admin->get([
             'id' => $this->auth->id
         ]);
-        $status = 0;
-
         if ($params) {
             $result = $this->comm->saveOrderDetail($params,$this->type,$username['nickname']);
             if ($result) {
+                $this->comm->check_resultstatus($params["order_serial_number"]);
                 $this->success('保存成功', "index", '', 1);
             } else {
                 $this->error('没有变更数据', 'index');
             }
         }
         
-        $this->comm->check_resultstatus($params["order_serial_number"]);
         
         if ($status == 0) {
             $this->success('保存成功', "index", '', 1);

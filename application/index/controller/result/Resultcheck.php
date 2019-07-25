@@ -117,72 +117,7 @@ class Resultcheck extends Frontend
         $status = 0;
 
         if ($params) {
-            // $where['type'] = $this->type;
-//             $where['parent'] = 0;
-//             $inspectInfo = $this->inspect->where($where)->select();
-//             foreach ($inspectInfo as $row) {
-//                 if (! empty($params['result'])) {
-//                     foreach ($params['result'] as $rs) {
-//                         $sql = "select id,name from fa_inspect where
-//                         id=(select parent from fa_inspect where id = $rs)  limit 1";
-//                         $ins = db()->query($sql);
-//                         if ($ins[0]['id'] == $row['id']) {
-
-//                             $where = [
-//                                 // 'physical' => $this->type,
-//                                 'order_serial_number' => $params["order_serial_number"],
-//                                 'item' => $ins[0]['id'],
-//                                 'odbs_id' => $this->busId
-//                             ];
-//                             $list = [
-//                                 "physical_result" => 1,
-//                                 "physical_result_ext" => $rs,
-//                                 "status" => 1,
-//                                 "doctor" => $username['nickname']
-//                             ];
-//                             $update = $this->orderde->where($where)->update($list);
-//                             if (! $update) {
-//                                 $status ++;
-//                             }
-//                         } else {
-//                             $where = [
-//                                 // 'physical' => $this->type,
-//                                 'order_serial_number' => $params["order_serial_number"],
-//                                 'item' => $row['id'],
-//                                 'odbs_id' => $this->busId
-//                             ];
-//                             $list = [
-//                                 "physical_result" => 0,
-//                                 "physical_result_ext" => 0,
-//                                 "status" => 1,
-//                                 "doctor" => $username['nickname']
-//                             ];
-//                             $update = $this->orderde->where($where)->update($list);
-//                             if (! $update) {
-//                                 $status ++;
-//                             }
-//                         }
-//                     }
-//                 } else {
-//                     $where = [
-//                         // 'physical' => $this->type,
-//                         'order_serial_number' => $params["order_serial_number"],
-//                         'item' => $row['id'],
-//                         'odbs_id' => $this->busId
-//                     ];
-//                     $list = [
-//                         "physical_result" => 0,
-//                         "physical_result_ext" => 0,
-//                         "status" => 1,
-//                         "doctor" => $username['nickname']
-//                     ];
-//                     $update = $this->orderde->where($where)->update($list);
-//                     if (! $update) {
-//                         $status ++;
-//                     }
-//                 }
-//             }
-            $result = $this->comm->saveOrderDetail($params,$this->type,$username['nickname']);
+            $result = $this->comm->saveOrderDetail($params,9,$username['nickname']);
             $this->comm->check_resultstatus($params["order_serial_number"]);
             if ($status == 0) {
                 $this->success('保存成功', "index", '', 1);

@@ -75,7 +75,6 @@ class Perspective extends Frontend
                     'physical' => $this->type
                 ];
                 $ins = $this->comm->inspect($this->type,$order_id);
-                var_dump($ins);
                 $this->view->assign("inspect", $ins);
                 $this->view->assign("wait_physical", $this->comm->wait_physical($user['id']));
                 $this->view->assign("body", $user);
@@ -113,20 +112,14 @@ class Perspective extends Frontend
         $username = $this->admin->get([
             'id' => $this->auth->id
         ]);
-        $status = 0;
         if ($params) {
             $result = $this->comm->saveOrderDetail($params,$this->type,$username['nickname']);
             if ($result) {
+                $this->comm->check_resultstatus($params["order_serial_number"]);
                 $this->success('保存成功', "index", '', 1);
             } else {
                 $this->error('没有变更数据', 'index');
             }
-        }
-        $this->comm->check_resultstatus($params["order_serial_number"]);
-        if ($status == 0) {
-            $this->success('保存成功', "index", '', 1);
-        } else {
-            $this->error('', 'index');
         }
     }
 }

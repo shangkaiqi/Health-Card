@@ -88,20 +88,28 @@ class Bodyresult extends Frontend
                 $res = $this->orderde->field("physical_result")
                     ->where($resWhere)
                     ->select();
-                    $status = 0;
-                    foreach ($res as $r) {
-                        if ($r['physical_result'] == 2) {
-                            $status = 2;
-                        }
-                        if ($r['physical_result'] == 1) {
-                            $status = 1;
-                        }
-                        if ($r['physical_result'] == 0) {
-                            $status = 0;
-                        }
+                $status = 0;
+                $count = count($res);
+                $status1 = 0;
+                $status0 = 0;
+                foreach ($res as $r) {
+                    if ($r['physical_result'] == 2) {
+                        $status ++;
                     }
-                    
-                    $list[$row]['physical_result'] = $status;
+                    if ($r['physical_result'] == 1) {
+                        $status1 ++;
+                    }
+                    if ($r['physical_result'] == 0) {
+                        $status0 ++;
+                    }
+                }
+                if ($status == $count) {
+                    $list[$row]['physical_result'] = 2;
+                } else if ($status1) {
+                    $list[$row]['physical_result'] = 1;
+                } else if ($status0 == $count) {
+                    $list[$row]['physical_result'] = 0;
+                }
             }
             $list = collection($list)->toArray();
             $result = array(
@@ -129,24 +137,17 @@ class Bodyresult extends Frontend
             $status = 0;
 
             if ($params) {
-                $result = $this->comm->saveOrderDetail($params,$this->type,$username['nickname']);
+                $result = $this->comm->saveOrderDetail($params, $this->type, $username['nickname']);
                 if ($result) {
+                    $this->comm->check_resultstatus($params["order_serial_number"]);
                     $this->success('保存成功', "index", '', 1);
                 } else {
                     $this->error('没有变更数据', 'index');
                 }
             }
-
-            $this->comm->check_resultstatus($params["order_serial_number"]);
-
-            if ($status == 0) {
-                $this->success('保存成功', "index", '', 1);
-            } else {
-                $this->error('没有变更数据', 'index');
-            }
         }
 
-        $ins = $this->comm->inspect($this->type,$row['order_serial_number']);
+        $ins = $this->comm->inspect($this->type, $row['order_serial_number']);
         $this->view->assign("inspect", $ins);
         $this->view->assign("wait_physical", $this->comm->wait_physical($ids));
         $this->view->assign("row", $row);

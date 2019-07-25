@@ -90,19 +90,27 @@ class Perspective extends Frontend
                     ->where($resWhere)
                     ->select();
                 $status = 0;
+                $count = count($res);
+                $status1 = 0;
+                $status0 = 0;
                 foreach ($res as $r) {
                     if ($r['physical_result'] == 2) {
-                        $status = 2;
+                        $status ++;
                     }
                     if ($r['physical_result'] == 1) {
-                        $status = 1;
+                        $status1 ++;
                     }
                     if ($r['physical_result'] == 0) {
-                        $status = 0;
+                        $status0 ++;
                     }
                 }
-
-                $list[$row]['physical_result'] = $status;
+                if($status == $count){                    
+                    $list[$row]['physical_result'] = 2;
+                }else if($status1){                    
+                    $list[$row]['physical_result'] = 1;
+                }else if($status0 == $count){                    
+                    $list[$row]['physical_result'] = 0;
+                }
             }
             $list = collection($list)->toArray();
             $result = array(
@@ -133,17 +141,11 @@ class Perspective extends Frontend
 
                 $result = $this->comm->saveOrderDetail($params, $this->type, $username['nickname']);
                 if ($result) {
+                    $this->comm->check_resultstatus($params["order_serial_number"]);
                     $this->success('保存成功', "index", '', 1);
                 } else {
                     $this->error('没有变更数据', 'index');
                 }
-            }
-
-            $this->comm->check_resultstatus($params["order_serial_number"]);
-            if ($status == 0) {
-                $this->success('保存成功', "index", '', 1);
-            } else {
-                $this->error('没有变更数据', 'index');
             }
         }
 

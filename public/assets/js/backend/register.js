@@ -59,7 +59,10 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					operate : false
 				}, {
 					field : 'registertime',
-					title : '体检时间'
+					title : '体检时间',
+					operate : 'RANGE',
+					addclass : 'datetimerange',
+					formatter : Table.api.formatter.datetime
 				},{
 					field : 'order_serial_number',
 					title : '体检编号'

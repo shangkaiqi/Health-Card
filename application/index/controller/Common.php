@@ -175,9 +175,9 @@ class Common extends Frontend
             ->where($where)
             ->find();
         if ($number['physical_num'] >= $total)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
 
     /**
@@ -228,12 +228,20 @@ class Common extends Frontend
         for ($i = 0; $i < count($params['frist']); $i ++) {
             $arr = explode("-", $params['frist'][$i]);
             if ($arr[0] == 0) {
-                $where = [
-                    'physical' => $type,
-                    'order_serial_number' => $params["order_serial_number"],
-                    'item' => $arr[1],
-                    'odbs_id' => $this->busId
-                ];
+                if($type == 9){                    
+                    $where = [
+                        'order_serial_number' => $params["order_serial_number"],
+                        'item' => $arr[1],
+                        'odbs_id' => $this->busId
+                    ];
+                }else{                
+                    $where = [
+                        'physical' => $type,
+                        'order_serial_number' => $params["order_serial_number"],
+                        'item' => $arr[1],
+                        'odbs_id' => $this->busId
+                    ];
+                }
                 $list = [
                     "physical_result" => 0,
                     "physical_result_ext" => 0,
@@ -241,21 +249,28 @@ class Common extends Frontend
                     "doctor" => $doctor
                 ];
                 $update = $this->orderde->where($where)->update($list);
-                if (! $update) {
+                if ($update === 0) {
                     $status ++;
                 }
             } else {
                 $res = $params['result'][$i];
                 $sql = "select id,name from fa_inspect where
                                     id=(select parent from fa_inspect where id = $res)  limit 1";
-                $ins = db()->query($sql);
-
-                $where = [
-                    'physical' => $type,
-                    'order_serial_number' => $params["order_serial_number"],
-                    'item' => $ins[0]['id'],
-                    'odbs_id' => $this->busId
-                ];
+                $ins = db()->query($sql);                
+                if($type == 9){
+                    $where = [
+                        'order_serial_number' => $params["order_serial_number"],
+                        'item' => $arr[1],
+                        'odbs_id' => $this->busId
+                    ];
+                }else{
+                    $where = [
+                        'physical' => $type,
+                        'order_serial_number' => $params["order_serial_number"],
+                        'item' => $arr[1],
+                        'odbs_id' => $this->busId
+                    ];
+                }
                 $list = [
                     "physical_result" => 1,
                     "physical_result_ext" => $res,
@@ -263,16 +278,12 @@ class Common extends Frontend
                     "doctor" => $doctor
                 ];
                 $update = $this->orderde->where($where)->update($list);
-                if (! $update) {
+                if ($update === 0) {
                     $status ++;
                 }
             }
         }
-        if ($status == 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return true;
     }
 
     public function check_resultstatus($orderId)
@@ -293,6 +304,10 @@ class Common extends Frontend
             $result = db('order')->where($owhere)->update($data);
             return true;
         } else {
+            $owhere['order_serial_number'] = $orderId;
+            $owhere['obs_id'] = $this->busId;
+            $data['physical_result'] = 0;
+            $result = db('order')->where($owhere)->update($data);
             return false;
         }
     }
