@@ -14,7 +14,7 @@
 		</div>
 	</div>
 
-
+	{if condition="$pid"}
 	<div class="form-group">
 		<label for="c-avatar" class="control-label col-xs-12 col-sm-2">医院章:</label>
 		<div class="col-xs-12 col-sm-8">
@@ -38,8 +38,6 @@
 			<ul class="row list-inline plupload-preview" id="p-avatar"></ul>
 		</div>
 	</div>
-
-	{if condition="$pid"}
 	<div class="form-group">
 		<label class="control-label col-xs-12 col-sm-2">{:__('number')}:</label>
 		<div class="col-xs-12 col-sm-8">
@@ -115,6 +113,9 @@
 				data-rule="required;password" />
 		</div>
 	</div>
+	
+
+	{if condition="$pid"}
 	<div class="form-group">
 		<label for="password" class="control-label col-xs-12 col-sm-2">{:__('打卡打印机')}:</label>
 		<div class="col-xs-12 col-sm-8">
@@ -127,17 +128,21 @@
 			<select class="province form-control" id='form' name="row[printform]"></select>
 		</div>
 	</div>
+	{/if}
 
 	<div class="form-group">
 		<label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
 		<div class="col-xs-12 col-sm-8">{:build_radios('row[status]',
 			['normal'=>__('Normal'), 'hidden'=>__('Hidden')])}</div>
 	</div>
+	
+	{if condition="$pid"}
 	<div class="form-group">
 		<label class="control-label col-xs-12 col-sm-2">{:__('打印体检表')}:</label>
 		<div class="col-xs-12 col-sm-8">{:build_radios('row[isprint]',
 			['1'=>__('yes'), '0'=>__('no')],'0')}</div>
 	</div>
+	{/if}
 	<div class="form-group hidden layer-footer">
 		<label class="control-label col-xs-12 col-sm-2"></label>
 		<div class="col-xs-12 col-sm-8">
