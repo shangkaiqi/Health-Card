@@ -23,7 +23,7 @@ define(
 							.bootstrapTable({
 								url : $.fn.bootstrapTable.defaults.extend.index_url,
 								pk : 'id',
-								sortName : 'user.id',
+								sortName : 'id',
 								// 禁用默认搜索
 								search : false,
 								// 启用普通表单搜索

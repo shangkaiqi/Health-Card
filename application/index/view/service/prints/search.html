@@ -7,8 +7,8 @@
 				<label for="c-nickname" class="control-label col-xs-12 col-sm-2">快速检索:</label>
 				<div class="form-inline" data-toggle="cxselect"
 					data-selects="pid,name">
-					<input id="search-a" class="form-control" name="row[search]" placeholder="请输入12位体检编号"
-						type="text" value="">
+					<input id="search-a" class="form-control" name="row[search]"
+						placeholder="请输入12位体检编号" type="text" value="">
 					<button type="submit" class="btn btn-success btn-embossed">查询</button>
 				</div>
 			</div>
@@ -27,8 +27,9 @@
 		</div>
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">性别:</label>
-			<div class="col-xs-12 col-sm-4">				
-				<span id="c-username" class="form-control">{if condition="$body['sex'] eq 0"}男{else/}女{/if}</span>					
+			<div class="col-xs-12 col-sm-4">
+				<span id="c-username" class="form-control">{if
+					condition="$body['sex'] eq 0"}男{else/}女{/if}</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -40,40 +41,44 @@
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">手机:</label>
 			<div class="col-xs-12 col-sm-4">
-					
+
 				<span class="form-control">{$body['phone']}</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业单位:</label>
 			<div class="col-xs-12 col-sm-4">
-					
+
 				<span class="form-control">{$body['company']}</span>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>			
-			<div class="col-xs-12 col-sm-4">					
+			<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
+			<div class="col-xs-12 col-sm-4">
 				<span class="form-control">{$body['employee']}</span>
 			</div>
 		</div>
 		<div id="avatar_ad">
-			<img width="102" height="126" src="data:image/jpeg;base64,{$body['images']}" border="0">
+			<img width="102" height="126"
+				src="data:image/jpeg;base64,{$body['images']}" border="0">
 		</div>
 		<div class="wait_physical">
 			体检结果：<span>{$result}</span>
 		</div>
-		
+
 		<div id="avatar_ad"></div>
 		<div class="form-group layer-footer">
 			<div class="col-xs-12 col-sm-8">
-				<button type="button" onclick="myPreview()" class='btn btn-success btn-embossed {if condition="$print.physical_result == 0"}disabled{/if}'>打印健康证</button>
-				<button type="button" onclick="myOrderPreview()" class='btn btn-success btn-embossed {if condition="$print.physical_result == 0"}disabled{/if}'>打印复验单</button>
+				<button type="button" onclick="myPreview()"
+					class='btn btn-success btn-embossed {if condition="$print.physical_result == 0"}disabled{/if}'>打印健康证</button>
+				<button type="button" onclick="myOrderPreview()"
+					class='btn btn-success btn-embossed {if condition="$print.physical_result == 0"}disabled{/if}'>打印复验单</button>
 			</div>
 		</div>
 	</div>
 
 </div>
+<div id="aaa"></div>
 {include file="common/physicalform" /}
 <script src="/LodopFuncs.js"></script>
 <script>
@@ -89,9 +94,26 @@
 			CreatePrintPage1();
 		}
 
-		if (LODOP.SET_PRINTER_INDEX({$print['print_card_id']}))
-		LODOP.PREVIEW();		       
-	};		
+		if (LODOP.SET_PRINTER_INDEX({$print['print_card_id']})){
+			$.ajax({
+				url : "common/updatePrint",
+				data : {
+					'order_num' : {$order_num}
+				},
+				type : "post",
+				dataType : "json",
+				async : true,
+				success : function(obj) {
+				},
+				error : function(msg) {
+					$("#aaa").html(msg.responseText);
+				}
+
+			})
+		}
+		LODOP.PREVIEW();
+				       
+	};
 	function CreatePrintPage() {		
         LODOP = getLodop();
         LODOP.PRINT_INITA("0", "0", "86.6mm", "56.4mm", "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
@@ -108,7 +130,7 @@
         LODOP.ADD_PRINT_TEXT("41mm", "25mm", "60mm", "30", "{$print['obtain_employ_number']}"); //健康证号
         LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-        LODOP.ADD_PRINT_TEXT("45.5mm", "25mm", "100", "30", "2019年6月30日");//到期时间
+        LODOP.ADD_PRINT_TEXT("45.5mm", "25mm", "100", "30", "{$print['endtime']}");//到期时间
         LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
         LODOP.ADD_PRINT_IMAGE("30mm","62mm","16mm","20mm","<img style=\"position:absolute;left:1px;top:1px;\" height='75' width='62' src=\"data:image/jpeg;base64,{$print['images']}\"/><img style=\"position:absolute;left:10px;top:30px;\" height='50' width='50' border='0' src='http://39.100.89.92:8080/{$print['avatar']}' style='z-index: 999'/>");

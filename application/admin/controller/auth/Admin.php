@@ -160,12 +160,12 @@ class Admin extends Backend
                         'province' => $params['province'],
                         'city' => $params['city'],
                         'county' => $params['area'],
-                        'avatar' =>$params['avatar'],
-                        'print_card_id' =>$card[0],
-                        'print_form_id' =>$card[0],
-                        'print_card' =>$form[1],
-                        'print_form' =>$form[1],
-                        
+                        'avatar' => $params['avatar'],
+                        'print_card_id' => $card[0],
+                        'print_form_id' => $card[0],
+                        'print_card' => $form[1],
+                        'print_form' => $form[1],
+                        'profession'=>$params['congye']
                     ];
 
                     // $busResult = $this->buss->validate('Business.add')->save($data);
@@ -174,8 +174,8 @@ class Admin extends Backend
                     if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
                         $this->error("该体检单位已存在");
                     }
-                    if(strlen($result['phone'])>11){
-                        
+                    if (strlen($result['phone']) > 11) {
+
                         $this->error("请输入正确的手机号");
                     }
                     $busResult = $this->buss->save($data);
@@ -216,6 +216,8 @@ class Admin extends Backend
             }
             $this->error();
         }
+        $physcal_type = db("employee")->select();
+        $this->view->assign("physcal_type", $physcal_type);
         return $this->view->fetch();
     }
 

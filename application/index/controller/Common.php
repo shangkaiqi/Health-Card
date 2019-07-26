@@ -24,6 +24,17 @@ class Common extends Frontend
         parent::_initialize();
         $this->orderde = model("OrderDetail");
     }
+    /**
+     * 更新打印健康证时间
+     */
+    public function updatePrint(){
+        $params = $this->request->post('order_num');
+        $date['employ_num_time'] = time();
+        $where['obs_id']= $this->busId;
+        $where['order_serial_number']= $params;
+        db('order')->where($where)->update($date);        
+        
+    }
 
     public function getInspece($parent)
     {

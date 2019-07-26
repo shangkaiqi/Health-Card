@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\common\controller\Backend;
 use app\index\controller\Common;
+use think\Session;
 use Monolog\Logger;
 use think\Log;
 use app\common\controller\Frontend;
@@ -68,8 +69,8 @@ class Register extends Frontend
             // $total = db("physical_users")->count("id");
 
             // $userList = db("physical_users")->field("id,name,identitycard,type")->select();
-            $total = $this->model->where("bs_id", "=", $this->busId)->where($where)->count("id");
-            $userList = $this->model->where("bs_id", "=", $this->busId)->where($where)->select();
+            $total = $this->model->where($where)->where("bs_id", "=", $this->busId)->count("id");
+            $userList = $this->model->where($where)->where("bs_id", "=", $this->busId)->order($sort, $order)->limit($offset, $limit)->select();
             foreach ($userList as $row) {
                 $row['registertime'] = date("Y-m-d H:i", $row['registertime']);
             }
@@ -88,13 +89,18 @@ class Register extends Frontend
 
         // 获取医院唯一标识
         $bs_id = db("admin")->alias("a")
-            ->field("b.bs_uuid,isprint,b.charge,b.bs_id,b.print_form_id")
+            ->field("b.bs_uuid,isprint,b.charge,b.bs_id,b.print_form_id,profession")
             ->join("business b", "a.businessid = b.bs_id")
             ->where("id", "=", $this->auth->id)
             ->find();
+        $physcal_type = db("employee")->select();
+        Session::delete("company", '');
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
+                if($params['type'] == 1){                    
+                    Session::set("company", $params['company']);
+                }
                 // 获取订单最后一条id
                 // $orderId = $this->model->order('registertime', 'desc')->find();
 				$ordernum = array();
@@ -151,10 +157,10 @@ class Register extends Frontend
                 $ob_num = $this->order->where($ob_where)->find();
                 if(empty($ob_num['obtain_employ_number'])){
                     $obnum = $prefix."000001";
-                }else{                      
+                }else{
                     $obnum = $ob_num['obtain_employ_number']+1;
                 }
-                $par['obtain_employ_number'] = $prefix . $obnum;
+                $par['obtain_employ_number'] = $obnum;
                 if ($params['express']) {
                     $par['address'] = $params['address'];
                 }
@@ -169,11 +175,13 @@ class Register extends Frontend
                     $html = $this->get_html($param);
                     echo $html;
                 }
-                $this->success();
+                $this->success('添加成功',"index");
             }
             $this->error();
         }
         $this->view->assign("isprint", $bs_id['isprint']);
+        $this->view->assign("congye", $bs_id['profession']);
+        $this->view->assign("physcal_type", $physcal_type);
         return $this->view->fetch();
     }
 
@@ -268,7 +276,7 @@ class Register extends Frontend
             
 			function print() {
                 LODOP = getLodop();
-                LODOP.PRINT_INITA(9, 0, 794, 1122, \"打印控件功能演示_Lodop功能_在线编辑获得程序代码\");
+                LODOP.PRINT_INITA(9, 0, 794, 1122, \"体检单\");
                 {$str}
                 
 		        if (LODOP.SET_PRINTER_INDEX({$print}))

@@ -64,6 +64,7 @@ class Prints extends Frontend
                 $printInfo['physictype'] = $uid['employee_id']; // 1公共卫生2食药安全
                 $printInfo['identitycard'] = $uid['identitycard']; // 1公共卫生2食药安全
                 $printInfo['avatar'] = $hosp['avatar'];
+                $printInfo['endtime'] = date('Y-m-d',strtotime('+1year'));
                 $printInfo['print_card_id'] = $hosp['print_card_id'];
 
                 // 判断打印卡数量是否超过限制量
@@ -72,6 +73,7 @@ class Prints extends Frontend
                 $this->view->assign("print", $printInfo);
                 $checkresult = $this->checkresult($order_id);
                 $this->view->assign("result", $checkresult);
+                $this->view->assign("order_num", $order_id);
                 return $this->view->fetch("search");
             } else {
                 $this->error();

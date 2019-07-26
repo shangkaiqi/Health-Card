@@ -6,7 +6,8 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			// 初始化表格参数配置
 			Table.api.init({
 				extend : {
-					index_url : 'register/index',
+					index_url : 'register/index'
+						+ location.search,
 					add_url : 'register/add',
 					edit_url : 'register/edit',
 					del_url : 'register/del',
@@ -21,7 +22,7 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 			table.bootstrapTable({
 				url : $.fn.bootstrapTable.defaults.extend.index_url,
 				pk : 'id',
-				sortName : 'user.id',
+				sortName : 'id',
 				// 禁用默认搜索
 				search : false,
 				// 启用普通表单搜索

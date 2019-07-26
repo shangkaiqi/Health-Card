@@ -636,7 +636,7 @@ EOF;
         $result['employee'] = $this->comm->getEmpName($result['employee']);
         return $result;
     }
-   //批量打印体验单
+   //批量健康卡
     public function printMulit()
     {
         $params = $this->request->get("id");
@@ -658,8 +658,17 @@ EOF;
             $printInfo['company'] = $hosp['busisess_name'];
             $printInfo['avatar'] = $hosp['avatar'];
             $printInfo['images'] = $row['images'];
+            $printInfo['endtime'] = date('Y-m-d',strtotime('+1year'));
             $printInfo['physictype'] = $row['employee_id'];
+            
+            
+            $date['employ_num_time'] = time();
+            $where['obs_id']= $this->busId;
+            $where['order_serial_number']= $row['order_serial_number'];
+            db('order')->where($where)->update($date);   
+            
             $printArr[] = $this->html($printInfo);
+            
         }
         $str = '';
         foreach ($printArr as $row) {
@@ -713,7 +722,7 @@ EOF;
             LODOP.ADD_PRINT_TEXT("40.5mm", "25mm", "100", "30", "{$print['obtain_employ_number']}"); //健康证号
             LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
-            LODOP.ADD_PRINT_TEXT("45mm", "25mm", "100", "30", "2019年6月30日");//到期时间
+            LODOP.ADD_PRINT_TEXT("45mm", "25mm", "100", "30", "{$print['endtime']}");//到期时间
             LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
             LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
             LODOP.ADD_PRINT_IMAGE("30mm","62mm","16mm","20mm","<img style=\"position:absolute;left:1px;top:1px;\" height='75' width='62' src=\"data:image/jpeg;base64,{$print['images']}\"/><img style=\"position:absolute;left:10px;top:30px;\" height='50' width='50' border='0' src='http://39.100.89.92:8080/{$print['avatar']}' style='z-index: 999'/>");
