@@ -145,8 +145,16 @@ class Register extends Frontend
                 $par['order_status'] = '0';
                 $par['obtain_employ_type'] = $param['employee'];                
                 $par['obs_id'] = $this->busId;
-                $rand = mt_rand(100, 999);
-                $par['obtain_employ_number'] = $bs_id['bs_id'] . date("ymdHis", time()) . $rand;
+                $prefix = "03".$bs_id['bs_id'] .mt_rand(0,9). date("y", time());
+                $ob_where['obtain_employ_number'] = ["like",$prefix."%"];
+                $ob_where['obs_id'] = $this->busId;
+                $ob_num = $this->order->where($ob_where)->find();
+                if(empty($ob_num['obtain_employ_number'])){
+                    $obnum = $prefix."000001";
+                }else{                      
+                    $obnum = $ob_num['obtain_employ_number']+1;
+                }
+                $par['obtain_employ_number'] = $prefix . $obnum;
                 if ($params['express']) {
                     $par['address'] = $params['address'];
                 }

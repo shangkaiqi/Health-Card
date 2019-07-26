@@ -51,7 +51,13 @@ class Resultcheck extends Frontend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $order_id = date("Ymd", time()) . $params['search'];
+                if(strlen($params['search'])==4){                    
+                    $order_id = date("Ymd", time()) . $params['search'];
+                }else if(strlen($params['search'])==12){   
+                    $order_id = $params['search'];
+                }else{
+                    $this->error("请输入正确的体检编号");
+                }
                 $where['order_serial_number'] = $order_id;
                 $where['bs_id'] = $this->busId;
                 $uid = db("physical_users")->where($where)->find();
