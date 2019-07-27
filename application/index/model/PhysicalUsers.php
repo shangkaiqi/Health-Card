@@ -6,6 +6,7 @@ use think\Model;
 class PhysicalUsers extends Model
 {
 
+    protected $pk = "id";
     // 数据库
     protected $connection = 'database';
 
@@ -23,7 +24,7 @@ class PhysicalUsers extends Model
     protected $deleteTime = false;
 
     // 追加属性
-    protected $append = [];
+    protected $append = ['id'];
 
     public function order()
     {

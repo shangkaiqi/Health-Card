@@ -168,14 +168,13 @@ class Admin extends Backend
                         'print_form_id' => $card[0],
                         'print_card' => $form[1],
                         'print_form' => $form[1],
-                        'profession' => $params['congye']
+                        'profession' => $params['congye'],
+                        'bs_id' => ''
                     ];
 
                     // $busResult = $this->buss->validate('Business.add')->save($data);
                     // 验证医院是否存在
-                    $result = $this->buss->lock(true)
-                        ->where("busisess_name", "=", $params['hospital'])
-                        ->find();
+                    $result = $this->buss->where("busisess_name", "=", $params['hospital'])->find();
                     if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
                         $this->error("该体检单位已存在");
                     }
@@ -185,8 +184,13 @@ class Admin extends Backend
                     }
                     try {
                         $busResult = $this->buss->save($data);
+                        if ($busResult === false) {
+                            Db::rollBack();
+                            $this->error();
+                        }
                     } catch (Exception $e) {
                         Db::rollback();
+                        $this->error();
                     }
                     $last_id = $this->buss->bs_id;
                 }

@@ -89,6 +89,7 @@ class Register extends Frontend
     public function add()
     {
 
+        
         // 获取医院唯一标识
         $bs_id = db("admin")->alias("a")
             ->field("b.bs_uuid,isprint,b.charge,b.bs_id,b.print_form_id,profession")
@@ -107,8 +108,7 @@ class Register extends Frontend
 				$phwhere['order_serial_number'] = ['like',date("Ymd", time()) . "%"];
 				$phwhere['bs_id'] = $this->busId;
 				
-				Db::startTrans();
-				$ordernum = $result = db('physical_users')->field("order_serial_number")->lock(true)
+				$ordernum = $result = db('physical_users')->field("order_serial_number")
                     ->where($phwhere)
                     ->order("registertime desc")
                     ->find();
@@ -120,7 +120,7 @@ class Register extends Frontend
                 $emp = db('employee')->field('name,id')
                     ->where('id', '=', $params['parent'])
                     ->find();
-                
+                $param['id'] = '';
                 $param['name'] = $params['name'];
                 $param['identitycard'] = $params['identitycard'];
                 $param['type'] = $params['type'];
@@ -134,7 +134,21 @@ class Register extends Frontend
                 $param['employee_id'] = $params['parent'];
                 $param['company'] = $params['company'];
                 $param['order_serial_number'] = $resultNum;
-
+                
+                
+                Db::startTrans();
+                try {
+                    $order_detail = $this->order_detial($resultNum);
+                    $result = $this->model->validate("Register.add")->save($param);
+                    if ($result === false) {
+                        Db::rollBack();
+                        $this->error($this->model->getError());
+                    }
+                }catch (Exception $e){                    
+                    Db::rollBack();
+                    $this->error($this->model->getError());
+                }
+                
                 if (strlen($bs_id['bs_id']) == 1) {
                     $bs_id['bs_id'] = "00" . $bs_id['bs_id'];
                 } else if (strlen($bs_id['bs_id']) == 2) {
@@ -160,13 +174,7 @@ class Register extends Frontend
                 if ($params['express']) {
                     $par['address'] = $params['address'];
                 }
-                try {                    
-                    $order_detail = $this->order_detial($resultNum);
-                    $result = $this->model->validate("Register.add")->save($param);
-                    if ($result === false) {
-                        Db::rollBack();
-                        $this->error($this->model->getError());
-                    }
+                try {
                     $order = $this->order->save($par);
                     if ($order === false) {
                         Db::rollBack();
@@ -181,7 +189,8 @@ class Register extends Frontend
                     Db::rollBack();
                 }
                 Db::commit();
-                if($bs_id['isprint']){
+                if($bs_id['isprint']){                    
+                    $param['sex'] = $params['sex']==0?"男":"女";
                     $param['time'] = date("Y年m月d日",time());
                     $param['print_form_id'] = $bs_id['print_form_id'];
                     $html = $this->get_html($param);
@@ -260,6 +269,7 @@ class Register extends Frontend
         $print = $this->getPrint($params);
         $printArr = array();
         foreach ($print as $row){
+            $row['sex'] = $row['sex'] == 0?"男":"女";
             $printArr[] = $this->lodopJs($row);
         }
         $str = '';
@@ -302,6 +312,8 @@ class Register extends Frontend
         $lodop = <<<EOF
         LODOP.NewPage();
         LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
+
+        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text=123456789541&thickness=35&start=A&code=BCGcode128\">");
         LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
         LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
@@ -336,11 +348,34 @@ class Register extends Frontend
         LODOP.ADD_PRINT_TEXT(210, 380, 80, 26, "{$print['company']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
-        LODOP.ADD_PRINT_TEXT(250, 70, 80, 26, "身份证号");
+        LODOP.ADD_PRINT_TEXT(250, 70, 100, 26, "身份证号");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
         LODOP.ADD_PRINT_TEXT(250, 150, 200, 26, "{$print['identitycard']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
+
+        LODOP.ADD_PRINT_TEXT(980, 70, 80, 26, "姓名:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(980, 120, 200, 26, "{$print['name']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+
+        LODOP.ADD_PRINT_TEXT(980, 200, 100, 26, "身份证号:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(980, 270, 200, 26, "{$print['identitycard']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1000, 70, 80, 26, "性别:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1000, 120, 200, 26, "{$print['sex']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+
+        LODOP.ADD_PRINT_TEXT(1000, 150, 79, 26, "体检日期: ");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 11);
+        LODOP.ADD_PRINT_TEXT(1000, 220, 170, 26, "{$print['time']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1000, 350, 170, 26, "体检编号：");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1000, 420, 160, 26, "{$print['order_serial_number']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
         LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
         LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
@@ -798,9 +833,9 @@ EOF;
         					<tr>
         						<td colspan="14" style="border-bottom:none; border-left: none;border-right: none;" width="565"
         							valign="middle">
-        							<span style="padding-left:10px;font-size:14.0pt;font-family:仿宋_GB2312; color: red; height: 60px; display: inline-block; line-height:60px">
+        							<span style="padding-left:10px;font-size:12.0pt;font-family:仿宋_GB2312; color: red; height: 40px; display: inline-block; line-height:40px">
         								*说明：发现谷丙转氨酶异常的，加做
-        								<span style="font-size:14.0pt;font-family:宋体;">HAV-IgM、HEV-IgM两个指标。</span>
+        								<span style="font-size:12.0pt;font-family:宋体;">HAV-IgM、HEV-IgM两个指标。</span>
         							</span>
         						</td>
         					</tr>
@@ -826,10 +861,12 @@ EOF;
         				$("#print").trigger("click");
         			})
         			function print() {
+                        
         				LODOP = getLodop();
         				LODOP.PRINT_INITA(9, 0, 794, 1122, "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
         				LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
-        				LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
+                        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text=123456789541&thickness=35&start=A&code=BCGcode128\">");
+          				LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
         				LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         				LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
         				LODOP.SET_PRINT_STYLEA(0, "Alignment", 2);
@@ -866,6 +903,30 @@ EOF;
                         LODOP.ADD_PRINT_TEXT(250, 70, 80, 26, "身份证号");
                         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
                         LODOP.ADD_PRINT_TEXT(250, 150, 200, 26, "{$print['identitycard']}");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+
+
+                        LODOP.ADD_PRINT_TEXT(980, 70, 80, 26, "姓名:");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                        LODOP.ADD_PRINT_TEXT(980, 120, 200, 26, "{$print['name']}");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                
+                        LODOP.ADD_PRINT_TEXT(980, 200, 100, 26, "身份证号:");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                        LODOP.ADD_PRINT_TEXT(980, 270, 200, 26, "{$print['identitycard']}");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                        LODOP.ADD_PRINT_TEXT(1000, 70, 80, 26, "性别:");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                        LODOP.ADD_PRINT_TEXT(1000, 120, 200, 26, "{$print['sex']}");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                
+                        LODOP.ADD_PRINT_TEXT(1000, 150, 79, 26, "体检日期: ");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 11);
+                        LODOP.ADD_PRINT_TEXT(1000, 220, 170, 26, "{$print['time']}");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                        LODOP.ADD_PRINT_TEXT(1000, 350, 170, 26, "体检编号：");
+                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+                        LODOP.ADD_PRINT_TEXT(1000, 420, 160, 26, "{$print['order_serial_number']}");
                         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
 
@@ -1329,9 +1390,9 @@ EOF;
         						<td colspan="14" style="border-bottom:none; border-left: none;border-right: none;" width="565"
         							valign="middle">
         							<span
-        								style="padding-left:10px;font-size:14.0pt;font-family:仿宋_GB2312; color: red; height: 60px; display: inline-block; line-height:60px">
+        								style="padding-left:10px;font-size:12.0pt;font-family:仿宋_GB2312; color: red; height: 40px; display: inline-block; line-height:40px">
         								*说明：发现谷丙转氨酶异常的，加做
-        								<span style="font-size:14.0pt;font-family:宋体;">HAV-IgM、HEV-IgM两个指标。</span>
+        								<span style="font-size:12.0pt;font-family:宋体;">HAV-IgM、HEV-IgM两个指标。</span>
         							</span>
         						</td>
         					</tr>

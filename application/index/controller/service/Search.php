@@ -759,7 +759,6 @@ EOF;
     public function expUser()
     {
         $params = $this->request->get('id');        
-        file_put_contents("search-excel.txt", db()->getLastSql());
         // 导出Excel
         $xlsCell = array(
             array(
@@ -825,7 +824,6 @@ EOF;
             ->where("pu.id", "in", $params)
             ->field("pu.id,pu.name,pu.identitycard,pu.sex,pu.age,pu.phone,pu.employee,pu.company,pu.physictype,pu.registertime,pu.order_serial_number, b.busisess_name, o.obtain_employ_number,o.order_status")
             ->select();
-        file_put_contents("search-excel.txt", db()->getLastSql());
         foreach ($xlsData as $k => $v) {
             $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
             $xlsData[$k]['employee'] = $this->comm->getEmpName($v['employee']);
