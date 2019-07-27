@@ -6,6 +6,8 @@ use app\admin\model\AuthGroupAccess;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
+use Exception;
+use think\Db;
 use app\admin\controller\Business;
 
 /**
@@ -143,6 +145,7 @@ class Admin extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
+                Db::startTrans();
                 if ($this->pid == 0) {
                     $card = array();
                     $form = array();
@@ -165,12 +168,14 @@ class Admin extends Backend
                         'print_form_id' => $card[0],
                         'print_card' => $form[1],
                         'print_form' => $form[1],
-                        'profession'=>$params['congye']
+                        'profession' => $params['congye']
                     ];
 
                     // $busResult = $this->buss->validate('Business.add')->save($data);
                     // 验证医院是否存在
-                    $result = $this->buss->where("busisess_name", "=", $params['hospital'])->find();
+                    $result = $this->buss->lock(true)
+                        ->where("busisess_name", "=", $params['hospital'])
+                        ->find();
                     if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
                         $this->error("该体检单位已存在");
                     }
@@ -178,7 +183,11 @@ class Admin extends Backend
 
                         $this->error("请输入正确的手机号");
                     }
-                    $busResult = $this->buss->save($data);
+                    try {
+                        $busResult = $this->buss->save($data);
+                    } catch (Exception $e) {
+                        Db::rollback();
+                    }
                     $last_id = $this->buss->bs_id;
                 }
                 if ($this->pid != 0) {
@@ -196,9 +205,14 @@ class Admin extends Backend
                 $user['status'] = $params['status'];
                 $user['businessid'] = $last_id;
                 // 设置新管理员默认头像。
-                $result = $this->model->validate('Admin.add')->save($user);
-                if ($result === false) {
-                    $this->error($this->model->getError());
+                try {
+                    $result = $this->model->validate('Admin.add')->save($user);
+                    if ($result === false) {
+                        Db::rollBack();
+                        $this->error($this->model->getError());
+                    }
+                } catch (Exception $e) {
+                    Db::rollBack();
                 }
                 $group = $this->request->post("group/a");
 
@@ -211,7 +225,13 @@ class Admin extends Backend
                         'group_id' => $value
                     ];
                 }
-                model('AuthGroupAccess')->saveAll($dataset);
+                try {
+                    model('AuthGroupAccess')->saveAll($dataset);
+                } catch (Exception $e) {
+                    Db::rollBack();
+                }
+
+                Db::commit();
                 $this->success();
             }
             $this->error();

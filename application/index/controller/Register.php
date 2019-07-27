@@ -3,10 +3,12 @@ namespace app\index\controller;
 
 use app\common\controller\Backend;
 use app\index\controller\Common;
+use think\Db;
 use think\Session;
 use Monolog\Logger;
 use think\Log;
 use app\common\controller\Frontend;
+use Exception;
 
 /**
  *
@@ -101,12 +103,12 @@ class Register extends Frontend
                 if($params['type'] == 1){                    
                     Session::set("company", $params['company']);
                 }
-                // 获取订单最后一条id
-                // $orderId = $this->model->order('registertime', 'desc')->find();
 				$ordernum = array();
 				$phwhere['order_serial_number'] = ['like',date("Ymd", time()) . "%"];
 				$phwhere['bs_id'] = $this->busId;
-                $ordernum = $result = db('physical_users')->field("order_serial_number")
+				
+				Db::startTrans();
+				$ordernum = $result = db('physical_users')->field("order_serial_number")->lock(true)
                     ->where($phwhere)
                     ->order("registertime desc")
                     ->find();
@@ -132,13 +134,7 @@ class Register extends Frontend
                 $param['employee_id'] = $params['parent'];
                 $param['company'] = $params['company'];
                 $param['order_serial_number'] = $resultNum;
-                // $params['bsid'] = $this->auth->id;
-                // $result = $this->model->validate("Enregister.add")->save($params);
-                $result = $this->model->validate("Register.add")->save($param);
 
-                if (! $result) {
-                    $this->error($this->model->getError());
-                }
                 if (strlen($bs_id['bs_id']) == 1) {
                     $bs_id['bs_id'] = "00" . $bs_id['bs_id'];
                 } else if (strlen($bs_id['bs_id']) == 2) {
@@ -154,7 +150,7 @@ class Register extends Frontend
                 $prefix = "03".$bs_id['bs_id'] .mt_rand(0,9). date("y", time());
                 $ob_where['obtain_employ_number'] = ["like",$prefix."%"];
                 $ob_where['obs_id'] = $this->busId;
-                $ob_num = $this->order->where($ob_where)->find();
+                $ob_num = $this->order->where($ob_where)->lock(true)->find();
                 if(empty($ob_num['obtain_employ_number'])){
                     $obnum = $prefix."000001";
                 }else{
@@ -164,11 +160,27 @@ class Register extends Frontend
                 if ($params['express']) {
                     $par['address'] = $params['address'];
                 }
-                $order = $this->order->save($par);
-                if (! $order) {
-                    $this->error($this->model->getError());
+                try {                    
+                    $order_detail = $this->order_detial($resultNum);
+                    $result = $this->model->validate("Register.add")->save($param);
+                    if ($result === false) {
+                        Db::rollBack();
+                        $this->error($this->model->getError());
+                    }
+                    $order = $this->order->save($par);
+                    if ($order === false) {
+                        Db::rollBack();
+                        $this->error($this->model->getError());
+                    }
+                    $order_detail_save = $this->orderd->saveAll($order_detail);
+                    if($order_detail_save === false){
+                        Db::rollBack();
+                        $this->error($this->model->getError());
+                    }
+                } catch (Exception $e) {
+                    Db::rollBack();
                 }
-                $this->order_detial($resultNum);
+                Db::commit();
                 if($bs_id['isprint']){
                     $param['time'] = date("Y年m月d日",time());
                     $param['print_form_id'] = $bs_id['print_form_id'];
@@ -202,8 +214,7 @@ class Register extends Frontend
             $param['odbs_id'] = $this->busId;
             $list[] = $param;
         }
-
-        $this->orderd->saveAll($list);
+        return $list;        
     }
 
     public function edit($ids = '')
