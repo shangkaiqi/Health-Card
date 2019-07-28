@@ -102,7 +102,7 @@ define(
 											}
 
 										},
-										{
+										/*{
 											field : 'operate',
 											title : __('Operate'),
 											table : table,
@@ -123,7 +123,7 @@ define(
 														.call(that, value, row,
 																index);
 											},
-										} ] ]
+										}*/ ] ]
 							});
 
 					// 为表格绑定事件
