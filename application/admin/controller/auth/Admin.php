@@ -6,6 +6,9 @@ use app\admin\model\AuthGroupAccess;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
+use Exception;
+use think\Db;
+use app\admin\controller\Business;
 
 /**
  * 管理员管理
@@ -30,11 +33,13 @@ class Admin extends Backend
 
     protected $childrenAdminIds = [];
 
+    protected $pid = '';
+
     public function _initialize()
     {
         parent::_initialize();
         $this->model = model('Admin');
-        // $this->buss = model("Business");
+        $this->buss = model("Business");
 
         $this->childrenAdminIds = $this->auth->getChildrenAdminIds(true);
         $this->childrenGroupIds = $this->auth->getChildrenGroupIds(true);
@@ -66,6 +71,15 @@ class Admin extends Backend
         $this->assignconfig("admin", [
             'id' => $this->auth->id
         ]);
+
+        // 先判断会员组
+        $adminGroup = db("auth_group")->alias("ag")
+            ->field("pid")
+            ->join("auth_group_access aga", "ag.id = aga.group_id")
+            ->where("aga.uid", "=", $this->auth->id)
+            ->find();
+        $this->pid = $adminGroup['pid'];
+        $this->view->assign("pid", $adminGroup['pid'] == 0 ? 1 : 0);
     }
 
     /**
@@ -131,26 +145,61 @@ class Admin extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $data = [
-                    'area' => $params['area'],
-                    'physical_num' => $params['number'],
-                    'phone' => $params['phone'],
-                    'busisess_name' => $params['connect'],
-                    'address' => $params['address'],
-                    'bs_uuid' => create_uuid()
-                ];
-                // $data = [
-                // 'area' => 'sssssssssss',
-                // 'physical_num' => 10,
-                // 'phone' => "18545688515",
-                // 'busisess_name' => "wang",
-                // 'address' => "ddddd",
-                // 'bs_uuid' => create_uuid()
-                // ];
-                // // $busResult = $this->buss->save($buss);
-                $busResult = db('business')->insert($data);
-                $last_id = db()->getLastInsID();
+                Db::startTrans();
+                if ($this->pid == 0) {
+                    $card = array();
+                    $form = array();
+                    $card = explode('-', $params['printcard']);
+                    $form = explode('-', $params['printform']);
+                    $data = [
+                        // 'area' => $params['area'],
+                        'physical_num' => $params['number'],
+                        'phone' => $params['phone'],
+                        'busisess_name' => $params['hospital'],
+                        'connect' => $params['connect'],
+                        'address' => $params['address'],
+                        'bs_uuid' => create_uuid(),
+                        'isprint' => $params['isprint'],
+                        'province' => $params['province'],
+                        'city' => $params['city'],
+                        'county' => $params['area'],
+                        'avatar' => $params['avatar'],
+                        'print_card_id' => $card[0],
+                        'print_form_id' => $card[0],
+                        'print_card' => $form[1],
+                        'print_form' => $form[1],
+                        'profession' => $params['congye'],
+                        'bs_id' => ''
+                    ];
 
+                    // $busResult = $this->buss->validate('Business.add')->save($data);
+                    // 验证医院是否存在
+                    $result = $this->buss->where("busisess_name", "=", $params['hospital'])->find();
+                    if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
+                        $this->error("该体检单位已存在");
+                    }
+                    if (strlen($result['phone']) > 11) {
+
+                        $this->error("请输入正确的手机号");
+                    }
+                    try {
+                        $busResult = $this->buss->save($data);
+                        if ($busResult === false) {
+                            Db::rollBack();
+                            $this->error();
+                        }
+                    } catch (Exception $e) {
+                        Db::rollback();
+                        $this->error();
+                    }
+                    $last_id = $this->buss->bs_id;
+                }
+                if ($this->pid != 0) {
+                    $au = $this->model->get([
+                        'id' => $this->auth->id
+                    ]);
+                    $last_id = $au['businessid'];
+                }
                 $user['salt'] = Random::alnum();
                 $user['password'] = md5(md5($params['password']) . $user['salt']);
                 $user['avatar'] = '/assets/img/avatar.png'; // 设置新管理员默认头像。
@@ -160,9 +209,14 @@ class Admin extends Backend
                 $user['status'] = $params['status'];
                 $user['businessid'] = $last_id;
                 // 设置新管理员默认头像。
-                $result = $this->model->validate('Admin.add')->save($user);
-                if ($result === false) {
-                    $this->error($this->model->getError());
+                try {
+                    $result = $this->model->validate('Admin.add')->save($user);
+                    if ($result === false) {
+                        Db::rollBack();
+                        $this->error($this->model->getError());
+                    }
+                } catch (Exception $e) {
+                    Db::rollBack();
                 }
                 $group = $this->request->post("group/a");
 
@@ -175,12 +229,19 @@ class Admin extends Backend
                         'group_id' => $value
                     ];
                 }
-                model('AuthGroupAccess')->saveAll($dataset);
+                try {
+                    model('AuthGroupAccess')->saveAll($dataset);
+                } catch (Exception $e) {
+                    Db::rollBack();
+                }
+
+                Db::commit();
                 $this->success();
             }
             $this->error();
         }
-
+        $physcal_type = db("employee")->select();
+        $this->view->assign("physcal_type", $physcal_type);
         return $this->view->fetch();
     }
 

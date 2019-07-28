@@ -12,7 +12,6 @@ use app\common\controller\Backend;
  */
 class Customsearch extends Backend
 {
-
     protected $model = null;
 
     public function _initialize()
@@ -22,5 +21,4 @@ class Customsearch extends Backend
         $ipList = $this->model->whereTime('createtime', '-37 days')->group("ip")->column("ip,ip as aa");
         $this->view->assign("ipList", $ipList);
     }
-
 }

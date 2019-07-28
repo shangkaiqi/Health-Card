@@ -12,7 +12,6 @@ use app\common\controller\Backend;
  */
 class Baidumap extends Backend
 {
-
     protected $model = null;
 
     public function _initialize()
@@ -37,5 +36,4 @@ class Baidumap extends Backend
         $this->model = model('Area');
         return parent::selectpage();
     }
-
 }

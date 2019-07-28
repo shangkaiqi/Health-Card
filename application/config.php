@@ -26,7 +26,7 @@ return [
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
-    'auto_bind_module'       => "admin",
+    'auto_bind_module'       => "index",
     // 注册的根命名空间
     'root_namespace'         => [],
     // 扩展函数文件
@@ -55,7 +55,7 @@ return [
     // | 模块设置
     // +----------------------------------------------------------------------
     // 默认模块名
-    'default_module'         => 'admin',
+    'default_module'         => 'index',
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名
@@ -260,11 +260,11 @@ return [
         //是否开启前台会员中心
         'usercenter'          => true,
         //登录验证码
-        'login_captcha'       => true,
+        'login_captcha'       => false,
         //登录失败超过10次则1天后重试
         'login_failure_retry' => true,
         //是否同一账号同一时间只能在一个地方登录
-        'login_unique'        => false,
+        'login_unique'        => true,
         //登录页默认背景图
         'login_background'    => "/assets/img/loginbg.jpg",
         //是否启用多级菜单导航

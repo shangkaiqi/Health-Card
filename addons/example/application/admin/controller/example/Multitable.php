@@ -12,8 +12,8 @@ use app\common\controller\Backend;
  */
 class Multitable extends Backend
 {
-
     protected $model = null;
+    protected $noNeedRight = ['table1', 'table2'];
 
     public function _initialize()
     {
@@ -35,11 +35,9 @@ class Multitable extends Backend
         $this->model = model('Attachment');
         //设置过滤方法
         $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax())
-        {
+        if ($this->request->isAjax()) {
             //如果发送的来源是Selectpage，则转发到Selectpage
-            if ($this->request->request('keyField'))
-            {
+            if ($this->request->request('keyField')) {
                 return $this->selectpage();
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
@@ -66,11 +64,9 @@ class Multitable extends Backend
         $this->model = model('AdminLog');
         //设置过滤方法
         $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax())
-        {
+        if ($this->request->isAjax()) {
             //如果发送的来源是Selectpage，则转发到Selectpage
-            if ($this->request->request('keyField'))
-            {
+            if ($this->request->request('keyField')) {
                 return $this->selectpage();
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
@@ -91,5 +87,4 @@ class Multitable extends Backend
         }
         return $this->view->fetch('index');
     }
-
 }

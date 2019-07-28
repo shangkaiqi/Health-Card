@@ -91,7 +91,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                         {
                             field: 'admin_id', title: __('联动搜索'), searchList: function (column) {
                                 return Template('categorytpl', {});
-                            }
+                            }, formatter: function (value, row, index) {
+                                return '无';
+                            }, visible: false
                         },
                         //启用时间段搜索
                         {
@@ -105,11 +107,20 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                         //操作栏,默认有编辑、删除或排序按钮,可自定义配置buttons来扩展按钮
                         {
                             field: 'operate',
-                            width: "120px",
+                            width: "150px",
                             title: __('Operate'),
                             table: table,
                             events: Table.api.events.operate,
                             buttons: [
+                                {
+                                    name: 'click',
+                                    title: __('点击执行事件'),
+                                    classname: 'btn btn-xs btn-info btn-click',
+                                    icon: 'fa fa-leaf',
+                                    click: function (data) {
+                                        Layer.alert("点击按钮执行的事件");
+                                    }
+                                },
                                 {
                                     name: 'detail',
                                     title: __('弹出窗口打开'),
@@ -151,10 +162,16 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                 ],
                 //更多配置参数可参考http://bootstrap-table.wenzhixin.net.cn/zh-cn/documentation/#t
                 //亦可以参考require-table.js中defaults的配置
-                //禁用默认搜索
-                search: false,
+                //快捷搜索,这里可在控制器定义快捷搜索的字段
+                search: true,
                 //启用普通表单搜索
                 commonSearch: true,
+                //显示导出按钮
+                showExport: true,
+                //导出类型
+                exportDataType: "all", //共有basic, all, selected三种值 basic当前页 all全部 selected仅选中
+                //导出下拉列表选项
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'doc', 'excel'],
                 //可以控制是否默认显示搜索单表,false则隐藏,默认为false
                 searchFormVisible: true,
                 queryParams: function (params) {
@@ -248,7 +265,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                 },
                 custom: function (value, row, index) {
                     //添加上btn-change可以自定义请求的URL进行数据处理
-                    return '<a class="btn-change text-success" data-url="example/bootstraptable/change" data-id="' + row.id + '"><i class="fa ' + (row.title == '' ? 'fa-toggle-off' : 'fa-toggle-on') + ' fa-2x"></i></a>';
+                    return '<a class="btn-change text-success" data-url="example/bootstraptable/change" data-id="' + row.id + '"><i class="fa ' + (row.title == '' ? 'fa-toggle-on fa-flip-horizontal text-gray' : 'fa-toggle-on') + ' fa-2x"></i></a>';
                 },
             },
             events: {//绑定事件的方法

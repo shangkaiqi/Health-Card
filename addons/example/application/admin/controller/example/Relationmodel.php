@@ -12,7 +12,6 @@ use app\common\controller\Backend;
  */
 class Relationmodel extends Backend
 {
-
     protected $model = null;
 
     public function _initialize()
@@ -28,8 +27,7 @@ class Relationmodel extends Backend
     {
         $this->relationSearch = true;
         $this->searchFields = "admin.username,id";
-        if ($this->request->isAjax())
-        {
+        if ($this->request->isAjax()) {
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
                     ->with("admin")
@@ -48,5 +46,4 @@ class Relationmodel extends Backend
         }
         return $this->view->fetch();
     }
-
 }

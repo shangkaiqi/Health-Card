@@ -46,6 +46,22 @@ class Example extends Addons
                         ]
                     ],
                     [
+                        'name'    => 'example/customform',
+                        'title'   => '自定义表单示例',
+                        'icon'    => 'fa fa-edit',
+                        'sublist' => [
+                            ['name' => 'example/customform/index', 'title' => '查看'],
+                        ]
+                    ],
+                    [
+                        'name'    => 'example/tablelink',
+                        'title'   => '表格联动示例',
+                        'icon'    => 'fa fa-table',
+                        'sublist' => [
+                            ['name' => 'example/tablelink/index', 'title' => '查看'],
+                        ]
+                    ],
+                    [
                         'name'    => 'example/colorbadge',
                         'title'   => '彩色角标',
                         'icon'    => 'fa fa-table',

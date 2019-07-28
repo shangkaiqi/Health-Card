@@ -46,13 +46,17 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 						},
 						{
 							field : 'identitycard',
-							title : '身份证',
-							operate : false
+							title : '身份证'
 						},
 						{
 							field : 'sex',
 							title : '性别',
-							operate : false
+							operate : false,
+							formatter : Table.api.formatter.label,
+							searchList : {
+								1 : __('女'),
+								0 : __('男')
+							}
 						},
 						{
 							field : 'age',
@@ -65,6 +69,9 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							field : 'phone',
 							title : '手机号',
 							operate : false
+						},{
+							field : 'order_serial_number',
+							title : '体检编号'
 						},
 						{
 							field : 'employee',
@@ -72,15 +79,36 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 							operate : false
 						},
 						{
-							field : 'order_serial_number',
-							title : '登记编号',
-							operate : false
+
+							// field : 'order.create_date',
+							field : 'registertime',
+							title : '体检时间',
+							operate : 'RANGE',
+							addclass : 'datetimerange',
+							formatter : Table.api.formatter.datetime
+
 						},
 						{
-							field : 'order.physical_result',
+							field : 'order_serial_number',
+							title : '登记编号'
+						},
+						{
+							field : 'physical_result',
 							title : '结果',
 //							visible: false,
-							operate : false
+							operate : false,
+							formatter : function(value, row) {
+								if (value === 0)
+									return '<span style="font-size:14px;color:#000">合格</span>';
+								if (value === 1)
+									return '<span class="label" style="font-size:14px;color:red">异常</span>';
+								if (value === 2)
+									return '<span class="label" style="font-size:14px;color:red">未录入结果</span>';
+							},
+							searchList : {
+								0 : __('合格'),
+								1 : __('异常')
+							}
 						},
 						{
 							field : 'operate',
@@ -100,6 +128,25 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 
 			// 为表格绑定事件
 			Table.api.bindevent(table);
+			// 获取选中项
+			$(document).on("click", ".btn-selected", function() {
+				var rows = table.bootstrapTable('getSelections');
+				var str = '';
+				for (var i = 0; i < rows.length; i++) {
+					str += rows[i]['id'] + ",";
+				}
+				basic = str.substr(0, str.length - 1);
+				Fast.api.ajax({
+						type: 'GET',
+						url: "result/bloodresult/mulit",
+						data: {'id':basic},
+					}, function (data, ret) {
+						//成功的回调
+						return ret.msg;
+					}, function (data, ret) {
+						return false;
+				});
+			});
 		},
 		add : function() {
 			Controller.api.bindevent();

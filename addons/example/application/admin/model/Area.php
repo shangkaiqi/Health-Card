@@ -12,5 +12,4 @@ class Area extends Model
     // 定义时间戳字段名
     protected $createTime = false;
     protected $updateTime = false;
-
 }
