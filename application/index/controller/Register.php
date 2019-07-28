@@ -4,11 +4,12 @@ namespace app\index\controller;
 use app\common\controller\Backend;
 use app\index\controller\Common;
 use think\Db;
+use think\Exception;
 use think\Session;
 use Monolog\Logger;
 use think\Log;
 use app\common\controller\Frontend;
-use Exception;
+use think\exception\;
 
 /**
  *
@@ -258,6 +259,44 @@ class Register extends Frontend
         }
         $this->view->assign("row", $list);
         return $this->view->fetch();
+    }
+    public function del($ids = ''){
+        Db::startTrans();
+        try{
+            
+            $user = $this->model->where('id',$ids)->field('bs_id,order_serial_number')->lock(true)->find();
+            if(!$user){                
+                $this->error($this->model->getError());
+            }
+            $where['odbs_id'] = $user['bs_id'];
+            $where['order_serial_number'] = $user['order_serial_number'];
+            $order = $this->orderd->where($where)->field('physical_result')->find();
+            
+            $data['is_del'] = 1;
+            try{
+                $this->model->save($data,['id'=>$ids]);
+            }catch (Exception $e1){
+                Db::rollBack();
+                $this->error($this->model->getError());
+            }
+            try{
+                $this->order->save($data,['user_id'=>$ids]);
+            }catch (Exception $e1){
+                Db::rollBack();
+                $this->error($this->model->getError());
+            }
+            try{
+                $this->orderd->save($data,$where);
+            }catch (Exception $e1){
+                Db::rollBack();
+                $this->error($this->model->getError());
+            }          
+        }catch (Exception $e){
+            Db::rollBack();
+            $this->error($this->model->getError());
+        }
+        Db::commit();
+        $this->success();
     }
 /**
  * 批量打印体检单

@@ -19,7 +19,7 @@ class Phyusers extends Backend
 
     protected $model = null;
 
-    protected $order = null;
+    protected $orders = null;
 
     protected $orderd = null;
     protected $business = null;
@@ -42,7 +42,7 @@ class Phyusers extends Backend
         parent::_initialize();
 
         $this->model = model("PhysicalUsers");
-        $this->order = model("Order");
+        $this->orders = model("Order");
         $this->orderd = model("OrderDetail");
         $this->business = model("business");
         $comm = new Common();
@@ -68,10 +68,10 @@ class Phyusers extends Backend
 
             list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model->count("id");
-            $userList = $this->model->select();
+            $userList = $this->model->where($where)->order($sort, $order)->limit($offset, $limit)->select();
             foreach ($userList as $row => $value) {
                 $bus = $this->business->where('bs_id',$value['bs_id'])->find();
-                $order = $this->order->where("obs_id",$value['bs_id'])->find();
+                $order = $this->orders->where("obs_id",$value['bs_id'])->find();
                 $userList[$row]['bussname'] = $bus['busisess_name'];
                 $userList[$row]['physic_status'] = $order['physical_result'];
                 $value['registertime'] = date("Y-m-d H:i", $row['registertime']);

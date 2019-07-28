@@ -76,15 +76,15 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 					title : __('Operate'),
 					table : table,
 					events : Table.api.events.operate,
-//					formatter : Table.api.formatter.operate,
-					formatter : function(value, row, index) {
-						var that = $.extend({}, this);
-						var table = $(that.table).clone(true);
-						$(table).data("operate-del", null);
-						that.table = table;
-						return Table.api.formatter.operate.call(that,
-								value, row, index);
-					},					
+					formatter : Table.api.formatter.operate,
+//					formatter : function(value, row, index) {
+//						var that = $.extend({}, this);
+//						var table = $(that.table).clone(true);
+//						$(table).data("operate-del", null);
+//						that.table = table;
+//						return Table.api.formatter.operate.call(that,
+//								value, row, index);
+//					},					
 				}					 
 				] ]
 			});
