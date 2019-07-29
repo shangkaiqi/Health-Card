@@ -54,11 +54,14 @@ class Search extends Frontend
                 return $this->selectpage();
             }
             list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            
+            $where1['bs_id'] = $this->busId;
+            $where1['is_del'] = 0;
             $total = $this->model->with([
                 'order'
             ])
                 ->where($where)
-                ->where("bs_id", "=", $this->busId)
+                ->where($where1)
                 ->order($sort, $order)
                 ->count();
 
@@ -66,7 +69,7 @@ class Search extends Frontend
                 'order'
             ])
                 ->where($where)
-                ->where("bs_id", "=", $this->busId)
+                ->where($where1)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
@@ -822,19 +825,20 @@ EOF;
             ->join("order o","o.order_serial_number = pu.order_serial_number")
             ->join("business b","o.bus_number=b.bs_uuid")
             ->where("pu.id", "in", $params)
-            ->field("pu.id,pu.name,pu.identitycard,pu.sex,pu.age,pu.phone,pu.employee,pu.company,pu.physictype,pu.registertime,pu.order_serial_number, b.busisess_name, o.obtain_employ_number,o.order_status")
+            ->field("pu.id,pu.name,pu.identitycard,pu.sex,pu.age,pu.phone,pu.employee,pu.company,pu.physictype,pu.registertime,pu.order_serial_number, b.busisess_name, o.obtain_employ_number,o.order_status,employ_num_time")
             ->select();
         foreach ($xlsData as $k => $v) {
             $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
             $xlsData[$k]['employee'] = $this->comm->getEmpName($v['employee']);
             $xlsData[$k]['registertime'] = date("Y-m-d H:m:s", $v['registertime']);
             $status = '';
-            if($v['order_status'] == 0)
-                $status = "未开始体检";
-            if($v['order_status'] == 1)
-                $status = "已体检";
-            if($v['order_status'] == 2)
+            if($v['employ_num_time']){                
                 $status = "已出证";
+            }
+            if($v['physical_result'] == 0)
+                $status = "未通过";
+            if($v['physical_result'] == 1)
+                $status = "已通过";
             $xlsData[$k]['order_status'] = $status;
         }
         $this->comm->exportExcel("userPhysial", $xlsCell, $xlsData);

@@ -4,12 +4,11 @@ namespace app\index\controller;
 use app\common\controller\Backend;
 use app\index\controller\Common;
 use think\Db;
-use think\Exception;
 use think\Session;
 use Monolog\Logger;
 use think\Log;
 use app\common\controller\Frontend;
-use think\exception\;
+use think\Exception;
 
 /**
  *
@@ -69,11 +68,10 @@ class Register extends Frontend
             }
 
             list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
-            // $total = db("physical_users")->count("id");
-
-            // $userList = db("physical_users")->field("id,name,identitycard,type")->select();
-            $total = $this->model->where($where)->where("bs_id", "=", $this->busId)->count("id");
-            $userList = $this->model->where($where)->where("bs_id", "=", $this->busId)->order($sort, $order)->limit($offset, $limit)->select();
+            $where1['bs_id'] = $this->busId;
+            $where1['is_del'] = 0;
+            $total = $this->model->where($where)->where($where1)->count("id");
+            $userList = $this->model->where($where)->where($where1)->order($sort, $order)->limit($offset, $limit)->select();
             foreach ($userList as $row) {
                 $row['registertime'] = date("Y-m-d H:i", $row['registertime']);
             }
@@ -262,10 +260,9 @@ class Register extends Frontend
     }
     public function del($ids = ''){
         Db::startTrans();
-        try{
-            
+        try{            
             $user = $this->model->where('id',$ids)->field('bs_id,order_serial_number')->lock(true)->find();
-            if(!$user){                
+            if(!$user){
                 $this->error($this->model->getError());
             }
             $where['odbs_id'] = $user['bs_id'];
@@ -278,25 +275,13 @@ class Register extends Frontend
             }catch (Exception $e1){
                 Db::rollBack();
                 $this->error($this->model->getError());
-            }
-            try{
-                $this->order->save($data,['user_id'=>$ids]);
-            }catch (Exception $e1){
-                Db::rollBack();
-                $this->error($this->model->getError());
-            }
-            try{
-                $this->orderd->save($data,$where);
-            }catch (Exception $e1){
-                Db::rollBack();
-                $this->error($this->model->getError());
-            }          
+            }      
         }catch (Exception $e){
             Db::rollBack();
             $this->error($this->model->getError());
         }
         Db::commit();
-        $this->success();
+        $this->success("删除成功");
     }
 /**
  * 批量打印体检单

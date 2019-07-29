@@ -64,12 +64,14 @@ class Conveniresult extends Frontend
                 return $this->selectpage();
             }
             list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
-            $mwhere['bs_id'] = $this->busId;
+            
+            $where1['bs_id'] = $this->busId;
+            $where1['is_del'] = 0;
             $total = $this->model->with([
                 'order'
             ])
                 ->where($where)
-                ->where("bs_id", "=", $this->busId)
+                ->where($where1)
                 ->order($sort, $order)
                 ->count();
 
@@ -77,7 +79,7 @@ class Conveniresult extends Frontend
                 'order'
             ])
                 ->where($where)
-                ->where("bs_id", "=", $this->busId)
+                ->where($where1)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
