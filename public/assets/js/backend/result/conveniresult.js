@@ -88,10 +88,6 @@ define([ 'jquery', 'bootstrap', 'backend', 'table', 'form' ], function($,
 
 						},
 						{
-							field : 'order_serial_number',
-							title : '登记编号'
-						},
-						{
 							field : 'physical_result',
 							title : '结果',
 							operate : false,
