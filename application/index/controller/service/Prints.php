@@ -66,6 +66,7 @@ class Prints extends Frontend
                 $printInfo['avatar'] = $hosp['avatar'];
                 $printInfo['endtime'] = date('Y-m-d',strtotime('+1year'));
                 $printInfo['print_card_id'] = $hosp['print_card_id'];
+                $printInfo['time'] = date('Y-m-d',time());
 
                 // 判断打印卡数量是否超过限制量
                 $printInfo['is_out'] = $this->comm->checkcardnumber($hosp['bs_id']);
