@@ -65,6 +65,7 @@ class Prints extends Frontend
                 $printInfo['identitycard'] = $uid['identitycard']; // 1公共卫生2食药安全
                 $printInfo['avatar'] = $hosp['avatar'];
                 $printInfo['endtime'] = date('Y-m-d',strtotime('+1year'));
+                $printInfo['time'] = date('Y-m-d',time());
                 $printInfo['print_card_id'] = $hosp['print_card_id'];
 
                 // 判断打印卡数量是否超过限制量
