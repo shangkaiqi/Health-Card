@@ -139,7 +139,8 @@
         LODOP.SET_PRINT_STYLEA(0, "FontName", "华文楷体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 8);
     };
-    function CreatePrintPage1() {
+    function CreatePrintPage1() {	
+        LODOP = getLodop();
         LODOP.PRINT_INITA(0, 0, "86.6mm", "56mm", "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
         LODOP.ADD_PRINT_TEXT("36mm", "48mm", 97, 30, "{$print['employee']}");  //从业类别
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 9);
