@@ -111,7 +111,7 @@
 		<div class="col-xs-12 col-sm-4">
 			<select class="first form-control"	name="row[congye]" style="width: 100px;">
 				{foreach physcal_type as $k=>$v}
-				<option value="{$v['id']}" {if condition="$v.id == $congye" }selected="selected"{/if}>{$v['name']}</option>
+				<option value="{$v['id']}">{$v['name']}</option>
 				{/foreach}
 			</select> 
 		</div>
