@@ -195,7 +195,7 @@ class Register extends Frontend
                     $html = $this->get_html($param);
                     echo $html;
                 }
-                $this->success('添加成功',"index");
+                $this->success();
             }
             $this->error();
         }

@@ -146,6 +146,13 @@ class Admin extends Backend
             $params = $this->request->post("row/a");
             if ($params) {
                 Db::startTrans();
+                
+                $user = db("admin")->lock(true)->where("username",$params['username'])->find();
+                if ($user) {
+                    $this->error("该用户已存在");
+                }
+                
+                
                 if ($this->pid == 0) {
                     $card = array();
                     $form = array();
@@ -200,6 +207,7 @@ class Admin extends Backend
                     ]);
                     $last_id = $au['businessid'];
                 }
+                
                 $user['salt'] = Random::alnum();
                 $user['password'] = md5(md5($params['password']) . $user['salt']);
                 $user['avatar'] = '/assets/img/avatar.png'; // 设置新管理员默认头像。
