@@ -45,10 +45,11 @@
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
 		<div class="col-xs-12 col-sm-4">
-			<select class="first form-control" name="row[parent]" id="pid-s" style="width: 120px;"> 
-			{foreach $physcal_type as $index=>$vo}
-				<option value="{$vo.id}" {if condition="$vo.id eq $congye"} selected="selected"{/if}>{$vo.name}</option> 
-			{/foreach}
+			<select class="first form-control" name="row[parent]" id="pid-s"
+				style="width: 120px;"> {foreach $physcal_type as
+				$index=>$vo}
+				<option value="{$vo.id}" {if condition="$vo.id eq $congye"
+					} selected="selected"{/if}>{$vo.name}</option> {/foreach}
 			</select>
 		</div>
 	</div>
@@ -76,8 +77,12 @@
 	<div id="avatar_ad">
 		<img width="102" id="imgs" height="126" src="" border="0">
 	</div>
-	<input name="row[avatar]" id="avatar" type="hidden" value="">
+
+	<div id="avatar_ad1">
+		<div id="webcam"></div>		
+    	<button type="button" class="play">拍照</button>
 	</div>
+	<input name="row[avatar]" id="avatar" type="hidden" value="">
 	<div class="form-group layer-footer">
 		<label class="control-label col-xs-12 col-sm-2"></label>
 		<div class="col-xs-12 col-sm-8">
@@ -89,6 +94,9 @@
 		</div>
 	</div>
 </form>
+
+<script src="/jquery.min.js"></script>
+<script src="/jquery.webcam.min.js"></script>
 <script for=idcard event="Readed()">
 	document.getElementById("avatar").value = rdcard.JPGBuffer;
 	document.getElementById("imgs").setAttribute("src",
@@ -190,13 +198,111 @@
 
 	}
 </script>
+<script type="text/javascript">
+	var pos = 0, ctx = null, saveCB, image = [];
+	var canvas = document.createElement("canvas");
+	canvas.setAttribute('width', 102);
+	canvas.setAttribute('height', 126);
+
+	if (canvas.toDataURL) {
+
+		ctx = canvas.getContext("2d");
+
+		image = ctx.getImageData(0, 0, 102, 126);
+
+		saveCB = function(data) {
+
+			var col = data.split(";");
+			var img = image;
+
+			for (var i = 0; i < 102; i++) {
+				var tmp = parseInt(col[i]);
+				img.data[pos + 0] = (tmp >> 16) & 0xff;
+				img.data[pos + 1] = (tmp >> 8) & 0xff;
+				img.data[pos + 2] = tmp & 0xff;
+				img.data[pos + 3] = 0xff;
+				pos += 4;
+			}
+
+			if (pos >= 4 * 102 * 126) {
+				ctx.putImageData(img, 0, 0);
+				var str = canvas.toDataURL("image/png");
+				document.getElementById("imgs").setAttribute("src",	str);
+				document.getElementById("avatar").value = str.substring(22);
+				console.log(str);
+				/* 				$.post("/upload.php", {
+				 type : "data",
+				 image : str
+				 }); */
+				pos = 0;
+			}
+		};
+
+	} else {
+
+		saveCB = function(data) {
+			image.push(data);
+
+			pos += 4 * 320;
+
+			if (pos >= 4 * 320 * 240) {
+				var str = image.join('|');
+				console.log(str);
+				/* 				$.post("/upload.php", {
+				 type : "pixel",
+				 image : str
+				 }); */
+				pos = 0;
+			}
+		};
+	}
+	$("#webcam").webcam({
+		width : 320,
+		height : 240,
+		mode : "callback", //stream,save，回调模式,流模式和保存模式
+		swffile : "/jscam_canvas_only.swf",
+		onTick : function(remain) {
+			if (0 == remain) {
+				$("#status").text("拍照成功!");
+			} else {
+				$("#status").text("倒计时" + remain + "秒钟...");
+			}
+		},
+		onSave : saveCB,
+		onCapture : function() { //捕获图像
+			webcam.save();
+		},
+		debug : function(type, string) { //控制台信息
+			console.log(type + ": " + string);
+		},
+		onLoad : function() { //flash 加载完毕执行
+			console.log('加载完毕！')
+			var cams = webcam.getCameraList();
+			for ( var i in cams) {
+				$("body").append("<p>" + cams[i] + "</p>");
+			}
+		}
+	});
+	$(".play").click(function() {
+		webcam.capture(0); //拍照，参数5是倒计时
+	});
+</script>
 <style>
 #avatar_ad {
 	border: 1px solid #ccc;
 	width: 102px;
 	height: 126px;
 	position: absolute;
-	top: 27%;
+	top: 10%;
 	right: 20%;
 }
+
+#avatar_ad1 {
+	width: 320px;
+	height: 280px;
+	position: absolute;
+	top: 42%;
+	right: 7%;
+}
+#webcam{ border: 1px solid #666666; width: auto; height: auto; float: left; }
 </style>
