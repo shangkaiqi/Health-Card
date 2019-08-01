@@ -329,7 +329,7 @@ class Register extends Frontend
             }
             </script>            
 		<button id=\"prints\" style=\"display:none\">打印文件</button>{$html}";
-        $this->success("", "index",'',1);
+        $this->success();
     }
     
     protected function lodopJs($print){
@@ -337,7 +337,7 @@ class Register extends Frontend
         LODOP.NewPage();
         LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
 
-        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text=123456789541&thickness=35&start=A&code=BCGcode128\">");
+        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text={$print['order_serial_number']}&thickness=35&start=A&code=BCGcode128\">");
         LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
         LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
@@ -889,7 +889,7 @@ EOF;
         				LODOP = getLodop();
         				LODOP.PRINT_INITA(9, 0, 794, 1122, "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
         				LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
-                        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text=123456789541&thickness=35&start=A&code=BCGcode128\">");
+                        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text={$print['order_serial_number']}&thickness=35&start=A&code=BCGcode128\">");
           				LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
         				LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         				LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
