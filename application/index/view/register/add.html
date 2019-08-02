@@ -45,7 +45,7 @@
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
 		<div class="col-xs-12 col-sm-4">
-			<select class="first form-control" name="row[parent]" id="pid-s" style="width: 120px;"> 
+			<select class="first" name="row[parent]" id="pid-s" style="width:238px;height:29px;line-height:29px;padding-left:10px;border: #d2d6de 1px solid;">
 			{foreach $physcal_type as $index=>$vo}
 				<option value="{$vo.id}" {if condition="$vo.id eq $congye"} selected="selected"{/if}>{$vo.name}</option> 
 			{/foreach}

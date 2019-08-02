@@ -42,7 +42,7 @@
 	<div class="form-group">
 		<label for="c-nickname" class="control-label col-xs-12 col-sm-2">从业类别:</label>
 		<div class="form-inline" style="margin-left: 10px;">
-			<select class="first form-control" name="row[parent]" id="pid-s" style="margin-left: 15px;">
+			<select class="first" name="row[parent]" id="pid-s" style="margin-left:15px;width:238px;height:29px;line-height:29px;padding-left:10px;border: #d2d6de 1px solid;">
 				{foreach $pid as $index=>$vo}					
 					<option value="{$vo.id}" {if condition="$vo.id eq 1"} selected = "selected" {/if}>
 						{$vo.name}
