@@ -97,7 +97,7 @@
 			var option = document.createElement("option");
 			option.innerHTML = LODOP.GET_PRINTER_NAME(i);
 			option.value = i + '-' + LODOP.GET_PRINTER_NAME(i);
-			if($row['print_card_id']){
+			if({$row['print_card_id']}){
 				option.selected = true;
 			}
 			document.getElementById("card").appendChild(option);
@@ -106,7 +106,7 @@
 			var option = document.createElement("option");
 			option.innerHTML = LODOP.GET_PRINTER_NAME(i);
 			option.value = i + '-' + LODOP.GET_PRINTER_NAME(i);
-			if($row['print_card_id']){
+			if({$row['print_form_id']}){
 				option.selected = true;
 			}
 			document.getElementById("form").appendChild(option);

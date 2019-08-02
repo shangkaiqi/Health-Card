@@ -6,6 +6,7 @@ use app\index\model\AuthGroupAccess;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
+use think\Db;
 use app\index\controller\Business;
 use app\common\controller\Frontend;
 
@@ -144,50 +145,16 @@ class Admin extends Frontend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                if ($this->pid == 0) {
-                    $card = array();
-                    $form = array();
-                    $card = explode('-', $params['printcard']);
-                    $form = explode('-', $params['printform']);
-                    $data = [
-                        // 'area' => $params['area'],
-                        'physical_num' => $params['number'],
-                        'phone' => $params['phone'],
-                        'busisess_name' => $params['hospital'],
-                        'connect' => $params['connect'],
-                        'address' => $params['address'],
-                        'bs_uuid' => create_uuid(),
-                        'isprint' => $params['isprint'],
-                        'province' => $params['province'],
-                        'city' => $params['city'],
-                        'county' => $params['area'],
-                        'avatar' =>$params['avatar'],
-                        'print_card_id' =>$card[0],
-                        'print_form_id' =>$card[0],
-                        'print_card' =>$form[1],
-                        'print_form' =>$form[1],
-                        
-                    ];
-
-                    // $busResult = $this->buss->validate('Business.add')->save($data);
-                    // 验证医院是否存在
-                    $result = $this->buss->where("busisess_name", "=", $params['hospital'])->find();
-                    if ($result['busisess_name'] != null || $result['busisess_name'] != '') {
-                        $this->error("该体检单位已存在");
-                    }
-                    if(strlen($result['phone'])>11){
-                        
-                        $this->error("请输入正确的手机号");
-                    }
-                    $busResult = $this->buss->save($data);
-                    $last_id = $this->buss->bs_id;
+                $au = $this->model->get([
+                    'id' => $this->auth->id
+                ]);
+                Db::startTrans();
+                $last_id = $au['businessid'];
+                $user = db("admin")->lock(true)->where("username",$params['username'])->find();
+                if ($user) {
+                    $this->error("该用户已存在");
                 }
-                if ($this->pid != 0) {
-                    $au = $this->model->get([
-                        'id' => $this->auth->id
-                    ]);
-                    $last_id = $au['businessid'];
-                }
+                $user['id'] = '';
                 $user['salt'] = Random::alnum();
                 $user['password'] = md5(md5($params['password']) . $user['salt']);
                 $user['avatar'] = '/assets/img/avatar.png'; // 设置新管理员默认头像。
@@ -199,8 +166,10 @@ class Admin extends Frontend
                 // 设置新管理员默认头像。
                 $result = $this->model->validate('Admin.add')->save($user);
                 if ($result === false) {
+                    Db::rollBack();
                     $this->error($this->model->getError());
                 }
+                Db::commit();
                 $group = $this->request->post("group/a");
 
                 // 过滤不允许的组别,避免越权

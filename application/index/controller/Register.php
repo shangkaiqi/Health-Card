@@ -8,7 +8,7 @@ use think\Session;
 use Monolog\Logger;
 use think\Log;
 use app\common\controller\Frontend;
-use Exception;
+use think\Exception;
 
 /**
  *
@@ -68,11 +68,10 @@ class Register extends Frontend
             }
 
             list ($where, $sort, $order, $offset, $limit) = $this->buildparams();
-            // $total = db("physical_users")->count("id");
-
-            // $userList = db("physical_users")->field("id,name,identitycard,type")->select();
-            $total = $this->model->where($where)->where("bs_id", "=", $this->busId)->count("id");
-            $userList = $this->model->where($where)->where("bs_id", "=", $this->busId)->order($sort, $order)->limit($offset, $limit)->select();
+            $where1['bs_id'] = $this->busId;
+            $where1['is_del'] = 0;
+            $total = $this->model->where($where)->where($where1)->count("id");
+            $userList = $this->model->where($where)->where($where1)->order($sort, $order)->limit($offset, $limit)->select();
             foreach ($userList as $row) {
                 $row['registertime'] = date("Y-m-d H:i", $row['registertime']);
             }
@@ -196,7 +195,7 @@ class Register extends Frontend
                     $html = $this->get_html($param);
                     echo $html;
                 }
-                $this->success('添加成功',"index");
+                $this->success();
             }
             $this->error();
         }
@@ -259,6 +258,31 @@ class Register extends Frontend
         $this->view->assign("row", $list);
         return $this->view->fetch();
     }
+    public function del($ids = ''){
+        Db::startTrans();
+        try{            
+            $user = $this->model->where('id',$ids)->field('bs_id,order_serial_number')->lock(true)->find();
+            if(!$user){
+                $this->error($this->model->getError());
+            }
+            $where['odbs_id'] = $user['bs_id'];
+            $where['order_serial_number'] = $user['order_serial_number'];
+            $order = $this->orderd->where($where)->field('physical_result')->find();
+            
+            $data['is_del'] = 1;
+            try{
+                $this->model->save($data,['id'=>$ids]);
+            }catch (Exception $e1){
+                Db::rollBack();
+                $this->error($this->model->getError());
+            }      
+        }catch (Exception $e){
+            Db::rollBack();
+            $this->error($this->model->getError());
+        }
+        Db::commit();
+        $this->success("删除成功");
+    }
 /**
  * 批量打印体检单
  * 
@@ -305,14 +329,13 @@ class Register extends Frontend
             }
             </script>            
 		<button id=\"prints\" style=\"display:none\">打印文件</button>{$html}";
-        $this->success("", "index",'',1);
+        $this->success();
     }
     
     protected function lodopJs($print){
         $lodop = <<<EOF
         LODOP.NewPage();
         LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
-
         LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
         LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
         LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
@@ -868,8 +891,9 @@ EOF;
         				LODOP = getLodop();
         				LODOP.PRINT_INITA(9, 0, 794, 1122, "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
         				LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
-                        LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
-                        LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
+                LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
+                LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
+
         				LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         				LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
         				LODOP.SET_PRINT_STYLEA(0, "Alignment", 2);

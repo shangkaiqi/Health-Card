@@ -284,15 +284,15 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'adminlte', 'form'], functi
             //绑定tabs事件,如果需要点击强制刷新iframe,则请将iframeForceRefresh置为true,iframeForceRefreshTable只强制刷新表格
             nav.addtabs({iframeHeight: "100%", iframeForceRefresh: false, iframeForceRefreshTable: true, nav: nav});
 
-            if ($("ul.sidebar-menu li.active a").size() > 0) {
-                $("ul.sidebar-menu li.active a").trigger("click");
-            } else {
-                if (Config.fastadmin.multiplenav) {
-                    $("li:first > a", firstnav).trigger("click");
-                } else {
-                    $("ul.sidebar-menu li a[url!='javascript:;']:first").trigger("click");
-                }
-            }
+//            if ($("ul.sidebar-menu li.active a").size() > 0) {
+//                $("ul.sidebar-menu li.active a").trigger("click");
+//            } else {
+//                if (Config.fastadmin.multiplenav) {
+//                    $("li:first > a", firstnav).trigger("click");
+//                } else {
+//                    $("ul.sidebar-menu li a[url!='javascript:;']:first").trigger("click");
+//                }
+//            }
 
             //如果是刷新操作则直接返回刷新前的页面
             if (Config.referer) {
