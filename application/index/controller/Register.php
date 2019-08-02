@@ -336,44 +336,44 @@ class Register extends Frontend
         $lodop = <<<EOF
         LODOP.NewPage();
         LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
-        LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
-        LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
+        LODOP.ADD_PRINT_IMAGE(70, 60, 500, 100, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=11&text={$print['order_serial_number']}&thickness=55&start=A&code=BCGcode128\">");
+        LODOP.ADD_PRINT_TEXT(30, 170, 465, 45, "河北省食品药品从业人员健康检查表");
         LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
         LODOP.SET_PRINT_STYLEA(0, "Alignment", 2);
         LODOP.ADD_PRINT_SHAPE(4, 150, 46, 702, 2, 0, 1, "#000000");
-        LODOP.ADD_PRINT_TEXT(122, 50, 79, 26, "体检日期: ");
+        LODOP.ADD_PRINT_TEXT(250, 70, 90, 26, "体检日期:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 11);
-        LODOP.ADD_PRINT_TEXT(122, 570, 160, 26, "编号：{$print['order_serial_number']}");
+        LODOP.ADD_PRINT_TEXT(250, 340, 160, 26, "编号:{$print['order_serial_number']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(122, 140, 170, 26, "{$print['time']}");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-
-        LODOP.ADD_PRINT_TEXT(170, 70, 50, 26, "姓名:");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 150, 60, 26, "{$print['name']}");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 240, 60, 26, "性别:");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 300, 60, 26, "{$print['sex']}");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 400, 60, 26, "年龄:");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 460, 60, 26, "{$print['age']}");
+        LODOP.ADD_PRINT_TEXT(250, 140, 170, 26, "{$print['time']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
-        LODOP.ADD_PRINT_TEXT(210, 70, 80, 26, "从业类别:");
+        LODOP.ADD_PRINT_TEXT(170, 70, 90, 26, "姓名:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(210, 150, 80, 26, "{$print['employee']}");
+        LODOP.ADD_PRINT_TEXT(170, 120, 60, 26, "{$print['name']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(210, 240, 80, 26, "体检单位:");
+        LODOP.ADD_PRINT_TEXT(170, 210, 80, 26, "性别:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(210, 380, 80, 26, "{$print['company']}");
+        LODOP.ADD_PRINT_TEXT(170, 260, 60, 26, "{$print['sex']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(170, 300, 80, 26, "年龄:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(170, 350, 60, 26, "{$print['age']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
-        LODOP.ADD_PRINT_TEXT(250, 70, 100, 26, "身份证号");
+        LODOP.ADD_PRINT_TEXT(170, 400, 80, 26, "从业类别:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(250, 150, 200, 26, "{$print['identitycard']}");
+        LODOP.ADD_PRINT_TEXT(170, 480, 80, 26, "{$print['employee']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(210, 320, 80, 26, "从业单位:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(210, 400, 200, 26, "{$print['company']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+
+        LODOP.ADD_PRINT_TEXT(210, 70, 100, 26, "身份证号:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(210, 150, 180, 26, "{$print['identitycard']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
 
@@ -408,7 +408,7 @@ class Register extends Frontend
         LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
-        LODOP.ADD_PRINT_IMAGE(1020, 580, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
+        LODOP.ADD_PRINT_IMAGE(1020, 580, 200, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text={$print['order_serial_number']}&thickness=55&start=A&code=BCGcode128\">");
 EOF;
         return $lodop;
     }
