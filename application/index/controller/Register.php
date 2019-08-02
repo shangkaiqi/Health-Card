@@ -313,8 +313,8 @@ class Register extends Frontend
         LODOP.NewPage();
         LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
 
-        LODOP.ADD_PRINT_IMAGE(10, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=3&rotation=0&font_family=Arial.ttf&font_size=19&text=123456789541&thickness=35&start=A&code=BCGcode128\">");
-        LODOP.ADD_PRINT_TEXT(43, 150, 465, 45, "河北省食品药品从业人员健康检查表");
+        LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
+        LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
         LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
         LODOP.SET_PRINT_STYLEA(0, "Alignment", 2);
@@ -328,22 +328,22 @@ class Register extends Frontend
 
         LODOP.ADD_PRINT_TEXT(170, 70, 50, 26, "姓名:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 120, 60, 26, "{$print['name']}");
+        LODOP.ADD_PRINT_TEXT(170, 150, 60, 26, "{$print['name']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
         LODOP.ADD_PRINT_TEXT(170, 240, 60, 26, "性别:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
         LODOP.ADD_PRINT_TEXT(170, 300, 60, 26, "{$print['sex']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(170, 400, 60, 26, "年龄");
+        LODOP.ADD_PRINT_TEXT(170, 400, 60, 26, "年龄:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
         LODOP.ADD_PRINT_TEXT(170, 460, 60, 26, "{$print['age']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
-        LODOP.ADD_PRINT_TEXT(210, 70, 80, 26, "从业类别");
+        LODOP.ADD_PRINT_TEXT(210, 70, 80, 26, "从业类别:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
         LODOP.ADD_PRINT_TEXT(210, 150, 80, 26, "{$print['employee']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(210, 300, 80, 26, "体检单位");
+        LODOP.ADD_PRINT_TEXT(210, 240, 80, 26, "体检单位:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
         LODOP.ADD_PRINT_TEXT(210, 380, 80, 26, "{$print['company']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
@@ -380,6 +380,8 @@ class Register extends Frontend
         LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
         LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
         LODOP.ADD_PRINT_TABLE(290, 56, 680, 760, document.getElementById("print_8").innerHTML);
+        
+        LODOP.ADD_PRINT_TEXT(1000, 50, 465, 45, "从业人员健康回执表");
 EOF;
         return $lodop;
     }
@@ -838,6 +840,7 @@ EOF;
         								<span style="font-size:12.0pt;font-family:宋体;">HAV-IgM、HEV-IgM两个指标。</span>
         							</span>
         						</td>
+        							<div style="border-bottom:1px solid #000000;cellspacing="0" cellpadding="0""></div>
         					</tr>
         				</tbody>
         			</table>
