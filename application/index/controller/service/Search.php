@@ -826,7 +826,7 @@ EOF;
             ->join("order o","o.order_serial_number = pu.order_serial_number")
             ->join("business b","o.bus_number=b.bs_uuid")
             ->where("pu.id", "in", $params)
-            ->field("pu.id,pu.name,pu.identitycard,pu.sex,pu.age,pu.phone,pu.employee,pu.company,pu.physictype,pu.registertime,pu.order_serial_number, b.busisess_name, o.obtain_employ_number,o.order_status,employ_num_time")
+            ->field("pu.id,pu.name,pu.identitycard,o.physical_result,pu.sex,pu.age,pu.phone,pu.employee,pu.company,pu.physictype,pu.registertime,pu.order_serial_number, b.busisess_name, o.obtain_employ_number,o.order_status,employ_num_time")
             ->select();
         foreach ($xlsData as $k => $v) {
             $xlsData[$k]['sex'] = $v['sex'] == 0 ? '男' : '女';
