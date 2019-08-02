@@ -60,15 +60,15 @@
 			<div class="form-inline">
 				<input type="hidden" name="order_serial_number"
 					value="{$row['order_serial_number']}"> <select
-					class="first form-control"  name='frist[]'
-					onchange="getInspect({$vo.id},this.value)" style="width: 100px;">
+					class="first"  name='frist[]'
+					onchange="getInspect({$vo.id},this.value)" style="width:100px;height:30px;line-height:30px;padding-left:10px;">
 					<option value="0-{$vo.id}" {if condition="$vo.physical_result eq 0"
 						}selected="selected"{/if}>阴性</option>
 					<option value="1-{$vo.id}" {if condition="$vo.physical_result eq 1"
 						}selected="selected"{/if}>阳性</option>
-				</select> <select id='inspace-1-{$vo.id}' class="second form-control"
+				</select> <select id='inspace-1-{$vo.id}' class="second"
 					name="result[]"
-					style="width: 100px;{if condition='$vo.physical_result  neq 1'}visibility:hidden{/if}">
+					style="width:200px;height:29px;line-height:29px;padding-left:10px;{if condition='$vo.physical_result  neq 1'}visibility:hidden{/if}">
 					{foreach $vo.values as $k=>$v}
 					<option value="{$v['id']}" {if
 						condition="$v.id == $vo.physical_result_ext" }selected="selected"{/if}>{$v['name']}</option>
