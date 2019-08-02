@@ -377,34 +377,38 @@ class Register extends Frontend
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
 
-        LODOP.ADD_PRINT_TEXT(980, 70, 80, 26, "姓名:");
+        LODOP.ADD_PRINT_TEXT(1030, 70, 80, 26, "姓名:");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(980, 120, 200, 26, "{$print['name']}");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-
-        LODOP.ADD_PRINT_TEXT(980, 200, 100, 26, "身份证号:");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(980, 270, 200, 26, "{$print['identitycard']}");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(1000, 70, 80, 26, "性别:");
-        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(1000, 120, 200, 26, "{$print['sex']}");
+        LODOP.ADD_PRINT_TEXT(1030, 120, 200, 26, "{$print['name']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
-        LODOP.ADD_PRINT_TEXT(1000, 150, 79, 26, "体检日期: ");
+        LODOP.ADD_PRINT_TEXT(1030, 280, 100, 26, "身份证号:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1030, 370, 200, 26, "{$print['identitycard']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1030, 200, 80, 26, "性别:");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+        LODOP.ADD_PRINT_TEXT(1030, 240, 200, 26, "{$print['sex']}");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+
+        LODOP.ADD_PRINT_TEXT(1060, 70, 79, 26, "体检日期: ");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 11);
-        LODOP.ADD_PRINT_TEXT(1000, 220, 170, 26, "{$print['time']}");
+        LODOP.ADD_PRINT_TEXT(1060, 140, 170, 26, "{$print['time']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(1000, 350, 170, 26, "体检编号：");
+        LODOP.ADD_PRINT_TEXT(1060, 280, 170, 26, "体检编号：");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
-        LODOP.ADD_PRINT_TEXT(1000, 420, 160, 26, "{$print['order_serial_number']}");
+        LODOP.ADD_PRINT_TEXT(1060, 370, 160, 26, "{$print['order_serial_number']}");
         LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
 
         LODOP.ADD_PRINT_IMAGE(160, 600, 102, 126, "<img src=\"data:image/jpeg;base64,{$print['images']}\"/>");
         LODOP.SET_PRINT_STYLEA(0, "TransColor", "#0F0100");
         LODOP.ADD_PRINT_TABLE(290, 56, 680, 760, document.getElementById("print_8").innerHTML);
         
-        LODOP.ADD_PRINT_TEXT(1000, 50, 465, 45, "从业人员健康回执表");
+        LODOP.ADD_PRINT_TEXT(1000, 300, 465, 45, "从业人员健康回执单");
+        LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
+        LODOP.SET_PRINT_STYLEA(0, "FontSize", 12);
+
+        LODOP.ADD_PRINT_IMAGE(1020, 580, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
 EOF;
         return $lodop;
     }
@@ -891,8 +895,8 @@ EOF;
         				LODOP = getLodop();
         				LODOP.PRINT_INITA(9, 0, 794, 1122, "打印控件功能演示_Lodop功能_在线编辑获得程序代码");
         				LODOP.SET_PRINT_MODE("PRINT_NOCOLLATE", 1);
-                LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
-                LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
+                        LODOP.ADD_PRINT_IMAGE(40, 60, 102, 126, "<img src=\"http://39.100.89.92:8082/barcodegen/html/image.php?filetype=PNG&dpi=85&scale=1&rotation=0&font_family=Arial.ttf&font_size=8&text=123456789541&thickness=55&start=A&code=BCGcode128\">");
+                        LODOP.ADD_PRINT_TEXT(10, 50, 465, 45, "河北省食品药品从业人员健康检查表");
 
         				LODOP.SET_PRINT_STYLEA(0, "FontName", "黑体");
         				LODOP.SET_PRINT_STYLEA(0, "FontSize", 20);
@@ -1427,7 +1431,7 @@ EOF;
         			</table>
         		</div>
         	</body>
-        	
+        	    
         	</html>
 EOF;
     }
